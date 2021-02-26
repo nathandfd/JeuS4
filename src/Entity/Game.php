@@ -122,12 +122,12 @@ class Game
     /**
      * @return Collection|Round[]
      */
-    public function getSets(): Collection
+    public function getRounds(): Collection
     {
         return $this->rounds;
     }
 
-    public function addSet(Round $round): self
+    public function addRound(Round $round): self
     {
         if (!$this->rounds->contains($round)) {
             $this->rounds[] = $round;
@@ -137,7 +137,7 @@ class Game
         return $this;
     }
 
-    public function removeSet(Round $round): self
+    public function removeRound(Round $round): self
     {
         if ($this->rounds->removeElement($round)) {
             // set the owning side to null (unless already changed)

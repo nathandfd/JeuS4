@@ -105,8 +105,32 @@ class GameController extends AbstractController
             ]);
             $entityManager->persist($set);
             $entityManager->flush();
+
+            return $this->redirectToRoute('show_game', [
+                'game' => $game->getId()
+            ]);
         } else {
             return $this->redirectToRoute('new_game');
         }
+    }
+
+    /**
+     * @Route("/show-game/{game}", name="show_game")
+     */
+    public function showGame(
+        CardRepository $cardRepository,
+        Game $game
+    ): Response {
+        $cards = $cardRepository->findAll();
+        $tCards = [];
+        foreach ($cards as $card) {
+            $tCards[$card->getId()] = $card;
+        }
+
+        return $this->render('game/show_game.html.twig', [
+            'game' => $game,
+            'set' => $game->getRounds()[0],
+            'cards' => $tCards
+        ]);
     }
 }

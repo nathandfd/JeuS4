@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-8">
+            Cartes de l'adversaire
+            {% for card in set.user2HandCards %}
+                <img src="{{ asset('cartes/'~cards[card].picture) }}">{{ cards[card].number }}
+            {% endfor %}
+        </div>
+        <div class="col-4">
+            Actions
+        </div>
+    </div>
+    <div class="row">
+        Plateau adversaire
+    </div>
+    <div class="row">
+        Plateau
+    </div>
+    <div class="row">
+        Mon Plateau
+    </div>
+    <div class="row">
+        <div class="col-8">
+            {% for card in set.user1HandCards %}
+                <img src="{{ asset('cartes/'~cards[card].picture) }}">{{ cards[card].number }}
+            {% endfor %}
+        </div>
+        <div class="col-4">
+            Mes Actions
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+
