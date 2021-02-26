@@ -49,6 +49,11 @@ class Game
      */
     private $sets;
 
+    /**
+     * @ORM\Column(type="array")
+     */
+    private $pioche = [];
+
     public function __construct()
     {
         $this->sets = new ArrayCollection();
@@ -145,6 +150,18 @@ class Game
                 $set->setGame(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPioche(): ?array
+    {
+        return $this->pioche;
+    }
+
+    public function setPioche(array $pioche): self
+    {
+        $this->pioche = $pioche;
 
         return $this;
     }
