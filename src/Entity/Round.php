@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=SetRepository::class)
  */
-class Set
+class Round
 {
     /**
      * @ORM\Id
@@ -76,6 +76,11 @@ class Set
      * @ORM\Column(type="array")
      */
     private $user2_hand_cards = [];
+
+    /**
+     * @ORM\Column(type="array")
+     */
+    private $pioche = [];
 
     public function getId(): ?int
     {
@@ -222,6 +227,18 @@ class Set
     public function setUser2HandCards(array $user2_hand_cards): self
     {
         $this->user2_hand_cards = $user2_hand_cards;
+
+        return $this;
+    }
+
+    public function getPioche(): ?array
+    {
+        return $this->pioche;
+    }
+
+    public function setPioche(array $pioche): self
+    {
+        $this->pioche = $pioche;
 
         return $this;
     }

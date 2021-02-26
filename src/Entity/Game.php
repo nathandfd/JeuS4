@@ -45,18 +45,13 @@ class Game
     private $winner;
 
     /**
-     * @ORM\OneToMany(targetEntity=Set::class, mappedBy="game")
+     * @ORM\OneToMany(targetEntity=Round::class, mappedBy="game")
      */
-    private $sets;
-
-    /**
-     * @ORM\Column(type="array")
-     */
-    private $pioche = [];
+    private $rounds;
 
     public function __construct()
     {
-        $this->sets = new ArrayCollection();
+        $this->rounds = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -125,43 +120,31 @@ class Game
     }
 
     /**
-     * @return Collection|Set[]
+     * @return Collection|Round[]
      */
     public function getSets(): Collection
     {
-        return $this->sets;
+        return $this->rounds;
     }
 
-    public function addSet(Set $set): self
+    public function addSet(Round $round): self
     {
-        if (!$this->sets->contains($set)) {
-            $this->sets[] = $set;
-            $set->setGame($this);
+        if (!$this->rounds->contains($round)) {
+            $this->rounds[] = $round;
+            $round->setGame($this);
         }
 
         return $this;
     }
 
-    public function removeSet(Set $set): self
+    public function removeSet(Round $round): self
     {
-        if ($this->sets->removeElement($set)) {
+        if ($this->rounds->removeElement($round)) {
             // set the owning side to null (unless already changed)
-            if ($set->getGame() === $this) {
-                $set->setGame(null);
+            if ($round->getGame() === $this) {
+                $round->setGame(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getPioche(): ?array
-    {
-        return $this->pioche;
-    }
-
-    public function setPioche(array $pioche): self
-    {
-        $this->pioche = $pioche;
 
         return $this;
     }

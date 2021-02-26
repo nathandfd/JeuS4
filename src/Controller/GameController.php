@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Game;
-use App\Entity\Set;
+use App\Entity\Round;
 use App\Repository\CardRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -47,7 +47,7 @@ class GameController extends AbstractController
 
             $entityManager->persist($game);
 
-            $set = new Set();
+            $set = new Round();
             $set->setGame($game);
             $set->setCreated(new \DateTime('now'));
             $set->setSetNumber(1);
