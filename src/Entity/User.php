@@ -155,12 +155,12 @@ class User implements UserInterface
         // $this->plainPassword = null;
     }
 
-    public function getFisrtName(): ?string
+    public function getFirstName(): ?string
     {
         return $this->firstname;
     }
 
-    public function setFirstNale(string $firstname): self
+    public function setFirstName(string $firstname): self
     {
         $this->firstname = $firstname;
 
