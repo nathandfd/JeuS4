@@ -3,22 +3,22 @@
 {% block title %}Hello GameController!{% endblock %}
 
 {% block body %}
-<form action="{{ path('create_game') }}" method="post">
-    <div>
-        You blyat : {{ app.user.firstname }}
-    </div>
+    <h1 id="title">You're now wainting for another player</h1>
 
-    <div>
-        <label for="user2">Joueur 2</label>
-        <select name="user2" id="user2">
-            <option value="">Choisir le joueur 2</option>
-            {% for user in users|filter(user=>user.id != app.user.id)%}
-                <option value="{{ user.id }}">{{ user.display }}</option>
-            {% endfor %}
-        </select>
-    </div>
-
-    <button type="submit">Commencer la partie</button>
-
-</form>
+    <script>
+        const es = new EventSource('http://localhost:3000/.well-known/mercure?topic=' + encodeURIComponent('http://example.com/books/1'));
+        es.onmessage = e => {
+            let data = JSON.parse(e.data)
+            if (data.game_id){
+                setTimeout(()=>{
+                    document.location = '/game/show-game/'+data.game_id
+                },1500)
+            }
+            if (data.opponent){
+                let element = document.createElement('h2')
+                element.innerHTML = `Adversaire trouvé : ${data.opponent}`
+                document.getElementById('title').insertAdjacentElement('afterend',element)
+            }
+        }
+    </script>
 {% endblock %}

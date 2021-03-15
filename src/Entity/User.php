@@ -67,6 +67,11 @@ class User implements UserInterface
      */
     private $winners;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $gameReady;
+
     public function __construct()
     {
         $this->games1 = new ArrayCollection();
@@ -284,5 +289,17 @@ class User implements UserInterface
     public function display()
     {
         return $this->firstname.' '.$this->lastname;
+    }
+
+    public function getGameReady(): ?bool
+    {
+        return $this->gameReady;
+    }
+
+    public function setGameReady(bool $gameReady): self
+    {
+        $this->gameReady = $gameReady;
+
+        return $this;
     }
 }
