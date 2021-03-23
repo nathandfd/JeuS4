@@ -72,7 +72,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="boolean")
      */
-    private $gameReady;
+    private $gameReady = false;
 
     /**
      * @ORM\Column(type="boolean")
@@ -305,7 +305,7 @@ class User implements UserInterface
 
     public function setGameReady(bool $gameReady): self
     {
-        $this->gameReady = $gameReady;
+        $this->gameReady = $gameReady | false;
 
         return $this;
     }
