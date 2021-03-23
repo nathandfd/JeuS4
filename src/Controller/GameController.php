@@ -14,7 +14,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mercure\Publisher;
 use Symfony\Component\Mercure\PublisherInterface;
 use Symfony\Component\Mercure\Update;
 use Symfony\Component\Routing\Annotation\Route;
@@ -86,17 +85,18 @@ class GameController extends AbstractController
     /**
      * @Route("/suce",name="suce")
      */
-    public function suce(
-        PublisherInterface $publisher
-    ):Response{
+    public function suce(PublisherInterface $publisher): Response
+    {
         $update = new Update(
             'http://example.com/books/1',
-            json_encode(['game_id' => 1])
+            json_encode(['status' => 'OutOfStock']),
+            true
         );
 
         // The Publisher service is an invokable object
-        $ok = $publisher($update);
-        return new Response($ok);
+        $publisher($update);
+
+        return new Response('published!');
     }
 
     /**
