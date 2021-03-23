@@ -20,7 +20,7 @@ final class Version20210316194738 extends AbstractMigration
     public function up(Schema $schema) : void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE card CHANGE picture picture VARCHAR(20) NOT NULL, CHANGE name name VARCHAR(20) NOT NULL');
+        $this->addSql('ALTER TABLE card CHANGE picture picture VARCHAR(20) NOT NULL, CHANGE name name VARCHAR(50) NOT NULL');
         $this->addSql('ALTER TABLE user ADD is_verified TINYINT(1) NOT NULL');
     }
 

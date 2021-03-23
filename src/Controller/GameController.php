@@ -84,6 +84,22 @@ class GameController extends AbstractController
     }
 
     /**
+     * @Route("/suce",name="suce")
+     */
+    public function suce(
+        PublisherInterface $publisher
+    ):Response{
+        $update = new Update(
+            'http://example.com/books/1',
+            json_encode(['game_id' => 1])
+        );
+
+        // The Publisher service is an invokable object
+        $ok = $publisher($update);
+        return new Response($ok);
+    }
+
+    /**
      * @Route("/create-game/{user1_id}-{user2_id}", name="create_game")
      */
         public function createGame(
@@ -185,7 +201,7 @@ class GameController extends AbstractController
                     'game' => $game->getId()
                 ]);
             } else {
-                return $this->redirectToRoute('new_game');
+                return $this->redirectToRoute('home');
             }
     }
 
