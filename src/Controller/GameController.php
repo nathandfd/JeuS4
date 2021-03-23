@@ -144,7 +144,7 @@ class GameController extends AbstractController
                 $tMainJ1 = [];
                 $tMainJ2 = [];
                 for ($i = 0; $i < 6; $i++) {
-                    //on distribue 6 cartes aux deux joueurs
+                    //on distribue 6 cartes aux deux joueurs oui
                     $carte = array_pop($tCards);
                     $tMainJ1[] = $carte->getId();
                     $carte = array_pop($tCards);
