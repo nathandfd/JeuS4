@@ -4,8 +4,8 @@ const fs = require('fs')
 var cors = require('cors');
 
 const server = require('http').Server({
-    key: fs.readFileSync('/etc/letsencrypt/live/my_api_url/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/my_api_url/fullchain.pem'),
+    key: fs.readFileSync('/etc/letsencrypt/live/nathandfd.fr/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/nathandfd.fr/fullchain.pem'),
 },app)
 const io = require('socket.io')(server)
 
