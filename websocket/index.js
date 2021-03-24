@@ -9,9 +9,7 @@ const server = require('http').Server({
 },app)
 const io = require('socket.io')(server)
 
-app.use(cors({
-    origin:'http://localhost:8000'
-}));
+app.use(cors());
 
 app.get('/',(req,res)=>{
     res.end('nik tes morts')
