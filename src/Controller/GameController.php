@@ -96,7 +96,7 @@ class GameController extends AbstractController
         // The Publisher service is an invokable object
         $publisher($update);
 
-        return new Response('published!');
+        return new Response('%env(string:MERCURE_PUBLISH_URL)%!');
     }
 
     /**
