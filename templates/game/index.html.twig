@@ -6,7 +6,7 @@
     <h1 id="title">You're now wainting for another player</h1>
 
     <script>
-        const es = new EventSource('http://localhost:3000/.well-known/mercure?topic=' + encodeURIComponent('http://example.com/books/1'));
+        const es = new EventSource('http://nathandfd.fr:3000/.well-known/mercure?topic=' + encodeURIComponent('http://example.com/books/1'));
         es.onmessage = e => {
             let data = JSON.parse(e.data)
             if (data.game_id){
