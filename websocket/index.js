@@ -7,7 +7,12 @@ const server = require('https').Server({
     key: fs.readFileSync('/etc/letsencrypt/live/nathandfd.fr-0002/privkey.pem'),
     cert: fs.readFileSync('/etc/letsencrypt/live/nathandfd.fr-0002/fullchain.pem'),
 },app)
-const io = require('socket.io')(server)
+const io = require('socket.io')(server,{
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+    }
+})
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
