@@ -1,19 +1,16 @@
-const express = require('express')
-const app = express()
-const fs = require('fs')
-var cors = require('cors');
+var express = require('express')
+var fs = require('fs')
+var https = require('https')
+var app = express()
 
-const server = require('https').Server({
-    key: fs.readFileSync('/etc/letsencrypt/live/nathandfd.fr-0002/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/nathandfd.fr-0002/fullchain.pem'),
-},app)
-const io = require('socket.io').listen(server)
-
-app.use(cors());
-
-app.get('/',(req,res)=>{
-    res.end('nik tes morts')
-    io.emit('foo','bar')
+app.get('/', function (req, res) {
+    res.send('hello world')
 })
 
-server.listen(8080)
+https.createServer({
+    key: fs.readFileSync('/etc/letsencrypt/live/nathandfd.fr-0002/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/nathandfd.fr-0002/fullchain.pem'),
+}, app)
+    .listen(8080, function () {
+        console.log('Example app listening on port 3000! Go to https://localhost:3000/')
+    })
