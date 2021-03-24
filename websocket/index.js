@@ -7,7 +7,7 @@ const server = require('https').Server({
     key: fs.readFileSync('/etc/letsencrypt/live/nathandfd.fr-0002/privkey.pem'),
     cert: fs.readFileSync('/etc/letsencrypt/live/nathandfd.fr-0002/fullchain.pem'),
 },app)
-const io = require('socket.io')(server)
+const io = require('socket.io').listen(server)
 
 app.use(cors());
 
