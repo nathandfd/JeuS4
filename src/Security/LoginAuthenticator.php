@@ -71,7 +71,7 @@ class LoginAuthenticator extends AbstractFormLoginAuthenticator implements Passw
 
         if (!$user) {
             // fail authentication with a custom error
-            throw new CustomUserMessageAuthenticationException('Email could not be found. Et ça c\'est con');
+            throw new CustomUserMessageAuthenticationException('Email introuvable, possédez-vous un compte ?');
         }
 
         return $user;
@@ -85,7 +85,7 @@ class LoginAuthenticator extends AbstractFormLoginAuthenticator implements Passw
                 return true;
             }
             else{
-                throw new CustomUserMessageAuthenticationException('nan nan vérifie ton mail fdp');
+                throw new CustomUserMessageAuthenticationException('Veuillez confirmer votre mail avant de vous connecter');
             }
         }
     }
