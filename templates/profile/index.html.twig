@@ -7,7 +7,7 @@
    <h2>Voici toutes vos parties :</h2>
    <ul>
    {% for game in games %}
-      <li>{{ game.id }}</li>
+      <li>{{ game.getUser1().getId() }} - {{ game.getUser2().getId() }}</li>
    {% endfor %}
    </ul>
 {% endblock %}

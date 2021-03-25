@@ -20,6 +20,7 @@ class ProfileController extends AbstractController
     {
         $games = $gameRepository->findGameById($this->getUser()->getId());
 
+
         return $this->render('profile/index.html.twig', [
             'controller_name' => 'ProfileController',
             'user'=>$this->getUser(),
