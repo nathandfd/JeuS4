@@ -10,7 +10,7 @@
     <script>
         const socket = io('nathandfd.fr:8080');
 
-        socket.on('opponent_{{ user_id }}',oppponent=>{
+        socket.on('opponent_{{ user_id }}',opponent=>{
             let element = document.createElement('h2')
             element.innerHTML = `Adversaire trouvé : ${opponent}`
             document.getElementById('title').insertAdjacentElement('afterend',element)
