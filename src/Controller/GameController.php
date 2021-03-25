@@ -19,6 +19,7 @@ use Symfony\Component\Mercure\Update;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
+
 /**
  * @Route("/game")
  */
@@ -70,7 +71,7 @@ class GameController extends AbstractController
             $entityManager->flush();
         }else{
 
-            $client->request('GET', 'https://nathandfd.fr:8080/opponent', [
+            $client->request('GET', $this->getParameter('app.api_url').'/opponent', [
                 'query' => [
                     'userId' => $opponent->getId(),
                     'opponentName' => $name->getFirstName(),
@@ -90,7 +91,7 @@ class GameController extends AbstractController
      */
     public function suce(HttpClientInterface $client): Response
     {
-        $client->request('GET', 'https://nathandfd.fr:8080/opponent', [
+        $client->request('GET', $this->getParameter('app.api_url').'/opponent', [
             'query' => [
                 'userId' => 1,
                 'opponentName' => 'Nathan le boss',
@@ -191,14 +192,14 @@ class GameController extends AbstractController
                 $entityManager->persist($set);
                 $entityManager->flush();
 
-                $client->request('GET', 'https://nathandfd.fr:8080/game', [
+                $client->request('GET', $this->getParameter('app.api_url').'/game', [
                     'query' => [
                         'userId' => $user1->getId(),
                         'gameId' => $game->getId(),
                     ],
                 ]);
 
-                $client->request('GET', 'https://nathandfd.fr:8080/game', [
+                $client->request('GET', $this->getParameter('app.api_url').'/game', [
                     'query' => [
                         'userId' => $user2->getId(),
                         'gameId' => $game->getId(),
