@@ -20,9 +20,13 @@ app.use(function(req, res, next) {
     next();
 });
 app.get('/opponent',(req,res)=>{
-    console.log(req.query.opponentName)
-    //io.emit('opponent_','bar')
-    res.status(200).end()
+    if (req.query.userId && req.query.opponentName){
+        io.emit('opponent_'+req.query.userId,req.query.opponentName)
+        res.status(200).end()
+    }
+    else{
+        res.status(400).end()
+    }
 })
 
 server.listen(8080)
