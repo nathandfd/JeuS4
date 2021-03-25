@@ -73,7 +73,7 @@ class GameController extends AbstractController
             $client->request('GET', 'https://nathandfd.fr:8080/opponent', [
                 'query' => [
                     'userId' => $opponent->getId(),
-                    'opponentName' => $name->getId(),
+                    'opponentName' => $name->getFirstName(),
                 ],
             ]);
 
