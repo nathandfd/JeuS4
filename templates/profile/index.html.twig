@@ -7,7 +7,7 @@
    <h2>Voici parties les plus récentes :</h2>
    <ul>
    {% for game in games %}
-      <li style="color: {{ (user.getId() == game.getWinner())?'green':'red' }};">{{ game.getUser1().getFirstname() }} | {{ game.getUser1().getId() }} - {{ game.getUser2().getId() }} | {{ game.getUser2().getFirstname() }}</li>
+      <li style="color: {{ (user.getId() == game.getWinner())?'green':'red' }};">{{ game.getUser1().getUsername() }} | {{ game.getUser1().getId() }} - {{ game.getUser2().getId() }} | {{ game.getUser2().getUsername() }}</li>
    {% endfor %}
    </ul>
    - Voir tout -
