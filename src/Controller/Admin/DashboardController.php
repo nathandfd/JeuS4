@@ -29,6 +29,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linktoDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-list', UserCrudController::getEntityFqcn());
         yield MenuItem::linkToCrud('Cartes', 'fas fa-list', CardCrudController::getEntityFqcn());
-        yield MenuItem::linkToCrud('Game', 'fas fa-list', GameCrudController::getEntityFqcn());
+        //yield MenuItem::linkToCrud('Game', 'fas fa-list', GameCrudController::getEntityFqcn());
     }
 }
