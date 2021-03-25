@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\GameRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,13 +13,17 @@ class ProfileController extends AbstractController
     /**
      * @Route("/profile", name="profile")
      */
-    public function index(UserRepository $userRepository): Response
+    public function index(
+        UserRepository $userRepository,
+        GameRepository $gameRepository
+    ): Response
     {
-        $user = $userRepository->find($this->getUser());
-        $test = $this->getUser();
+        $games = $gameRepository->findGameById($this->getUser()->getId());
+
         return $this->render('profile/index.html.twig', [
             'controller_name' => 'ProfileController',
-            'user'=>$test
+            'user'=>$this->getUser(),
+            'games'=>$games
         ]);
     }
 }

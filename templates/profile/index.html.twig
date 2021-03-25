@@ -4,4 +4,10 @@
 
 {% block body %}
    Bienvenue {{ user.getFirstname() }}
+   <h2>Voici toutes vos parties :</h2>
+   <ul>
+   {% for game in games %}
+      <li>{{ game.id }}</li>
+   {% endfor %}
+   </ul>
 {% endblock %}
