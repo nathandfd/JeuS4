@@ -30,6 +30,7 @@ class GameRepository extends ServiceEntityRepository
             ->orWhere('g.user2 = :val')
             ->setParameter('val', $userId)
             ->orderBy('g.ended', 'DESC')
+            ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;

@@ -4,10 +4,11 @@
 
 {% block body %}
    Bienvenue {{ user.getFirstname() }}
-   <h2>Voici toutes vos parties :</h2>
+   <h2>Voici parties les plus récentes :</h2>
    <ul>
    {% for game in games %}
       <li>{{ game.getUser1().getId() }} - {{ game.getUser2().getId() }}</li>
    {% endfor %}
    </ul>
+   - Voir tout -
 {% endblock %}
