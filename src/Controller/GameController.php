@@ -33,7 +33,8 @@ class GameController extends AbstractController
         EntityManagerInterface $entityManager,
         PublisherInterface $publisher,
         RoundRepository $roundRepository,
-        GameRepository $gameRepository
+        GameRepository $gameRepository,
+        HttpClientInterface $client
     ): Response {
         $name = $this->getUser();
 
@@ -68,13 +69,14 @@ class GameController extends AbstractController
 
             $entityManager->flush();
         }else{
-            $update = new Update(
-                'http://example.com/books/1',
-                json_encode(['opponent' => $name->getFirstname()])
-            );
 
-            // The Publisher service is an invokable object
-            $publisher($update);
+            $client->request('GET', 'https://nathandfd.fr:8080/opponent', [
+                'query' => [
+                    'userId' => $opponent->getId(),
+                    'opponentName' => $name->getId(),
+                ],
+            ]);
+
             return $this->redirectToRoute('create_game',['user1_id'=>$name->getId(),'user2_id'=>$opponent->getId()]);
         }
 
@@ -191,7 +193,14 @@ class GameController extends AbstractController
 
                 $client->request('GET', 'https://nathandfd.fr:8080/game', [
                     'query' => [
-                        'userId' => $this->getUser()->getId(),
+                        'userId' => $user1->getId(),
+                        'gameId' => $game->getId(),
+                    ],
+                ]);
+
+                $client->request('GET', 'https://nathandfd.fr:8080/game', [
+                    'query' => [
+                        'userId' => $user2->getId(),
                         'gameId' => $game->getId(),
                     ],
                 ]);
