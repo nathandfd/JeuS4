@@ -4,21 +4,22 @@
 
 {% block body %}
     <h1 id="title">You're now wainting for another player</h1>
-
+{% endblock %}
+{% block javascripts %}
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js" integrity="sha384-DkkWv9oJFWLIydBXXjkBWnG1/fuVhw8YPBq37uvvD6WSYRFRqr21eY5Dg9ZhmWdy" crossorigin="anonymous"></script>
     <script>
-        const es = new EventSource('http://nathandfd.fr:3000/.well-known/mercure?topic=' + encodeURIComponent('http://example.com/books/1'));
-        es.onmessage = e => {
-            let data = JSON.parse(e.data)
-            if (data.game_id){
-                setTimeout(()=>{
-                    document.location = '/game/show-game/'+data.game_id
-                },1500)
-            }
-            if (data.opponent){
-                let element = document.createElement('h2')
-                element.innerHTML = `Adversaire trouvé : ${data.opponent}`
-                document.getElementById('title').insertAdjacentElement('afterend',element)
-            }
-        }
+        const socket = io('nathandfd.fr:8080');
+
+        socket.on('opponent_{{ user_id }}',oppponent=>{
+            let element = document.createElement('h2')
+            element.innerHTML = `Adversaire trouvé : ${opponent}`
+            document.getElementById('title').insertAdjacentElement('afterend',element)
+        })
+
+        socket.on('game_{{ user_id }}', gameId=>{
+            setTimeout(()=>{
+                document.location = '/game/show-game/'+gameId
+            },1500)
+        })
     </script>
 {% endblock %}

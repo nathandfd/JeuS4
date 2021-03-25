@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mercure\PublisherInterface;
 use Symfony\Component\Mercure\Update;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
  * @Route("/game")
@@ -85,16 +86,14 @@ class GameController extends AbstractController
     /**
      * @Route("/suce",name="suce")
      */
-    public function suce(PublisherInterface $publisher): Response
+    public function suce(HttpClientInterface $client): Response
     {
-        $update = new Update(
-            'http://example.com/books/1',
-            json_encode(['status' => 'OutOfStock']),
-            true
-        );
-
-        // The Publisher service is an invokable object
-        $publisher($update);
+        $client->request('GET', 'https://nathandfd.fr/game', [
+            'query' => [
+                'userId' => 1,
+                'opponentName' => 'Nathan le boss',
+            ],
+        ]);
 
         return new Response('published !');
     }
@@ -108,6 +107,7 @@ class GameController extends AbstractController
             UserRepository $userRepository,
             CardRepository $cardRepository,
             PublisherInterface $publisher,
+            HttpClientInterface $client,
             $user1_id,$user2_id
         ): Response {
             $user1 = $userRepository->find($user1_id);
@@ -189,13 +189,12 @@ class GameController extends AbstractController
                 $entityManager->persist($set);
                 $entityManager->flush();
 
-                $update = new Update(
-                    'http://example.com/books/1',
-                    json_encode(['game_id' => $game->getId()])
-                );
-
-                // The Publisher service is an invokable object
-                $publisher($update);
+                $client->request('GET', 'https://nathandfd.fr/game', [
+                    'query' => [
+                        'userId' => $this->getUser()->getId(),
+                        'gameId' => $game->getId(),
+                    ],
+                ]);
 
                 return $this->redirectToRoute('show_game', [
                     'game' => $game->getId()

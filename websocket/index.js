@@ -29,5 +29,15 @@ app.get('/opponent',(req,res)=>{
     }
 })
 
+app.get('/game',(req,res)=>{
+    if (req.query.userId && req.query.gameId){
+        io.emit('game_'+req.query.userId,req.query.gameId)
+        res.status(200).end()
+    }
+    else{
+        res.status(400).end()
+    }
+})
+
 server.listen(8080)
 
