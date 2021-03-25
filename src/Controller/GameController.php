@@ -88,7 +88,7 @@ class GameController extends AbstractController
      */
     public function suce(HttpClientInterface $client): Response
     {
-        $client->request('GET', 'https://nathandfd.fr/game', [
+        $client->request('GET', 'https://nathandfd.fr:8080/game', [
             'query' => [
                 'userId' => 1,
                 'opponentName' => 'Nathan le boss',
@@ -189,7 +189,7 @@ class GameController extends AbstractController
                 $entityManager->persist($set);
                 $entityManager->flush();
 
-                $client->request('GET', 'https://nathandfd.fr/game', [
+                $client->request('GET', 'https://nathandfd.fr:8080/game', [
                     'query' => [
                         'userId' => $this->getUser()->getId(),
                         'gameId' => $game->getId(),
