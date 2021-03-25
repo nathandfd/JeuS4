@@ -189,7 +189,7 @@ class GameController extends AbstractController
                 $entityManager->persist($set);
                 $entityManager->flush();
 
-                $client->request('GET', 'https://nathandfd.fr:8080/game', [
+                $client->request('GET', 'https://nathandfd.fr:8080/opponent', [
                     'query' => [
                         'userId' => $this->getUser()->getId(),
                         'gameId' => $game->getId(),
