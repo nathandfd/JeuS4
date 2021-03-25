@@ -15,7 +15,7 @@ class DefaultController extends AbstractController
     {
         return $this->render('home/index.html.twig', [
             'controller_name' => 'DefaultController',
-            'user_id'=>$this->getId()
+            'user_id'=>$this->getUser()->getId()
         ]);
     }
 }
