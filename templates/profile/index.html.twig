@@ -1,14 +1,39 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Profile{% endblock %}
-
+{% block title %}Profil | Handling{% endblock %}
+{% block stylesheets %}
+   <link rel='stylesheet' type='text/css' media='screen' href='style/main.css'>
+{% endblock %}
 {% block body %}
-   Bienvenue {{ user.getFirstname() }}
-   <h2>Voici parties les plus récentes :</h2>
-   <ul>
-   {% for game in games %}
-      <li style="color: {{ (user.getId() == game.getWinner())?'green':'red' }};">{{ game.getUser1().getUsername() }} | {{ game.getUser1().getId() }} - {{ game.getUser2().getId() }} | {{ game.getUser2().getUsername() }}</li>
-   {% endfor %}
-   </ul>
+   <header>
+      <img src="{{ asset('assets/img/logo.png') }}" alt="Logo">
+      <a href="index.html" id="lien_accueil"> <img src="{{ asset('assets/img/fleche2.png') }}" alt="Retour"> Retour à l'accueil</a>
+   </header>
+   <div id="profil">
+      <div id="progression">
+         <h2>Votre progression</h2>
+         <div class="texte">
+            {% for game in games %}
+               <p style="color: {{ (user.getId() == game.getWinner())?'green':'red' }};">{{ game.getUser1().getUsername() }} | {{ game.getUser1().getId() }} - {{ game.getUser2().getId() }} | {{ game.getUser2().getUsername() }}</p>
+            {% endfor %}
+         </div>
+      </div>
+      <div id="infos">
+         <h2>Vos informations</h2>
+         <div class="texte">
+            <p>Pseudo : {{ user.getUsername() }}</p>
+            <p>Nom : {{ user.getLastName() }}</p>
+            <p>Prénom : {{ user.getFirstName() }}</p>
+            <p>E-mail : {{ user.getEmail() }}</p>
+            <p>Photo de Profil : </p> <img id="photo" src="{{ asset('assets/img/profil.jpg') }}" alt="Photo de profil">
+         </div>
+      </div>
+      <a href="" id="modif">Modifier les informations</a>
+   </div>
+   <!-- <footer>
+        <div><a href="">Mentions légales</a></div>
+        <div><img src="img/logo.png" alt="Logo">&nbsp; Tous droits réservés</div>
+        <div><a href="#">Rejoins nous sur Instagram ! <img src="img/instagram.png" alt="Instagram"></a></div>
+    </footer> -->
    - Voir tout -
 {% endblock %}
