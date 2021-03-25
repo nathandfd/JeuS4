@@ -19,9 +19,10 @@ app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
-app.get('/',(req,res)=>{
-    res.end('nik tes morts')
-    io.emit('foo','bar')
+app.get('/opponent',(req,res)=>{
+    console.log(req.query.opponentName)
+    //io.emit('opponent_','bar')
+    res.status(200).end()
 })
 
 server.listen(8080)
