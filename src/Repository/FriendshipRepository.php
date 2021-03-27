@@ -39,6 +39,26 @@ class FriendshipRepository extends ServiceEntityRepository
             ;
     }
 
+    public function isAlreadyFriend($user1Id, $user2Id){
+        $qb = $this->createQueryBuilder('g');
+
+        $result = $qb->where($qb->expr()->orX(
+            $qb->expr()->eq('g.user1',':user1'),
+            $qb->expr()->eq('g.user2',':user2')
+            ))
+            ->andWhere($qb->expr()->orX(
+                $qb->expr()->eq('g.user1',':user1'),
+                $qb->expr()->eq('g.user2',':user2')
+            ))
+            ->setParameter('user1', $user1Id)
+            ->setParameter('user2', $user2Id)
+            ->getQuery()
+            ->getResult()
+            ;
+
+        return ($result)?1:0;
+    }
+
     /*
     public function findOneBySomeField($value): ?Friendship
     {

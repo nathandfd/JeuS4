@@ -87,21 +87,6 @@ class GameController extends AbstractController
     }
 
     /**
-     * @Route("/suce",name="suce")
-     */
-    public function suce(HttpClientInterface $client): Response
-    {
-        $client->request('GET', $this->getParameter('app.api_url').'/opponent', [
-            'query' => [
-                'userId' => 1,
-                'opponentName' => 'Nathan le boss',
-            ],
-        ]);
-
-        return new Response('published !');
-    }
-
-    /**
      * @Route("/create-game/{user1_id}-{user2_id}", name="create_game")
      */
         public function createGame(
