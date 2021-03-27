@@ -3,6 +3,7 @@
 {% block title %}Profil | Handling{% endblock %}
 {% block stylesheets %}
    <link rel='stylesheet' type='text/css' media='screen' href='{{ asset('assets/style/main.css') }}'>
+   <link rel="stylesheet" href="{{ asset('assets/js/notification/notifications.css') }}">
 {% endblock %}
 {% block body %}
    <header>
@@ -14,7 +15,7 @@
          <h2>Votre progression</h2>
          <div class="texte">
             {% for game in games %}
-               <p style="color: {{ (user.getId() == game.getWinner())?'green':'red' }};">{{ game.getUser1().getUsername() }} | {{ game.getUser1().getId() }} - {{ game.getUser2().getId() }} | {{ game.getUser2().getUsername() }}</p>
+               <p style="color: {{ (user.getId() == game.getWinner().getId())?'green':'red' }};">{{ game.getUser1().getUsername() }} | {{ game.getUser1().getId() }} - {{ game.getUser2().getId() }} | {{ game.getUser2().getUsername() }}</p>
             {% endfor %}
             - Voir tout -
          </div>
@@ -57,11 +58,23 @@
 {% endblock %}
 {% block javascripts %}
    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js" integrity="sha384-DkkWv9oJFWLIydBXXjkBWnG1/fuVhw8YPBq37uvvD6WSYRFRqr21eY5Dg9ZhmWdy" crossorigin="anonymous"></script>
+   <script src="{{ asset('assets/js/notification/notifications.js') }}"></script>
    <script>
       const socket = io('https://nathandfd.fr:8080');
+      const notif = window.createNotification({
+         closeOnClick: true,
+         displayCloseButton: false,
+         positionClass: 'nfc-top-right',
+         onclick: false,
+         showDuration: 10000000,
+         theme: 'friend-add'
+      });
 
       socket.on('friendRequest_{{ user.getId() }}',friend=>{
-         console.log("Nouvelle demande d'ami de "+friend)
+         notif({
+            title:"Demande d'ami",
+            message:"Vous avez une nouvelle demande d'ami de "+friend
+         })
       })
    </script>
 {% endblock %}

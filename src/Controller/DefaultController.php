@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Friendship;
 use App\Repository\FriendshipRepository;
+use App\Repository\GameRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -31,10 +32,11 @@ class DefaultController extends AbstractController
         HttpClientInterface $httpClient,
         FriendshipRepository $friendshipRepository,
         UserRepository $userRepository,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        GameRepository $gameRepository
     ): Response
     {
-        if ($friendshipRepository->isAlreadyFriend($userRepository->find(1),$userRepository->find(7))){
+       /* if ($friendshipRepository->isAlreadyFriend($userRepository->find(1),$userRepository->find(7))){
             return New Response('Déjà amis !');
         }
        $friend = new Friendship();
@@ -43,7 +45,7 @@ class DefaultController extends AbstractController
        $friend->setAccepted(false);
 
        $entityManager->persist($friend);
-       $entityManager->flush();
+       $entityManager->flush();*/
 
        $httpClient->request('GET','https://nathandfd.fr:8080/sendFriendRequest?userId='.$userRepository->find(1)->getId().'&friendUsername='.$userRepository->find(7)->getUsername());
 
