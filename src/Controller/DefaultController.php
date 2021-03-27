@@ -27,8 +27,11 @@ class DefaultController extends AbstractController
     /**
      * @Route("/suce",name="suce")
      */
-    public function suce(UserRepository $userRepository, EntityManagerInterface $entityManager): Response
+    public function suce(FriendshipRepository $friendshipRepository,UserRepository $userRepository, EntityManagerInterface $entityManager): Response
     {
+        if ($friendshipRepository->isAlreadyFriend($userRepository->find(1),$userRepository->find(2))){
+            return New Response('Déjà amis !');
+        }
        $friend = new Friendship();
        $friend->setUser1($userRepository->find(1));
        $friend->setUser2($userRepository->find(2));
