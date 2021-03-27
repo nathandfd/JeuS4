@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\FriendshipRepository;
 use App\Repository\GameRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,7 +16,8 @@ class ProfileController extends AbstractController
      */
     public function index(
         UserRepository $userRepository,
-        GameRepository $gameRepository
+        GameRepository $gameRepository,
+        FriendshipRepository $friendshipRepository
     ): Response
     {
         $games = $gameRepository->findGameById($this->getUser()->getId());
@@ -24,7 +26,8 @@ class ProfileController extends AbstractController
         return $this->render('profile/index.html.twig', [
             'controller_name' => 'ProfileController',
             'user'=>$this->getUser(),
-            'games'=>$games
+            'games'=>$games,
+            'friends'=>$friendshipRepository->findFriendshipOfUser($this->getUser()->getId())
         ]);
     }
 }

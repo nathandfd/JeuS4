@@ -28,6 +28,12 @@
             <p>E-mail : {{ user.getEmail() }}</p>
             <p>Photo de Profil : </p> <img id="photo" src="{{ asset('assets/img/profil.jpg') }}" alt="Photo de profil">
          </div>
+         Vos amis :
+         <ul>
+            {% for friend in friends %}
+               <li>{{ (friend.getUser1().getId() == user.getId())?friend.getUser2().getUsername():friend.getUser2().getUsername() }}</li>
+            {% endfor %}
+         </ul>
       </div>
       <a href="" id="modif">Modifier les informations</a>
    </div>

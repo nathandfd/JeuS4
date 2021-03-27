@@ -24,10 +24,11 @@ class FriendshipRepository extends ServiceEntityRepository
       */
     public function findFriendshipOfUser($userId)
     {
-        return $this->createQueryBuilder('g')
-            ->where($this->createQueryBuilder()->expr()->orX(
-                $this->createQueryBuilder()->expr()->eq('g.user1',':val'),
-                $this->createQueryBuilder()->expr()->eq('g.user2',':val')
+        $qb = $this->createQueryBuilder('g');
+
+        return $qb->where($qb->expr()->orX(
+                $qb->expr()->eq('g.user1',':val'),
+                $qb->expr()->eq('g.user2',':val')
             ))
             ->andWhere('g.accepted = 1')
             ->setParameter('val', $userId)
