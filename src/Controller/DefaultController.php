@@ -27,18 +27,25 @@ class DefaultController extends AbstractController
     /**
      * @Route("/suce",name="suce")
      */
-    public function suce(FriendshipRepository $friendshipRepository,UserRepository $userRepository, EntityManagerInterface $entityManager): Response
+    public function suce(
+        HttpClientInterface $httpClient,
+        FriendshipRepository $friendshipRepository,
+        UserRepository $userRepository,
+        EntityManagerInterface $entityManager
+    ): Response
     {
         if ($friendshipRepository->isAlreadyFriend($userRepository->find(1),$userRepository->find(2))){
             return New Response('Déjà amis !');
         }
        $friend = new Friendship();
-       $friend->setUser1($userRepository->find(1));
-       $friend->setUser2($userRepository->find(2));
+       $friend->setUser1($userRepository->find(2));
+       $friend->setUser2($userRepository->find(1));
        $friend->setAccepted(false);
 
        $entityManager->persist($friend);
        $entityManager->flush();
+
+       $httpClient->request('GET','https://nathandfd.fr:8080/sendFriendRequest?userId'.$userRepository->find(1)->getId().'&friendUsername='.$userRepository->find(2)->getUsername());
 
         return new Response('New friend !');
     }
