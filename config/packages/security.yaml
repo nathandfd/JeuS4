@@ -37,3 +37,4 @@ security:
     access_control:
          - { path: ^/game, roles: ROLE_USER }
          - { path: ^/profile, roles: ROLE_USER }
+         - { path: ^/admin, roles: ROLE_ADMIN}
