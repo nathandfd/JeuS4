@@ -39,6 +39,38 @@ class FriendshipRepository extends ServiceEntityRepository
             ;
     }
 
+    public function getSendedRequests($userId)
+    {
+        $qb = $this->createQueryBuilder('g');
+
+        return $qb->where(
+            $qb->expr()->eq('g.user1',':val')
+         )
+            ->andWhere('g.accepted = 0')
+            ->setParameter('val', $userId)
+            ->orderBy('g.id', 'DESC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function getReceivedRequests($userId)
+    {
+        $qb = $this->createQueryBuilder('g');
+
+        return $qb->where(
+            $qb->expr()->eq('g.user2',':val')
+        )
+            ->andWhere('g.accepted = 0')
+            ->setParameter('val', $userId)
+            ->orderBy('g.id', 'DESC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     public function isAlreadyFriend($user1Id, $user2Id){
         $qb = $this->createQueryBuilder('g');
 
