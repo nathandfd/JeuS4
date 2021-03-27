@@ -34,18 +34,18 @@ class DefaultController extends AbstractController
         EntityManagerInterface $entityManager
     ): Response
     {
-        if ($friendshipRepository->isAlreadyFriend($userRepository->find(1),$userRepository->find(2))){
+        if ($friendshipRepository->isAlreadyFriend($userRepository->find(1),$userRepository->find(7))){
             return New Response('Déjà amis !');
         }
        $friend = new Friendship();
-       $friend->setUser1($userRepository->find(2));
+       $friend->setUser1($userRepository->find(7));
        $friend->setUser2($userRepository->find(1));
        $friend->setAccepted(false);
 
        $entityManager->persist($friend);
        $entityManager->flush();
 
-       $httpClient->request('GET','https://nathandfd.fr:8080/sendFriendRequest?userId'.$userRepository->find(1)->getId().'&friendUsername='.$userRepository->find(2)->getUsername());
+       $httpClient->request('GET','https://nathandfd.fr:8080/sendFriendRequest?userId='.$userRepository->find(1)->getId().'&friendUsername='.$userRepository->find(7)->getUsername());
 
         return new Response('New friend !');
     }
