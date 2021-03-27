@@ -39,5 +39,15 @@ app.get('/game',(req,res)=>{
     }
 })
 
+app.get('/sendFriendRequest',(req,res)=>{
+    if (req.query.userId && req.query.friendUsername){
+        io.emit('friendRequest_'+req.query.userId,req.query.friendUsername)
+        res.status(200).end()
+    }
+    else{
+        res.status(400).end()
+    }
+})
+
 server.listen(8080)
 

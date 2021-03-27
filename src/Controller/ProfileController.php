@@ -27,7 +27,9 @@ class ProfileController extends AbstractController
             'controller_name' => 'ProfileController',
             'user'=>$this->getUser(),
             'games'=>$games,
-            'friends'=>$friendshipRepository->findFriendshipOfUser($this->getUser()->getId())
+            'friends'=>$friendshipRepository->findFriendshipOfUser($this->getUser()->getId()),
+            'received_friend_request'=>$friendshipRepository->getReceivedRequests($this->getUser()->getId()),
+            'sended_friend_request'=>$friendshipRepository->getSendedRequests($this->getUser()->getId()),
         ]);
     }
 }

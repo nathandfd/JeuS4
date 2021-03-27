@@ -34,6 +34,18 @@
                <li>{{ (friend.getUser1().getId() == user.getId())?friend.getUser2().getUsername():friend.getUser2().getUsername() }}</li>
             {% endfor %}
          </ul>
+         Demandes reçues :
+         <ul>
+            {% for friend in received_friend_request %}
+               <li>{{ friend.getUser1().getUsername() }}</li>
+            {% endfor %}
+         </ul>
+         Demandes envoyées :
+         <ul>
+            {% for friend in sended_friend_request %}
+               <li>{{ friend.getUser2().getUsername() }}</li>
+            {% endfor %}
+         </ul>
       </div>
       <a href="" id="modif">Modifier les informations</a>
    </div>
@@ -42,4 +54,14 @@
         <div><img src="img/logo.png" alt="Logo">&nbsp; Tous droits réservés</div>
         <div><a href="#">Rejoins nous sur Instagram ! <img src="img/instagram.png" alt="Instagram"></a></div>
     </footer> -->
+{% endblock %}
+{% block javascripts %}
+   <script src="https://cdn.socket.io/4.0.0/socket.io.min.js" integrity="sha384-DkkWv9oJFWLIydBXXjkBWnG1/fuVhw8YPBq37uvvD6WSYRFRqr21eY5Dg9ZhmWdy" crossorigin="anonymous"></script>
+   <script>
+      const socket = io('nathandfd.fr:8080');
+
+      socket.on('friendRequest{{ user_id }}',friend=>{
+         console.log("Nouvelle demande d'ami de "+friend)
+      })
+   </script>
 {% endblock %}
