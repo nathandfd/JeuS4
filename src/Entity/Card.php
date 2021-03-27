@@ -28,7 +28,7 @@ class Card
     private $number;
 
     /**
-     * @ORM\Column(type="string", length=20)
+     * @ORM\Column(type="string", length=50)
      */
     private $name;
 

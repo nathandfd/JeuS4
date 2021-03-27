@@ -85,11 +85,17 @@ class User implements UserInterface
      */
     private $username;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Friendship::class, mappedBy="user1", orphanRemoval=true)
+     */
+    private $friendships;
+
     public function __construct()
     {
         $this->games1 = new ArrayCollection();
         $this->games2 = new ArrayCollection();
         $this->winners = new ArrayCollection();
+        $this->friendships = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -331,6 +337,36 @@ class User implements UserInterface
     public function setUsername(string $username): self
     {
         $this->username = $username;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Friendship[]
+     */
+    public function getFriendships(): Collection
+    {
+        return $this->friendships;
+    }
+
+    public function addFriendship(Friendship $friendship): self
+    {
+        if (!$this->friendships->contains($friendship)) {
+            $this->friendships[] = $friendship;
+            $friendship->setUser1($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFriendship(Friendship $friendship): self
+    {
+        if ($this->friendships->removeElement($friendship)) {
+            // set the owning side to null (unless already changed)
+            if ($friendship->getUser1() === $this) {
+                $friendship->setUser1(null);
+            }
+        }
 
         return $this;
     }
