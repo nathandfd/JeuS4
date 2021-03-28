@@ -1,3 +1,7 @@
+html{
+  scroll-behavior: smooth;
+}
+
 header #lien_accueil {
   color: white;
   text-decoration: none;

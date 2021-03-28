@@ -17,6 +17,8 @@
                <p style="color: {{ (user.getId() == game.getWinner().getId())?'green':'red' }};">{{ game.getUser1().getUsername() }} | {{ game.getUser1().getId() }} - {{ game.getUser2().getId() }} | {{ game.getUser2().getUsername() }}</p>
             {% endfor %}
             - Voir tout -
+            <input type="text" id="friend_search_bar">
+            <ul id="search_list"></ul>
          </div>
       </div>
       <div id="infos">
@@ -26,7 +28,7 @@
             <p>Nom : {{ user.getLastName() }}</p>
             <p>Prénom : {{ user.getFirstName() }}</p>
             <p>E-mail : {{ user.getEmail() }}</p>
-            <p>Photo de Profil : </p> <img id="photo" src="{{ asset('assets/img/profil.jpg') }}" alt="Photo de profil">
+            <p>Photo de Profil : </p> <img title id="photo" src="{{ asset('assets/img/profil.jpg') }}" alt="Photo de profil">
          </div>
          Vos amis :
          <ul>
@@ -54,4 +56,36 @@
         <div><img src="img/logo.png" alt="Logo">&nbsp; Tous droits réservés</div>
         <div><a href="#">Rejoins nous sur Instagram ! <img src="img/instagram.png" alt="Instagram"></a></div>
     </footer> -->
+{% endblock %}
+{% block javascripts %}
+<script>
+   document.addEventListener('DOMContentLoaded',()=>{
+      const searchBar = document.getElementById('friend_search_bar')
+        const resultList = document.getElementById('search_list')
+         searchBar.addEventListener('keyup',(e)=>{
+         if(e.target.value.length >= 3){
+             fetch('http://localhost:8000/api/users?page=1&username='+e.target.value)
+                .then((res)=>{return res.json()})
+                .then(res=>{
+                    resultList.innerHTML = ''
+                    if(!res['hydra:member']){
+                        let li = document.createElement('li')
+                        li.innerHTML = 'Aucun résultat'
+                        resultList.appendChild(li)
+                    }
+                    else{
+                        res['hydra:member'].forEach(user=>{
+                        let li = document.createElement('li')
+                        let addButton = document.createElement('a')
+                        addButton.innerHTML = 'Demander en ami'
+                        addButton.href = ''
+                        li.innerHTML = user.username
+                        resultList.appendChild(li)
+                    })
+}
+                })
+         }
+      })
+   })
+</script>
 {% endblock %}

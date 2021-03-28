@@ -2,18 +2,33 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
  * @UniqueEntity(fields={"email"},message="Cette adresse mail est déjà utilisée")
  * @UniqueEntity(fields={"username"},message="Ce pseudo est déjà utilisé")
+ * @ApiResource(
+ *     collectionOperations={"get"},
+ *     itemOperations={"get"},
+ *     normalizationContext={"groups"={"user:read"}}
+ * )
+ * @ApiFilter(
+ *     SearchFilter::class,
+ *     properties={
+ *          "username"="start"
+ *     }
+ * )
  */
 class User implements UserInterface
 {
@@ -42,6 +57,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=30)
+     * @Groups({"user:read"})
      */
     private $firstname;
 
@@ -82,6 +98,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"user:read"})
      */
     private $username;
 
