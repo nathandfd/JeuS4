@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -63,7 +64,9 @@ class RegistrationFormType extends AbstractType
             ->add('lastname',TextType::class,['required'=>true])
             ->add('birthday',DateTimeType::class,[
                 'widget'=>'choice',
-                'input_format'=>'dd-MM-YYYY'
+                'input_format'=>'dd-MM-YYYY',
+                'html5'=>false,
+                'years'=>range(\date('Y'),1950)
             ])
             ->add('username',TextType::class,[
                 'label'=>'Confirmation de mot de passe',
