@@ -39,7 +39,7 @@
          Demandes reçues :
          <ul>
             {% for friend in received_friend_request %}
-               <li>{{ friend.getUser1().getUsername() }}</li>
+               <li>{{ friend.getUser1().getUsername() }} <button onclick="addFriendFunction({{ friend.getUser1().getId() }})">Accepter l'invitation</button></li>
             {% endfor %}
          </ul>
          Demandes envoyées :

@@ -38,13 +38,17 @@ class DefaultController extends AbstractController
     ): Response
     {
         if($friendshipRepository->isRequestWaiting($this->getUser()->getId(),$userRepository->find($friendId)->getId())){
-            return New Response('Demande d\'invitation acceptée  !');
+            $friendship = $friendshipRepository->isRequestWaiting($this->getUser()->getId(),$userRepository->find($friendId)->getId());
+            $friendship->setAccepted(true);
+            $entityManager->persist($friendship);
+            $entityManager->flush();
+            return New Response('Demande d\'invitation acceptée ! 😊');
         }
         elseif($friendshipRepository->isRequestSended($this->getUser()->getId(),$userRepository->find($friendId)->getId())){
-            return New Response('Demande d\'invitation déjà envoyée  !');
+            return New Response('Tu as déjà demandé cette personne en ami 😉');
         }
         elseif($friendshipRepository->isAlreadyFriend($this->getUser()->getId(),$userRepository->find($friendId)->getId())){
-            return New Response('Bonne nouvelle, vous êtes déjà amis !');
+            return New Response('Bonne nouvelle, vous êtes déjà amis ! 🎉');
         }
 
        $friend = new Friendship();
@@ -57,6 +61,6 @@ class DefaultController extends AbstractController
 
        $httpClient->request('GET','https://nathandfd.fr:8080/sendFriendRequest?userId='.$userRepository->find($friendId)->getId().'&friendUsername='.$this->getUser()->getUsername());
 
-        return new Response('Et que votre amitié dure !');
+        return new Response('Et que votre amitié dure ! 🥰');
     }
 }

@@ -84,7 +84,11 @@ class FriendshipRepository extends ServiceEntityRepository
             ->getResult()
         ;
 
-        return $result;
+        try {
+            return $result[0];
+        }catch (\Exception $exception){
+            return 0;
+        }
     }
 
     public function isRequestSended($user1Id, $user2Id)
