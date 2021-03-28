@@ -6,6 +6,7 @@ use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -62,10 +63,11 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('firstname',TextType::class,['required'=>true])
             ->add('lastname',TextType::class,['required'=>true])
-            ->add('birthday',DateTimeType::class,[
+            ->add('birthday',DateType::class,[
+                'mapped'=>false,
+                //'html5'=>false,
                 'widget'=>'choice',
-                'input_format'=>'dd-MM-YYYY',
-                'html5'=>false,
+                'format'=>'ddMMMMyyyy',
                 'years'=>range(\date('Y'),1950)
             ])
             ->add('username',TextType::class,[
