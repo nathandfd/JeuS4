@@ -14,8 +14,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mercure\PublisherInterface;
-use Symfony\Component\Mercure\Update;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -32,7 +30,6 @@ class GameController extends AbstractController
     public function newGame(
         UserRepository $userRepository,
         EntityManagerInterface $entityManager,
-        PublisherInterface $publisher,
         RoundRepository $roundRepository,
         GameRepository $gameRepository,
         HttpClientInterface $client
