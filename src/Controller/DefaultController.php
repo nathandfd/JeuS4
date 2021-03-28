@@ -26,29 +26,37 @@ class DefaultController extends AbstractController
     }
 
     /**
-     * @Route("/suce",name="suce")
+     * @Route("/addFriend/{friendId}",name="add_friend")
      */
     public function suce(
         HttpClientInterface $httpClient,
         FriendshipRepository $friendshipRepository,
         UserRepository $userRepository,
         EntityManagerInterface $entityManager,
-        GameRepository $gameRepository
+        GameRepository $gameRepository,
+        $friendId
     ): Response
     {
-       /* if ($friendshipRepository->isAlreadyFriend($userRepository->find(1),$userRepository->find(7))){
-            return New Response('Déjà amis !');
+        if($friendshipRepository->isRequestWaiting($this->getUser()->getId(),$userRepository->find($friendId)->getId())){
+            return New Response('Demande d\'invitation acceptée  !');
         }
+        elseif($friendshipRepository->isRequestSended($this->getUser()->getId(),$userRepository->find($friendId)->getId())){
+            return New Response('Demande d\'invitation déjà envoyée  !');
+        }
+        elseif($friendshipRepository->isAlreadyFriend($this->getUser()->getId(),$userRepository->find($friendId)->getId())){
+            return New Response('Bonne nouvelle, vous êtes déjà amis !');
+        }
+
        $friend = new Friendship();
-       $friend->setUser1($userRepository->find(7));
-       $friend->setUser2($userRepository->find(1));
+       $friend->setUser1($this->getUser());
+       $friend->setUser2($userRepository->find($friendId));
        $friend->setAccepted(false);
 
        $entityManager->persist($friend);
-       $entityManager->flush();*/
+       $entityManager->flush();
 
-       $httpClient->request('GET','https://nathandfd.fr:8080/sendFriendRequest?userId='.$userRepository->find(1)->getId().'&friendUsername='.$userRepository->find(7)->getUsername());
+       $httpClient->request('GET','https://nathandfd.fr:8080/sendFriendRequest?userId='.$userRepository->find($friendId)->getId().'&friendUsername='.$this->getUser()->getUsername());
 
-        return new Response('New friend !');
+        return new Response('Et que votre amitié dure !');
     }
 }

@@ -71,15 +71,48 @@ class FriendshipRepository extends ServiceEntityRepository
             ;
     }
 
+    public function isRequestWaiting($user1Id, $user2Id)
+    {
+        $qb = $this->createQueryBuilder('g');
+
+        $result = $qb->where($qb->expr()->eq('g.user1',':user2'))
+            ->andWhere($qb->expr()->orX($qb->expr()->eq('g.user2',':user1')))
+            ->andWhere('g.accepted = 0')
+            ->setParameter('user1', $user1Id)
+            ->setParameter('user2', $user2Id)
+            ->getQuery()
+            ->getResult()
+        ;
+
+        return $result;
+    }
+
+    public function isRequestSended($user1Id, $user2Id)
+    {
+        $qb = $this->createQueryBuilder('g');
+
+        $result = $qb->where($qb->expr()->eq('g.user1',':user1'))
+            ->andWhere($qb->expr()->orX($qb->expr()->eq('g.user2',':user2')))
+            ->andWhere('g.accepted = 0')
+            ->setParameter('user1', $user1Id)
+            ->setParameter('user2', $user2Id)
+            ->getQuery()
+            ->getResult()
+        ;
+
+        return $result;
+    }
+
+
     public function isAlreadyFriend($user1Id, $user2Id){
         $qb = $this->createQueryBuilder('g');
 
         $result = $qb->where($qb->expr()->orX(
             $qb->expr()->eq('g.user1',':user1'),
-            $qb->expr()->eq('g.user2',':user2')
+            $qb->expr()->eq('g.user2',':user1')
             ))
             ->andWhere($qb->expr()->orX(
-                $qb->expr()->eq('g.user1',':user1'),
+                $qb->expr()->eq('g.user1',':user2'),
                 $qb->expr()->eq('g.user2',':user2')
             ))
             ->setParameter('user1', $user1Id)

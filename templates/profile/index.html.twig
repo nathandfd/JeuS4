@@ -59,31 +59,57 @@
 {% endblock %}
 {% block javascripts %}
 <script>
+    let delayTimer
+    const addFriendFunction = friendId=>{
+        fetch('{{ url('home') }}addFriend/'+friendId)
+        .then(res=>{
+            return res.text()
+        })
+        .then(res=>{
+            const notif = window.createNotification({
+                closeOnClick: true,
+                displayCloseButton: false,
+                positionClass: 'nfc-top-right',
+                onclick: false,
+                showDuration: 5000,
+                theme: 'info'
+            });
+            notif({
+                title:"Demande d'ami",
+                message:res
+            })
+        })
+    }
    document.addEventListener('DOMContentLoaded',()=>{
       const searchBar = document.getElementById('friend_search_bar')
         const resultList = document.getElementById('search_list')
          searchBar.addEventListener('keyup',(e)=>{
          if(e.target.value.length >= 3){
-             fetch('http://localhost:8000/api/users?page=1&username='+e.target.value)
-                .then((res)=>{return res.json()})
-                .then(res=>{
-                    resultList.innerHTML = ''
-                    if(!res['hydra:member']){
-                        let li = document.createElement('li')
-                        li.innerHTML = 'Aucun résultat'
-                        resultList.appendChild(li)
-                    }
-                    else{
-                        res['hydra:member'].forEach(user=>{
-                        let li = document.createElement('li')
-                        let addButton = document.createElement('a')
-                        addButton.innerHTML = 'Demander en ami'
-                        addButton.href = ''
-                        li.innerHTML = user.username
-                        resultList.appendChild(li)
-                    })
-}
-                })
+             clearTimeout(delayTimer);
+             delayTimer = setTimeout(function() {
+                 fetch('http://localhost:8000/api/users?page=1&username='+e.target.value)
+                     .then((res)=>{return res.json()})
+                     .then(res=>{
+                         resultList.innerHTML = ''
+                         if(!res['hydra:member']){
+                             let li = document.createElement('li')
+                             li.innerHTML = 'Aucun résultat'
+                             resultList.appendChild(li)
+                         }
+                         else{
+                             res['hydra:member'].forEach(friend=>{
+                                 console.log(friend)
+                                 let li = document.createElement('li')
+                                 let addButton = document.createElement('button')
+                                 addButton.innerHTML = 'Demander en ami'
+                                 addButton.onclick = ()=>{addFriendFunction(friend.id)}
+                                 li.innerHTML = friend.username
+                                 li.appendChild(addButton)
+                                 resultList.appendChild(li)
+                             })
+                         }
+                     })
+             }, 1000);
          }
       })
    })
