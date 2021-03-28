@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -25,24 +26,25 @@ class RegistrationFormType extends AbstractType
                 'mapped' => false,
                 'constraints' => [
                     new IsTrue([
-                        'message' => 'You should agree to our terms.',
+                        'message' => 'Vous devez accepter les conditions',
                     ]),
                 ],
             ])
             ->add('password', RepeatedType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
+                'mapped'=>false,
                 'type'=>PasswordType::class,
-                'required'=>true,
+                'required'=>false,
                 'first_options'=>[
                     'label'=>'Mot de passe',
                     'constraints' => [
                         new NotBlank([
-                            'message' => 'Please enter a password',
+                            'message' => 'Veuillez saisir un mot de passe',
                         ]),
                         new Length([
                             'min' => 6,
-                            'minMessage' => 'Your password should be at least {{ limit }} characters',
+                            'minMessage' => 'Votre mot de passe doit faire au moins {{ limit }} caractères',
                             // max length allowed by Symfony for security reasons
                             'max' => 4096,
                         ]),
@@ -50,12 +52,22 @@ class RegistrationFormType extends AbstractType
                 ],
                 'second_options'=>[
                   'label'=>'Confirmation de mot de passe',
+                    'constraints' => [
+                        new NotBlank([
+                            'message' => 'Veuillez confirmer votre mot de passe',
+                        ]),
+                    ]
                 ],
             ])
             ->add('firstname',TextType::class,['required'=>true])
             ->add('lastname',TextType::class,['required'=>true])
-            ->add('birthday')
-            ->add('username')
+            ->add('birthday',DateTimeType::class,[
+                'widget'=>'choice',
+                'input_format'=>'dd-MM-YYYY'
+            ])
+            ->add('username',TextType::class,[
+                'label'=>'Confirmation de mot de passe',
+            ])
         ;
     }
 
