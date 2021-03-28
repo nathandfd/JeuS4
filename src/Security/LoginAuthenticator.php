@@ -70,10 +70,13 @@ class LoginAuthenticator extends AbstractFormLoginAuthenticator implements Passw
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $credentials['email']]);
 
         if (!$user) {
-            // fail authentication with a custom error
-            throw new CustomUserMessageAuthenticationException('Email introuvable, possédez-vous un compte ?');
-        }
+            $user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $credentials['email']]);
 
+            if (!$user){
+                throw new CustomUserMessageAuthenticationException('Identifiant introuvable, possédez-vous un compte ?');
+            }
+            // fail authentication with a custom error
+        }
         return $user;
     }
 
@@ -106,7 +109,7 @@ class LoginAuthenticator extends AbstractFormLoginAuthenticator implements Passw
 
         // For example : return new RedirectResponse($this->urlGenerator->generate('some_route'));
         //throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
-        return new RedirectResponse($this->urlGenerator->generate('new_game'));
+        return new RedirectResponse($this->urlGenerator->generate('home'));
     }
 
     protected function getLoginUrl()
