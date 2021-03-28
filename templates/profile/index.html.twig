@@ -17,39 +17,49 @@
                <p style="color: {{ (user.getId() == game.getWinner().getId())?'green':'red' }};">{{ game.getUser1().getUsername() }} | {{ game.getUser1().getId() }} - {{ game.getUser2().getId() }} | {{ game.getUser2().getUsername() }}</p>
             {% endfor %}
             - Voir tout -
-            <input type="text" id="friend_search_bar">
-            <ul id="search_list"></ul>
          </div>
       </div>
       <div id="infos">
          <h2>Vos informations</h2>
-         <div class="texte">
+          <a href="" id="modif">Modifier les informations</a>
+          <div class="texte">
             <p>Pseudo : {{ user.getUsername() }}</p>
             <p>Nom : {{ user.getLastName() }}</p>
             <p>Prénom : {{ user.getFirstName() }}</p>
             <p>E-mail : {{ user.getEmail() }}</p>
             <p>Photo de Profil : </p> <img title id="photo" src="{{ asset('assets/img/profil.jpg') }}" alt="Photo de profil">
          </div>
-         Vos amis :
-         <ul>
-            {% for friend in friends %}
-               <li>{{ (friend.getUser1().getId() == user.getId())?friend.getUser2().getUsername():friend.getUser1().getUsername() }}</li>
-            {% endfor %}
-         </ul>
-         Demandes reçues :
-         <ul>
-            {% for friend in received_friend_request %}
-               <li>{{ friend.getUser1().getUsername() }} <button onclick="addFriendFunction({{ friend.getUser1().getId() }})">Accepter l'invitation</button></li>
-            {% endfor %}
-         </ul>
-         Demandes envoyées :
-         <ul>
-            {% for friend in sended_friend_request %}
-               <li>{{ friend.getUser2().getUsername() }}</li>
-            {% endfor %}
-         </ul>
+
       </div>
-      <a href="" id="modif">Modifier les informations</a>
+       <div id="amis">
+           <h2>Vos amis</h2>
+          <div id="friend_section" class="texte">
+              <div><h3>Ajouter un ami :</h3>
+                  <input placeholder="Ex. Xx_DarkTimoté_xX" type="text" id="friend_search_bar">
+                  <ul id="search_list"></ul>
+              </div>
+              <div>
+                  <h3>Demandes reçues :</h3>
+                  <ul>
+                      {% for friend in received_friend_request %}
+                          <li>{{ friend.getUser1().getUsername() }} <button onclick="addFriendFunction({{ friend.getUser1().getId() }})">Accepter l'invitation</button></li>
+                      {% endfor %}
+                  </ul>
+                  <h3>Demandes envoyées :</h3>
+                  <ul>
+                      {% for friend in sended_friend_request %}
+                          <li>{{ friend.getUser2().getUsername() }}</li>
+                      {% endfor %}
+                  </ul>
+                  <h3>Vos amis :</h3>
+                  <ul>
+                      {% for friend in friends %}
+                          <li>{{ (friend.getUser1().getId() == user.getId())?friend.getUser2().getUsername():friend.getUser1().getUsername() }}</li>
+                      {% endfor %}
+                  </ul>
+              </div>
+          </div>
+       </div>
    </div>
    <!-- <footer>
         <div><a href="">Mentions légales</a></div>
@@ -91,7 +101,7 @@
                      .then((res)=>{return res.json()})
                      .then(res=>{
                          resultList.innerHTML = ''
-                         if(!res['hydra:member']){
+                         if(!res['hydra:member'].length){
                              let li = document.createElement('li')
                              li.innerHTML = 'Aucun résultat'
                              resultList.appendChild(li)

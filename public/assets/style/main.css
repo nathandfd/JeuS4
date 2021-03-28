@@ -16,11 +16,17 @@ header #lien_accueil img {
   width: 5%;
 }
 
+#friend_section{
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+}
+
 #profil {
-  display: flex;
+  display: grid;
   margin-top: 3%;
   align-items: flex-start;
   justify-content: space-around;
+  grid-template-columns: repeat(2,1fr);
 }
 #profil h2 {
   color: white !important;
@@ -29,7 +35,7 @@ header #lien_accueil img {
   margin-left: 20%;
 }
 #profil #modif {
-  position: absolute;
+  position: relative;
   bottom: 0;
   right: 0;
   margin-bottom: 1%;
