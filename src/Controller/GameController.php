@@ -94,7 +94,6 @@ class GameController extends AbstractController
             EntityManagerInterface $entityManager,
             UserRepository $userRepository,
             CardRepository $cardRepository,
-            PublisherInterface $publisher,
             HttpClientInterface $client,
             $user1_id,$user2_id
         ): Response {
