@@ -24,11 +24,19 @@ class DefaultController extends AbstractController
             'controller_name' => 'DefaultController',
         ]);
     }
+    /**
+     * @Route("/blyat",name="blyat")
+     */
+    public function blyat(
+
+    ):Response{
+        return new Response('Oh blyat !')
+    }
 
     /**
      * @Route("/addFriend/{friendId}",name="add_friend")
      */
-    public function suce(
+    public function addFriend(
         HttpClientInterface $httpClient,
         FriendshipRepository $friendshipRepository,
         UserRepository $userRepository,
