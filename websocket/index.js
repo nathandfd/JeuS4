@@ -62,10 +62,8 @@ io.on('connection',socket=>{
         }
 
         let delIndex = users.findIndex((el)=>{
-            el.server_id === data
+            return el.server_id === data
         })
-
-        console.log(delIndex)
 
         if (delIndex !== -1){
             users.splice(delIndex,1)
