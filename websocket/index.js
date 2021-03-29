@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const fs = require('fs')
 var cors = require('cors');
+var users = {}
 
 const server = require('https').Server({
     key: fs.readFileSync('/etc/letsencrypt/live/nathandfd.fr-0002/privkey.pem'),
@@ -50,9 +51,17 @@ app.get('/sendFriendRequest',(req,res)=>{
 })
 
 io.on('connection',socket=>{
+    socket.on('disconnect',()=>{
+        console.log('on a perdu un djo')
+    })
+
     socket.on('attachId',(data)=>{
-        console.log(`client node_id : ${socket.id}`)
-        console.log(data)
+        let user = {
+            client_id: socket.id,
+            server_id: data
+        }
+        users.append(user)
+        console.log(users)
     })
 })
 
