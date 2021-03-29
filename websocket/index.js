@@ -60,6 +60,11 @@ io.on('connection',socket=>{
             client_id: socket.id,
             server_id: data
         }
+        console.log(users.find((el,i,array)=>{
+            if(el.server_id === data){
+                array.splice(i,1)
+            }
+        }))
         users.push(user)
         console.log(users)
     })

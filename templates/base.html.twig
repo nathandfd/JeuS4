@@ -25,7 +25,6 @@
                 });
 
                 socket.on('connect',()=>{
-                    console.log('bite')
                     socket.emit('attachId','{{ app.user.id }}')
                 })
 
