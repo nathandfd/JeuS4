@@ -52,7 +52,13 @@ app.get('/sendFriendRequest',(req,res)=>{
 
 io.on('connection',socket=>{
     socket.on('disconnect',()=>{
-        console.log('on a perdu un djo')
+        let delIndex = users.findIndex((el)=>{
+            return el.server_id === socket.id
+        })
+
+        if (delIndex !== -1){
+            users.splice(delIndex,1)
+        }
     })
 
     socket.on('attachId',(data)=>{
