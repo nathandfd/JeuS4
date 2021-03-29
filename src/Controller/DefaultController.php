@@ -30,7 +30,7 @@ class DefaultController extends AbstractController
     public function blyat(
 
     ):Response{
-        return new Response('Oh blyat !')
+        return new Response('Oh blyat !');
     }
 
     /**
