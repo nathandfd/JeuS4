@@ -60,7 +60,7 @@ io.on('connection',socket=>{
             client_id: socket.id,
             server_id: data
         }
-        users.splice(users.findIndex((el)=>{
+        (...users).splice(users.findIndex((el)=>{
             el.server_id === data
         }),1,user)
 
