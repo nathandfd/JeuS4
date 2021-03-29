@@ -49,5 +49,9 @@ app.get('/sendFriendRequest',(req,res)=>{
     }
 })
 
+io.on('connection',socket=>{
+    console.log(socket)
+})
+
 server.listen(8080)
 
