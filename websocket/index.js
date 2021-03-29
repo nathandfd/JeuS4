@@ -49,8 +49,9 @@ app.get('/sendFriendRequest',(req,res)=>{
     }
 })
 
-io.on('connection',socket=>{
-    console.log(socket)
+io.on('attachId',(socket,data)=>{
+    console.log(`client node_id : ${socket.id}`)
+    console.log(data)
 })
 
 server.listen(8080)

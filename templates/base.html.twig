@@ -24,6 +24,10 @@
                     theme: 'friend-add'
                 });
 
+                socket.on('connection',()=>{
+                    socket.emit('attachId','{{ app.user.id }}')
+                })
+
                 socket.on('friendRequest_{{ app.user.id }}',friend=>{
                     notif({
                         title:"Demande d'ami",
