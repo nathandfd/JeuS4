@@ -60,13 +60,11 @@ io.on('connection',socket=>{
             client_id: socket.id,
             server_id: data
         }
-        let ets = users.splice(users.findIndex((el)=>{
+        users.splice(users.findIndex((el)=>{
             el.server_id === data
-        }),1)
+        }),1,user)
 
-        users.push(user)
         console.log(users)
-        console.log('---'+ets)
     })
 })
 
