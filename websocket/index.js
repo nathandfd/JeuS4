@@ -66,7 +66,7 @@ io.on('connection',socket=>{
         })
 
         if (delIndex){
-            users.splice(delIndex,1)
+            //users.splice(delIndex,1)
         }
 
         users.push(user)
