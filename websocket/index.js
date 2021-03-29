@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const fs = require('fs')
 var cors = require('cors');
-var users = {}
+var users = []
 
 const server = require('https').Server({
     key: fs.readFileSync('/etc/letsencrypt/live/nathandfd.fr-0002/privkey.pem'),
@@ -60,7 +60,7 @@ io.on('connection',socket=>{
             client_id: socket.id,
             server_id: data
         }
-        users.appendChild(user)
+        users.push(user)
         console.log(users)
     })
 })
