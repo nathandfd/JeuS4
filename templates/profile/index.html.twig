@@ -97,7 +97,7 @@
          if(e.target.value.length >= 3){
              clearTimeout(delayTimer);
              delayTimer = setTimeout(function() {
-                 fetch('http://localhost:8000/api/users?page=1&username='+e.target.value)
+                 fetch('{{ path('home')}}api/users?page=1&username='+e.target.value)
                      .then((res)=>{return res.json()})
                      .then(res=>{
                          resultList.innerHTML = ''
