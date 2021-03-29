@@ -60,7 +60,7 @@ io.on('connection',socket=>{
             client_id: socket.id,
             server_id: data
         }
-        users.append(user)
+        users.appendChild(user)
         console.log(users)
     })
 })
