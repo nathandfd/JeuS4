@@ -65,7 +65,10 @@ io.on('connection',socket=>{
             el.server_id === data
         })
 
-        users.splice(delIndex,1)
+        if (delIndex){
+            users.splice(delIndex,1)
+        }
+
         users.push(user)
 
         console.log(users)
