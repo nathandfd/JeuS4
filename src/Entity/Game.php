@@ -49,6 +49,11 @@ class Game
      */
     private $rounds;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $userTurn;
+
     public function __construct()
     {
         $this->rounds = new ArrayCollection();
@@ -151,5 +156,17 @@ class Game
 
     public function getUser1Id(){
         return $this->getUser1()->getId();
+    }
+
+    public function getUserTurn(): ?int
+    {
+        return $this->userTurn;
+    }
+
+    public function setUserTurn(int $userTurn): self
+    {
+        $this->userTurn = $userTurn;
+
+        return $this;
     }
 }
