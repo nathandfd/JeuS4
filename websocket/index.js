@@ -52,6 +52,7 @@ app.get('/sendFriendRequest',(req,res)=>{
 
 io.on('connection',socket=>{
     socket.on('disconnect',()=>{
+         //TODO: Récupérer list de ses amis et leur envoyer un ping pour dire qu'il est hors-ligne
         let delIndex = users.findIndex((el)=>{
             return el.server_id === socket.id
         })
@@ -78,6 +79,8 @@ io.on('connection',socket=>{
         users.push(user)
 
         console.log(users)
+        //TODO: Récupérer list de ses amis et leur envoyer un ping pour dire qu'il est ligne
+        
     })
 })
 
