@@ -290,17 +290,9 @@ class GameController extends AbstractController
 
         if ($game->getUser1()->getId() === $user->getId())
         {
-            $joueur = 1;
-        } elseif ($game->getUser2()->getId() === $user->getId()) {
-            $joueur = 2;
-        } else {
-            /// On a un problème... On pourrait rediriger vers une page d'erreur.
-        }
-
-        switch ($action) {
-            case 'secret':
-                $carte = $request->request->get('carte');
-                if ($joueur === 1) {
+            switch ($action) {
+                case 'secret':
+                    $carte = $request->request->get('carte');
                     $actions = $round->getUser1Action(); //un tableau...
                     $actions['SECRET'] = [$carte]; //je sauvegarde la carte cachée dans mes actions
                     $round->setUser1Action($actions); //je mets à jour le tableau
@@ -308,8 +300,23 @@ class GameController extends AbstractController
                     $indexCarte = array_search($carte, $main); //je récupère l'index de la carte a supprimer dans ma main
                     unset($main[$indexCarte]); //je supprime la carte de ma main
                     $round->setUser1HandCards($main);
-                }
-                break;
+                    break;
+            }
+        } elseif ($game->getUser2()->getId() === $user->getId()) {
+            switch ($action) {
+                case 'secret':
+                    $carte = $request->request->get('carte');
+                    $actions = $round->getUser2Action(); //un tableau...
+                    $actions['SECRET'] = [$carte]; //je sauvegarde la carte cachée dans mes actions
+                    $round->setUser2Action($actions); //je mets à jour le tableau
+                    $main = $round->getUser2HandCards();
+                    $indexCarte = array_search($carte, $main); //je récupère l'index de la carte a supprimer dans ma main
+                    unset($main[$indexCarte]); //je supprime la carte de ma main
+                    $round->setUser2HandCards($main);
+                    break;
+            }
+        } else {
+            return new Response('Houston, nous avons un problème ! Un intrus est parmis nous !');
         }
 
         $entityManager->flush();
