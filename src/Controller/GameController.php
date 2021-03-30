@@ -264,7 +264,7 @@ class GameController extends AbstractController
             $adversaire['actions'] = $game->getRounds()[0]->getUser1Action();
             $adversaire['board'] = $game->getRounds()[0]->getUser1BoardCards();
         } else {
-            //redirection... je ne suis pas l'un des deux joueurs
+            return new Response('Houston, nous avons un problème ! Un intrus est parmis nous !');
         }
 
         return $this->render('game/show_game.html.twig', [
@@ -288,7 +288,7 @@ class GameController extends AbstractController
         $user = $this->getUser();
         $round = $game->getRounds()[0]; //a gérer selon le round en cours
 
-        if ($game->getUser1()->getId() === $user->getId())
+        if ($game->getUser1()->getId() === $user->getId() && $user->getId() === $game->getUserTurn())
         {
             switch ($action) {
                 case 'secret':
@@ -302,7 +302,7 @@ class GameController extends AbstractController
                     $round->setUser1HandCards($main);
                     break;
             }
-        } elseif ($game->getUser2()->getId() === $user->getId()) {
+        } elseif ($game->getUser2()->getId() === $user->getId() && $user->getId() === $game->getUserTurn()) {
             switch ($action) {
                 case 'secret':
                     $carte = $request->request->get('carte');
