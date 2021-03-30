@@ -267,7 +267,7 @@ class GameController extends AbstractController
             //redirection... je ne suis pas l'un des deux joueurs
         }
 
-        return $this->render('game/plateau_game.html.twig', [
+        return $this->render('game/show_game.html.twig', [
             'game' => $game,
             'set' => $game->getRounds()[0],
             'cards' => $tCards,
