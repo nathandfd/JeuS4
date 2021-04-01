@@ -71,7 +71,7 @@ class RegistrationFormType extends AbstractType
                 'years'=>range(\date('Y'),1950)
             ])
             ->add('username',TextType::class,[
-                'label'=>'Confirmation de mot de passe',
+                'label'=>'Nom d\'utilisateur',
             ])
         ;
     }

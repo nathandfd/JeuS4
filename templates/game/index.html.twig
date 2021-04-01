@@ -8,8 +8,6 @@
 {% block javascripts %}
     <script src="https://cdn.socket.io/4.0.0/socket.io.min.js" integrity="sha384-DkkWv9oJFWLIydBXXjkBWnG1/fuVhw8YPBq37uvvD6WSYRFRqr21eY5Dg9ZhmWdy" crossorigin="anonymous"></script>
     <script>
-        const socket = io('nathandfd.fr:8080');
-
         socket.on('opponent_{{ user_id }}',opponent=>{
             let element = document.createElement('h2')
             element.innerHTML = `Adversaire trouvé : ${opponent}`
@@ -18,7 +16,7 @@
 
         socket.on('game_{{ user_id }}', gameId=>{
             setTimeout(()=>{
-                document.location = '/JeuS4/public/game/show-game/'+gameId
+                document.location = '{{ path('show_game',{game:0}) }}'+gameId
             },1500)
         })
     </script>

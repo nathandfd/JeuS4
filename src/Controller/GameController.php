@@ -12,6 +12,7 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -281,7 +282,7 @@ class GameController extends AbstractController
      */
     public function actionGame(
         EntityManagerInterface $entityManager,
-        Request $request, Game $game){
+        Request $request, Game $game, OutputInterface $output){
 
 
         $action = $request->request->get('action');
@@ -298,6 +299,8 @@ class GameController extends AbstractController
                     $round->setUser1Action($actions); //je mets à jour le tableau
                     $main = $round->getUser1HandCards();
                     $indexCarte = array_search($carte, $main); //je récupère l'index de la carte a supprimer dans ma main
+                    $supercard = $main[$indexCarte]->getId();
+                    $output->writeln('Secret card :'.$supercard);
                     unset($main[$indexCarte]); //je supprime la carte de ma main
                     $round->setUser1HandCards($main);
                     break;
