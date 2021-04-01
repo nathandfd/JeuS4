@@ -301,6 +301,9 @@ class GameController extends AbstractController
                     unset($main[$indexCarte]); //je supprime la carte de ma main
                     $round->setUser1HandCards($main);
                     break;
+                default:
+                    return $this->json(false);
+                    break;
             }
         } elseif ($game->getUser2()->getId() === $user->getId() && $user->getId() === $game->getUserTurn()) {
             switch ($action) {
@@ -313,6 +316,9 @@ class GameController extends AbstractController
                     $indexCarte = array_search($carte, $main); //je récupère l'index de la carte a supprimer dans ma main
                     unset($main[$indexCarte]); //je supprime la carte de ma main
                     $round->setUser2HandCards($main);
+                    break;
+                default:
+                    return $this->json(false);
                     break;
             }
         } else {
