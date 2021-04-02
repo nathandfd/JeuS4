@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 class RegistrationController extends AbstractController
@@ -27,13 +28,24 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/register", name="app_register")
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, HttpClientInterface $httpClient): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid() && $form->get('g-recaptcha-response')) {
+            $userToken = $form->get('g-recaptcha-response')->getData();
+            $httpResponse = $httpClient->request('POST','https://www.google.com/recaptcha/api/siteverify',[
+                'body'=>[
+                    'secret'=>'6Lc_wpkaAAAAAL_u_VVVx4XS0XHFMxN_gCAM1DvJ',
+                    'response'=>$userToken
+                ]
+            ]);
+            $data = $httpResponse->toArray();
+            if (!$data['success']){
+                return $this->redirectToRoute('bitch');
+            }
             // encode the plain password
             $user->setPassword(
                 $passwordEncoder->encodePassword(
