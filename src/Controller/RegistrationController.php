@@ -35,16 +35,22 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $userToken = $form->get('g-recaptcha-response')->getData();
-            $httpResponse = $httpClient->request('POST','https://www.google.com/recaptcha/api/siteverify',[
-                'body'=>[
-                    'secret'=>'6Lc_wpkaAAAAAL_u_VVVx4XS0XHFMxN_gCAM1DvJ',
-                    'response'=>$userToken
-                ]
-            ]);
-            $data = $httpResponse->toArray();
-            if (!$data['success']){
-                return $this->redirectToRoute('bitch');
+            $formData = $form->getData();
+            if ($formData['g-recaptcha-response']){
+                $userToken = $formData['g-recaptcha-response'];
+                $httpResponse = $httpClient->request('POST','https://www.google.com/recaptcha/api/siteverify',[
+                    'body'=>[
+                        'secret'=>'6Lc_wpkaAAAAAL_u_VVVx4XS0XHFMxN_gCAM1DvJ',
+                        'response'=>$userToken
+                    ]
+                ]);
+                $data = $httpResponse->toArray();
+                if (!$data['success']){
+                    return $this->redirectToRoute('bitch');
+                }
+            }
+            else{
+                return $this->redirectToRoute('pute');
             }
             // encode the plain password
             $user->setPassword(
