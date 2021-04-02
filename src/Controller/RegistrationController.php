@@ -35,6 +35,7 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            var_dump($form);
             $userToken = $form->get('g-recaptcha-response')->getData();
             $httpResponse = $httpClient->request('POST','https://www.google.com/recaptcha/api/siteverify',[
                 'body'=>[
