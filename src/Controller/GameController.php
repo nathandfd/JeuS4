@@ -268,6 +268,8 @@ class GameController extends AbstractController
             return new Response('Houston, nous avons un problème ! Un intrus est parmis nous !');
         }
 
+
+
         return $this->render('game/show_game.html.twig', [
             'game' => $game,
             'set' => $game->getRounds()[0],
@@ -282,10 +284,10 @@ class GameController extends AbstractController
      */
     public function actionGame(
         EntityManagerInterface $entityManager,
-        Request $request, Game $game, OutputInterface $output){
+        Request $request, Game $game){
 
 
-        $action = $request->request->get('action');
+        $action = $request->query->get('action');
         $user = $this->getUser();
         $round = $game->getRounds()[0]; //a gérer selon le round en cours
 
@@ -293,14 +295,17 @@ class GameController extends AbstractController
         {
             switch ($action) {
                 case 'secret':
-                    $carte = $request->request->get('carte');
+                    $carte = $request->query->get('carte');
                     $actions = $round->getUser1Action(); //un tableau...
                     $actions['SECRET'] = [$carte]; //je sauvegarde la carte cachée dans mes actions
+                    $actions['DEPOT'] = [$carte];
+                    $actions['OFFRE'] = [$carte];
+                    $actions['ECHANGE'] = [$carte];
                     $round->setUser1Action($actions); //je mets à jour le tableau
                     $main = $round->getUser1HandCards();
                     $indexCarte = array_search($carte, $main); //je récupère l'index de la carte a supprimer dans ma main
-                    $supercard = $main[$indexCarte]->getId();
-                    $output->writeln('Secret card :'.$supercard);
+                    //$supercard = $main[$indexCarte]->getId();
+                    //$output->writeln('Secret card :'.$supercard);
                     unset($main[$indexCarte]); //je supprime la carte de ma main
                     $round->setUser1HandCards($main);
                     break;
@@ -311,9 +316,12 @@ class GameController extends AbstractController
         } elseif ($game->getUser2()->getId() === $user->getId() && $user->getId() === $game->getUserTurn()) {
             switch ($action) {
                 case 'secret':
-                    $carte = $request->request->get('carte');
+                    $carte = $request->query->get('carte');
                     $actions = $round->getUser2Action(); //un tableau...
                     $actions['SECRET'] = [$carte]; //je sauvegarde la carte cachée dans mes actions
+                    $actions['DEPOT'] = [$carte];
+                    $actions['OFFRE'] = [$carte];
+                    $actions['ECHANGE'] = [$carte];
                     $round->setUser2Action($actions); //je mets à jour le tableau
                     $main = $round->getUser2HandCards();
                     $indexCarte = array_search($carte, $main); //je récupère l'index de la carte a supprimer dans ma main
@@ -330,6 +338,21 @@ class GameController extends AbstractController
 
         $entityManager->flush();
 
+        foreach ($round->getUser1Action() as $action => $value){
+            var_dump($value);
+            if ($value){
+                continue;
+            }
+            return $this->json(true);
+        }
+
+        foreach ($round->getUser2Action() as $action => $value){
+            var_dump($value);
+            if ($value){
+                continue;
+            }
+            return $this->json(true);
+        }
         return $this->json(true);
     }
 }

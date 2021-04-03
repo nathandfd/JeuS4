@@ -82,15 +82,6 @@ class Round
      */
     private $pioche = [];
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $user1_secret_card;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $user2_secret_card;
 
     public function getId(): ?int
     {
@@ -249,30 +240,6 @@ class Round
     public function setPioche(array $pioche): self
     {
         $this->pioche = $pioche;
-
-        return $this;
-    }
-
-    public function getUser1SecretCard(): ?int
-    {
-        return $this->user1_secret_card;
-    }
-
-    public function setUser1SecretCard(?int $user1_secret_card): self
-    {
-        $this->user1_secret_card = $user1_secret_card;
-
-        return $this;
-    }
-
-    public function getUser2SecretCard(): ?int
-    {
-        return $this->user2_secret_card;
-    }
-
-    public function setUser2SecretCard(?int $user2_secret_card): self
-    {
-        $this->user2_secret_card = $user2_secret_card;
 
         return $this;
     }

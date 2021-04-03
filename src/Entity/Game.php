@@ -46,6 +46,7 @@ class Game
 
     /**
      * @ORM\OneToMany(targetEntity=Round::class, mappedBy="game")
+     * @ORM\OrderBy({"created" = "DESC"})
      */
     private $rounds;
 
