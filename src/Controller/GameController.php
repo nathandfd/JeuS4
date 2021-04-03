@@ -284,9 +284,7 @@ class GameController extends AbstractController
      */
     public function actionGame(
         EntityManagerInterface $entityManager,
-        Request $request, Game $game){
-
-
+        Request $request, Game $game, CardRepository $cardRepository){
         $action = $request->query->get('action');
         $user = $this->getUser();
         $round = $game->getRounds()[0]; //a gérer selon le round en cours
@@ -313,6 +311,7 @@ class GameController extends AbstractController
                     return $this->json(false);
                     break;
             }
+            $game->setUserTurn($game->getUser2()->getId());
         } elseif ($game->getUser2()->getId() === $user->getId() && $user->getId() === $game->getUserTurn()) {
             switch ($action) {
                 case 'secret':
@@ -332,6 +331,7 @@ class GameController extends AbstractController
                     return $this->json(false);
                     break;
             }
+            $game->setUserTurn($game->getUser1()->getId());
         } else {
             return new Response('Houston, nous avons un problème ! Un intrus est parmis nous !');
         }
@@ -353,6 +353,62 @@ class GameController extends AbstractController
             }
             return $this->json(true);
         }
+
+        //Create new set
+
+        $set = new Round();
+        $set->setGame($game);
+        $set->setCreated(new \DateTime('now'));
+        $set->setSetNumber(1);
+
+        $cards = $cardRepository->findAll();
+        $tCards = [];
+        foreach ($cards as $card) {
+            $tCards[$card->getId()] = $card;
+        }
+        shuffle($tCards);
+        $carte = array_pop($tCards);
+        $set->setRemovedCard($carte->getId());
+
+        $tMainJ1 = [];
+        $tMainJ2 = [];
+        for ($i = 0; $i < 6; $i++) {
+            //on distribue 6 cartes aux deux joueurs
+            $carte = array_pop($tCards);
+            $tMainJ1[] = $carte->getId();
+            $carte = array_pop($tCards);
+            $tMainJ2[] = $carte->getId();
+        }
+        $set->setUser1HandCards($tMainJ1);
+        $set->setUser2HandCards($tMainJ2);
+
+        $tPioche = [];
+
+        foreach ($tCards as $card) {
+            $carte = array_pop($tCards);
+            $tPioche[] = $carte->getId();
+        }
+        $set->setPioche($tPioche);
+        $set->setUser1Action([
+            'SECRET' => false,
+            'DEPOT' => false,
+            'OFFRE' => false,
+            'ECHANGE' => false
+        ]);
+
+        $set->setUser2Action([
+            'SECRET' => false,
+            'DEPOT' => false,
+            'OFFRE' => false,
+            'ECHANGE' => false
+        ]);
+
+        $set->setBoard($game->getRounds()[0]->getBoard());
+
+        $entityManager->persist($set);
+        $entityManager->flush();
+
+
         return $this->json(true);
     }
 }
