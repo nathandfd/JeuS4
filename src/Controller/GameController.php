@@ -339,7 +339,6 @@ class GameController extends AbstractController
         $entityManager->flush();
 
         foreach ($round->getUser1Action() as $action => $value){
-            var_dump($value);
             if ($value){
                 continue;
             }
@@ -347,7 +346,6 @@ class GameController extends AbstractController
         }
 
         foreach ($round->getUser2Action() as $action => $value){
-            var_dump($value);
             if ($value){
                 continue;
             }
