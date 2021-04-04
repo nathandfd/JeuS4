@@ -120,7 +120,7 @@ class GameController extends AbstractController
 
                 $game->setEnded(new \DateTime('now'));
 
-                $this->newSet($game);
+                $this->newSet($cardRepository, $entityManager, $game);
 
                 $client->request('GET', $this->getParameter('app.api_url').'/game', [
                     'query' => [
@@ -294,12 +294,12 @@ class GameController extends AbstractController
             return $this->json(true);
         }
 
-        $this->newSet($game);
+        $this->newSet($cardRepository, $entityManager, $game);
 
         return $this->json(true);
     }
 
-    private function newSet(CardRepository $cardRepository, EntityManagerInterface $entityManager, $game){
+    private function newSet(CardRepository $cardRepository, EntityManagerInterface $entityManager,Game $game){
         $set = new Round();
         $set->setGame($game);
         $set->setCreated(new \DateTime('now'));
@@ -347,7 +347,9 @@ class GameController extends AbstractController
             'ECHANGE' => false
         ]);
 
-        $set->setBoard($game->getRounds()[0]->getBoard());
+        if ($game->getRounds()[0]){
+            $set->setBoard($game->getRounds()[0]->getBoard());
+        }
 
         $entityManager->persist($set);
         $entityManager->flush();
