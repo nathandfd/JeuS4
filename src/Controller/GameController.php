@@ -118,67 +118,9 @@ class GameController extends AbstractController
 
                 $entityManager->persist($game);
 
-                $set = new Round();
-                $set->setGame($game);
-                $set->setCreated(new \DateTime('now'));
-                $set->setSetNumber(1);
-
-                $cards = $cardRepository->findAll();
-                $tCards = [];
-                foreach ($cards as $card) {
-                    $tCards[$card->getId()] = $card;
-                }
-                shuffle($tCards);
-                $carte = array_pop($tCards);
-                $set->setRemovedCard($carte->getId());
-
-                $tMainJ1 = [];
-                $tMainJ2 = [];
-                for ($i = 0; $i < 6; $i++) {
-                    //on distribue 6 cartes aux deux joueurs
-                    $carte = array_pop($tCards);
-                    $tMainJ1[] = $carte->getId();
-                    $carte = array_pop($tCards);
-                    $tMainJ2[] = $carte->getId();
-                }
-                $set->setUser1HandCards($tMainJ1);
-                $set->setUser2HandCards($tMainJ2);
-
-                $tPioche = [];
-
-                foreach ($tCards as $card) {
-                    $carte = array_pop($tCards);
-                    $tPioche[] = $carte->getId();
-                }
-                $set->setPioche($tPioche);
-                $set->setUser1Action([
-                    'SECRET' => false,
-                    'DEPOT' => false,
-                    'OFFRE' => false,
-                    'ECHANGE' => false
-                ]);
-
-                $set->setUser2Action([
-                    'SECRET' => false,
-                    'DEPOT' => false,
-                    'OFFRE' => false,
-                    'ECHANGE' => false
-                ]);
-
-                $set->setBoard([
-                    'EMPL1' => ['N'],
-                    'EMPL2' => ['N'],
-                    'EMPL3' => ['N'],
-                    'EMPL4' => ['N'],
-                    'EMPL5' => ['N'],
-                    'EMPL6' => ['N'],
-                    'EMPL7' => ['N']
-                ]);
-
                 $game->setEnded(new \DateTime('now'));
 
-                $entityManager->persist($set);
-                $entityManager->flush();
+                $this->newSet($game);
 
                 $client->request('GET', $this->getParameter('app.api_url').'/game', [
                     'query' => [
@@ -352,8 +294,12 @@ class GameController extends AbstractController
             return $this->json(true);
         }
 
-        //Create new set
+        $this->newSet($game);
 
+        return $this->json(true);
+    }
+
+    private function newSet(CardRepository $cardRepository, EntityManagerInterface $entityManager, $game){
         $set = new Round();
         $set->setGame($game);
         $set->setCreated(new \DateTime('now'));
@@ -405,8 +351,5 @@ class GameController extends AbstractController
 
         $entityManager->persist($set);
         $entityManager->flush();
-
-
-        return $this->json(true);
     }
 }
