@@ -238,9 +238,6 @@ class GameController extends AbstractController
                     $carte = $request->query->get('carte');
                     $actions = $round->getUser1Action(); //un tableau...
                     $actions['SECRET'] = [$carte]; //je sauvegarde la carte cachée dans mes actions
-                    $actions['DEPOT'] = [$carte];
-                    $actions['OFFRE'] = [$carte];
-                    $actions['ECHANGE'] = [$carte];
                     $round->setUser1Action($actions); //je mets à jour le tableau
                     $main = $round->getUser1HandCards();
                     $indexCarte = array_search($carte, $main); //je récupère l'index de la carte a supprimer dans ma main
@@ -260,9 +257,6 @@ class GameController extends AbstractController
                     $carte = $request->query->get('carte');
                     $actions = $round->getUser2Action(); //un tableau...
                     $actions['SECRET'] = [$carte]; //je sauvegarde la carte cachée dans mes actions
-                    $actions['DEPOT'] = [$carte];
-                    $actions['OFFRE'] = [$carte];
-                    $actions['ECHANGE'] = [$carte];
                     $round->setUser2Action($actions); //je mets à jour le tableau
                     $main = $round->getUser2HandCards();
                     $indexCarte = array_search($carte, $main); //je récupère l'index de la carte a supprimer dans ma main
@@ -294,6 +288,7 @@ class GameController extends AbstractController
             return $this->json(true);
         }
 
+        $round->
         $this->newSet($cardRepository, $entityManager, $game);
 
         return $this->json(true);
