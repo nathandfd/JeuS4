@@ -58,6 +58,9 @@
     </div>
     <a href="{{ path('home') }}">Retour à l'accueil</a>
     <script>
+        socket.on('ok',(data)=>{
+            console.log(data)
+        })
         window.addEventListener('load',()=>{
             document.getElementById('loading_screen').style.display = 'none';
             /*let cards = document.getElementsByClassName('card-container')

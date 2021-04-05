@@ -40,6 +40,23 @@ app.get('/game',(req,res)=>{
     }
 })
 
+app.get('/action/:action',(req,res)=>{
+    if (req.query.userId && req.query.gameId){
+        let userId = req.query.userId
+        let action = req.params.action
+        let userIndex = users.findIndex((el)=>{
+            return el.server_id === data
+        })
+        let socketId = users[userIndex].client_id
+
+        io.to(socketId).emit("action",action)
+        res.status(200).end()
+    }
+    else {
+        res.status(400).end()
+    }
+})
+
 app.get('/sendFriendRequest',(req,res)=>{
     if (req.query.userId && req.query.friendUsername){
         io.emit('friendRequest_'+req.query.userId,req.query.friendUsername)
