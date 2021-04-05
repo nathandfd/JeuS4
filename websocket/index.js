@@ -54,7 +54,6 @@ app.get('/action/:action',(req,res)=>{
                 let data = {
                     action:action,
                     card_position:3,
-                    oui:'non'
                 }
                 io.to(socketId).emit("action",data)
                 break

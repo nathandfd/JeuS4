@@ -13,11 +13,11 @@
             Cartes de l'adversaire
             {% if game.getUser1().getId() == user_id %}
                 {% for card in set.user2HandCards %}
-                    <img height="100" src="{{ asset('assets/images/cards/'~cards[card].picture) }}">{{ cards[card].number }}
+                    <img height="100" src="{{ asset('assets/images/objects/'~cards[card].picture) }}">{{ cards[card].number }}
                 {% endfor %}
             {% else %}
                 {% for card in set.user1HandCards %}
-                    <img height="100" src="{{ asset('assets/images/cards/'~cards[card].picture) }}">{{ cards[card].number }}
+                    <img height="100" src="{{ asset('assets/images/objects/'~cards[card].picture) }}">{{ cards[card].number }}
                 {% endfor %}
             {% endif %}
         </div>
@@ -38,11 +38,11 @@
         <div class="col-8">
             {% if game.getUser1().getId() == user_id %}
                 {% for card in set.user1HandCards %}
-                    <img data-card-id="{{ cards[card].getId() }}" class="card" height="100" src="{{ asset('assets/images/cards/'~cards[card].picture) }}">{{ cards[card].number }}
+                    <img data-card-id="{{ cards[card].getId() }}" class="card" height="100" src="{{ asset('assets/images/objects/'~cards[card].picture) }}">{{ cards[card].number }}
                 {% endfor %}
             {% else %}
                 {% for card in set.user2HandCards %}
-                    <img data-card-id="{{ cards[card].getId()}}" class="card" height="100" src="{{ asset('assets/images/cards/'~cards[card].picture) }}">{{ cards[card].number }}
+                    <img data-card-id="{{ cards[card].getId()}}" class="card" height="100" src="{{ asset('assets/images/objects/'~cards[card].picture) }}">{{ cards[card].number }}
                 {% endfor %}
             {% endif %}
         </div>

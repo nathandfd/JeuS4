@@ -226,6 +226,7 @@ class GameController extends AbstractController
      */
     public function actionGame(
         EntityManagerInterface $entityManager,
+        HttpClientInterface $client,
         Request $request, Game $game, CardRepository $cardRepository){
         $action = $request->query->get('action');
         $user = $this->getUser();
@@ -245,6 +246,11 @@ class GameController extends AbstractController
                     //$output->writeln('Secret card :'.$supercard);
                     unset($main[$indexCarte]); //je supprime la carte de ma main
                     $round->setUser1HandCards($main);
+                    $client->request('GET', $this->getParameter('app.api_url').'/action/'.$action, [
+                        'query' => [
+                            'userId' => $game->getUser2()->getId(),
+                        ],
+                    ]);
                     break;
                 default:
                     return $this->json(false);
@@ -262,6 +268,11 @@ class GameController extends AbstractController
                     $indexCarte = array_search($carte, $main); //je récupère l'index de la carte a supprimer dans ma main
                     unset($main[$indexCarte]); //je supprime la carte de ma main
                     $round->setUser2HandCards($main);
+                    $client->request('GET', $this->getParameter('app.api_url').'/action/'.$action, [
+                        'query' => [
+                            'userId' => $game->getUser1()->getId(),
+                        ],
+                    ]);
                     break;
                 default:
                     return $this->json(false);
