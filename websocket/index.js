@@ -56,7 +56,7 @@ app.get('/action/:action',(req,res)=>{
                     card_position:3,
                     oui:'non'
                 }
-                io.to(socketId).emit("action",JSON.stringify(data))
+                io.to(socketId).emit("action",data)
                 break
             case 'depot':
                 io.to(socketId).emit("action",action)
