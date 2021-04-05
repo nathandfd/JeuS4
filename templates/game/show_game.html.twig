@@ -58,7 +58,7 @@
     </div>
     <a href="{{ path('home') }}">Retour à l'accueil</a>
     <script>
-        socket.on('ok',(data)=>{
+        socket.on('action',(data)=>{
             console.log(data)
         })
         window.addEventListener('load',()=>{

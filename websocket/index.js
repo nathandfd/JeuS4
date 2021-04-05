@@ -41,11 +41,11 @@ app.get('/game',(req,res)=>{
 })
 
 app.get('/action/:action',(req,res)=>{
-    if (req.query.userId && req.query.gameId){
+    if (req.query.userId){
         let userId = req.query.userId
         let action = req.params.action
         let userIndex = users.findIndex((el)=>{
-            return el.server_id === data
+            return el.server_id === userId
         })
         let socketId = users[userIndex].client_id
 
