@@ -49,11 +49,32 @@ app.get('/action/:action',(req,res)=>{
         })
         let socketId = users[userIndex].client_id
 
-        io.to(socketId).emit("action",action)
+        switch (action){
+            case 'secret':
+                let data = {
+                    action:action,
+                    card_position:3,
+                    oui:'non'
+                }
+                io.to(socketId).emit("action",JSON.stringify(data))
+                break
+            case 'depot':
+                io.to(socketId).emit("action",action)
+                break
+            case 'echange':
+                io.to(socketId).emit("action",action)
+                break
+            case 'offre':
+                io.to(socketId).emit("action",action)
+                break
+            default:
+                res.status(400).end("L'action demandée n'existe pas")
+                break
+        }
         res.status(200).end()
     }
     else {
-        res.status(400).end()
+        res.status(400).end("Données incomplètes")
     }
 })
 
