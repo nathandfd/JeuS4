@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 {% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('assets/style/plateau.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/style/main.css') }}">
 {% endblock %}
 
 {% block body %}
@@ -8,54 +8,104 @@
     <div id="loading_screen" style="background-color: #404040; position: absolute; height: 100vh; width: 100vw; margin: 0; padding: 0; top: 0; left: 0">
         Loading !
     </div>
-    <div class="row">
-        <div class="col-8">
-            Cartes de l'adversaire
-            {% if game.getUser1().getId() == user_id %}
-                {% for card in set.user2HandCards %}
-                    <img height="100" src="{{ asset('assets/images/objects/'~cards[card].picture) }}">{{ cards[card].number }}
-                {% endfor %}
-            {% else %}
-                {% for card in set.user1HandCards %}
-                    <img height="100" src="{{ asset('assets/images/objects/'~cards[card].picture) }}">{{ cards[card].number }}
-                {% endfor %}
-            {% endif %}
-        </div>
-        <div class="col-4">
-            Actions
-        </div>
-    </div>
-    <div class="row">
-        Plateau adversaire
-    </div>
-    <div class="row">
-        Plateau
-    </div>
-    <div class="row">
-        Mon Plateau
-    </div>
-    <div class="row">
-        <div class="col-8">
-            {% if game.getUser1().getId() == user_id %}
-                {% for card in set.user1HandCards %}
-                    <img data-card-id="{{ cards[card].getId() }}" class="card" height="100" src="{{ asset('assets/images/objects/'~cards[card].picture) }}">{{ cards[card].number }}
-                {% endfor %}
-            {% else %}
-                {% for card in set.user2HandCards %}
-                    <img data-card-id="{{ cards[card].getId()}}" class="card" height="100" src="{{ asset('assets/images/objects/'~cards[card].picture) }}">{{ cards[card].number }}
-                {% endfor %}
-            {% endif %}
-        </div>
-        <div class="col-4">
-            Mes Actions
-            <div class="actions">
-                <button id="secret-button">Secret</button>
-                <button id="depot-button">Dépôt</button>
-                <button id="offre-button">Offre</button>
-                <button id="echange-button">Echange</button>
+    <div id="fond">
+        <div id="plateau">
+            <div id="adversaire">
+                <div id="jetons_ad">
+                    <img src="{{ asset('/assets/images/tokens') }}/Jeton1_ad.png" alt="jeton">
+                    <img src="{{ asset('/assets/images/tokens') }}/Jeton2_ad.png" alt="jeton">
+                    <img src="{{ asset('/assets/images/tokens') }}/Jeton3_ad.png" alt="jeton">
+                    <img src="{{ asset('/assets/images/tokens') }}/Jeton4_ad.png" alt="jeton">
+                </div>
+                <div id="carte_ad">
+                    <img src="{{ asset('/assets/images/cards') }}/carte_arriere.png" alt="verso carte">
+                    <img src="{{ asset('/assets/images/cards') }}/carte_arriere.png" alt="verso carte">
+                    <img src="{{ asset('/assets/images/cards') }}/carte_arriere.png" alt="verso carte">
+                    <img src="{{ asset('/assets/images/cards') }}/carte_arriere.png" alt="verso carte">
+                    <img src="{{ asset('/assets/images/cards') }}/carte_arriere.png" alt="verso carte">
+                    <img src="{{ asset('/assets/images/cards') }}/carte_arriere.png" alt="verso carte">
+                </div>
+            </div>
+            <div id="jeu_centre">
+                <div id="pioche">
+                    <img src="{{ asset('/assets/images/cards') }}/carte_arriere.png" alt="verso carte">
+                </div>
+                <div id="persos">
+                    <div class="personnage1"><img src="{{ asset('/assets/images/tokens') }}/jeton.png" alt="jeton"></div>
+                    <div class="personnage2"><img src="{{ asset('/assets/images/tokens') }}/jeton.png" alt="jeton"></div>
+                    <div class="personnage3"><img src="{{ asset('/assets/images/tokens') }}/jeton.png" alt="jeton"></div>
+                    <div class="personnage4"><img src="{{ asset('/assets/images/tokens') }}/jeton.png" alt="jeton"></div>
+                    <div class="personnage5"><img src="{{ asset('/assets/images/tokens') }}/jeton.png" alt="jeton"></div>
+                    <div class="personnage6"><img src="{{ asset('/assets/images/tokens') }}/jeton.png" alt="jeton"></div>
+                    <div class="personnage7"><img src="{{ asset('/assets/images/tokens') }}/jeton.png" alt="jeton"></div>
+                </div>
+            </div>
+            <div id="jeu">
+                <div id="jetons_jeu">
+                    <img src="{{ asset('/assets/images/tokens') }}/Jeton1.png" alt="jeton">
+                    <img src="{{ asset('/assets/images/tokens') }}/Jeton2.png" alt="jeton">
+                    <img src="{{ asset('/assets/images/tokens') }}/Jeton3.png" alt="jeton">
+                    <img src="{{ asset('/assets/images/tokens') }}/Jeton4.png" alt="jeton">
+                </div>
+                <div id="carte_jeu">
+                    <img id="carte1" src="{{ asset('/assets/images/objects') }}/carte_1.png" alt="objet">
+                    <img id="carte2" src="{{ asset('/assets/images/objects') }}/carte_1.png" alt="objet">
+                    <img id="carte3" src="{{ asset('/assets/images/objects') }}/carte_6.png" alt="objet">
+                    <img id="carte4" src="{{ asset('/assets/images/objects') }}/carte_2.png" alt="objet">
+                    <img id="carte5" src="{{ asset('/assets/images/objects') }}/carte_6.png" alt="objet">
+                    <img id="carte6" src="{{ asset('/assets/images/objects') }}/carte_5.png" alt="objet">
+                </div>
             </div>
         </div>
     </div>
+{#    <div class="row">#}
+{#        <div class="col-8">#}
+{#            Cartes de l'adversaire#}
+{#            {% if game.getUser1().getId() == user_id %}#}
+{#                {% for card in set.user2HandCards %}#}
+{#                    <img height="100" src="{{ asset('assets/images/objects/'~cards[card].picture) }}">{{ cards[card].number }}#}
+{#                {% endfor %}#}
+{#            {% else %}#}
+{#                {% for card in set.user1HandCards %}#}
+{#                    <img height="100" src="{{ asset('assets/images/objects/'~cards[card].picture) }}">{{ cards[card].number }}#}
+{#                {% endfor %}#}
+{#            {% endif %}#}
+{#        </div>#}
+{#        <div class="col-4">#}
+{#            Actions#}
+{#        </div>#}
+{#    </div>#}
+{#    <div class="row">#}
+{#        Plateau adversaire#}
+{#    </div>#}
+{#    <div class="row">#}
+{#        Plateau#}
+{#    </div>#}
+{#    <div class="row">#}
+{#        Mon Plateau#}
+{#    </div>#}
+{#    <div class="row">#}
+{#        <div class="col-8">#}
+{#            {% if game.getUser1().getId() == user_id %}#}
+{#                {% for card in set.user1HandCards %}#}
+{#                    <img data-card-id="{{ cards[card].getId() }}" class="card" height="100" src="{{ asset('assets/images/objects/'~cards[card].picture) }}">{{ cards[card].number }}#}
+{#                {% endfor %}#}
+{#            {% else %}#}
+{#                {% for card in set.user2HandCards %}#}
+{#                    <img data-card-id="{{ cards[card].getId()}}" class="card" height="100" src="{{ asset('assets/images/objects/'~cards[card].picture) }}">{{ cards[card].number }}#}
+{#                {% endfor %}#}
+{#            {% endif %}#}
+{#        </div>#}
+{#        <div class="col-4">#}
+{#            Mes Actions#}
+{#            <div class="actions">#}
+{#                <button id="secret-button">Secret</button>#}
+{#                <button id="depot-button">Dépôt</button>#}
+{#                <button id="offre-button">Offre</button>#}
+{#                <button id="echange-button">Echange</button>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
     <a href="{{ path('home') }}">Retour à l'accueil</a>
     <script>
         socket.on('action',(data)=>{
