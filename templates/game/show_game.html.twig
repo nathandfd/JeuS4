@@ -12,10 +12,10 @@
         <div id="plateau">
             <div id="adversaire">
                 <div id="jetons_ad">
-                    <img src="{{ asset('/assets/images/tokens') }}/Jeton1_ad.png" alt="jeton">
-                    <img src="{{ asset('/assets/images/tokens') }}/Jeton2_ad.png" alt="jeton">
-                    <img src="{{ asset('/assets/images/tokens') }}/Jeton3_ad.png" alt="jeton">
-                    <img src="{{ asset('/assets/images/tokens') }}/Jeton4_ad.png" alt="jeton">
+                    <img id="token_secret_opponent" src="{{ asset('/assets/images/tokens') }}/Jeton1.png" alt="jeton">
+                    <img id="token_depot_opponent" src="{{ asset('/assets/images/tokens') }}/Jeton2.png" alt="jeton">
+                    <img id="token_offre_opponent" src="{{ asset('/assets/images/tokens') }}/Jeton3.png" alt="jeton">
+                    <img id="token_echange_opponent" src="{{ asset('/assets/images/tokens') }}/Jeton4.png" alt="jeton">
                 </div>
                 <div id="carte_ad">
                     <img src="{{ asset('/assets/images/cards') }}/carte_arriere.png" alt="verso carte">
@@ -42,10 +42,10 @@
             </div>
             <div id="jeu">
                 <div id="jetons_jeu">
-                    <img src="{{ asset('/assets/images/tokens') }}/Jeton1.png" alt="jeton">
-                    <img src="{{ asset('/assets/images/tokens') }}/Jeton2.png" alt="jeton">
-                    <img src="{{ asset('/assets/images/tokens') }}/Jeton3.png" alt="jeton">
-                    <img src="{{ asset('/assets/images/tokens') }}/Jeton4.png" alt="jeton">
+                    <img id="token_secret" src="{{ asset('/assets/images/tokens') }}/Jeton1.png" alt="jeton">
+                    <img id="token_depot" src="{{ asset('/assets/images/tokens') }}/Jeton2.png" alt="jeton">
+                    <img id="token_offre" src="{{ asset('/assets/images/tokens') }}/Jeton3.png" alt="jeton">
+                    <img id="token_echange" src="{{ asset('/assets/images/tokens') }}/Jeton4.png" alt="jeton">
                 </div>
                 <div id="carte_jeu">
                     <img id="carte1" src="{{ asset('/assets/images/objects') }}/carte_1.png" alt="objet">
@@ -124,10 +124,10 @@
         })
 
         window.addEventListener('DOMContentLoaded',()=>{
-            let secretButton = document.getElementById('secret-button')
-            let depotButton = document.getElementById('depot-button')
-            let offreButton = document.getElementById('offre-button')
-            let echangeButton = document.getElementById('echange-button')
+            let secretButton = document.getElementById('token_secret')
+            let depotButton = document.getElementById('token_depot')
+            let offreButton = document.getElementById('token_offre')
+            let echangeButton = document.getElementById('token_echange')
 
             secretButton.addEventListener('click',(e)=>{
                 let cards = document.getElementsByClassName('card')
@@ -139,6 +139,7 @@
 
         function actionCard(e){
             let cards = document.getElementsByClassName('card')
+            //let token = document.getElementById()
             e.target.style.transform = "translateY(-30px)"
             secretCard(e.target.getAttribute('data-card-id'))
             Array.from(cards).forEach((card)=>{
