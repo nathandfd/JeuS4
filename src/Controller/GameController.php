@@ -227,57 +227,57 @@ class GameController extends AbstractController
         EntityManagerInterface $entityManager,
         HttpClientInterface $client,
         Request $request, Game $game, CardRepository $cardRepository){
-        $action = $request->query->get('action');
+        $action = $request->request->get('action');
         $user = $this->getUser();
         $round = $game->getRounds()[0]; //a gérer selon le round en cours
-
+        var_dump($request->request->all());
         if ($game->getUser1()->getId() === $user->getId() && $user->getId() === $game->getUserTurn())
         {
-            switch ($action) {
-                case 'secret':
-                    $carte = $request->query->get('carte');
-                    $actions = $round->getUser1Action(); //un tableau...
-                    $actions['SECRET'] = [$carte]; //je sauvegarde la carte cachée dans mes actions
-                    $round->setUser1Action($actions); //je mets à jour le tableau
-                    $main = $round->getUser1HandCards();
-                    $indexCarte = array_search($carte, $main); //je récupère l'index de la carte a supprimer dans ma main
-                    //$supercard = $main[$indexCarte]->getId();
-                    //$output->writeln('Secret card :'.$supercard);
-                    unset($main[$indexCarte]); //je supprime la carte de ma main
-                    $round->setUser1HandCards($main);
-                    $client->request('GET', $this->getParameter('app.api_url').'/action/'.$action, [
-                        'query' => [
-                            'userId' => $game->getUser2()->getId(),
-                        ],
-                    ]);
-                    break;
-                default:
-                    return $this->json(false);
-                    break;
-            }
-            $game->setUserTurn($game->getUser2()->getId());
+//            switch ($action) {
+//                case 'secret':
+//                    $carte = $request->request->get('carte');
+//                    $actions = $round->getUser1Action(); //un tableau...
+//                    $actions['SECRET'] = [$carte]; //je sauvegarde la carte cachée dans mes actions
+//                    $round->setUser1Action($actions); //je mets à jour le tableau
+//                    $main = $round->getUser1HandCards();
+//                    $indexCarte = array_search($carte, $main); //je récupère l'index de la carte a supprimer dans ma main
+//                    //$supercard = $main[$indexCarte]->getId();
+//                    //$output->writeln('Secret card :'.$supercard);
+//                    unset($main[$indexCarte]); //je supprime la carte de ma main
+//                    $round->setUser1HandCards($main);
+//                    $client->request('GET', $this->getParameter('app.api_url').'/action/'.$action, [
+//                        'query' => [
+//                            'userId' => $game->getUser2()->getId(),
+//                        ],
+//                    ]);
+//                    break;
+//                default:
+//                    return $this->json(false);
+//                    break;
+//            }
+//            $game->setUserTurn($game->getUser2()->getId());
         } elseif ($game->getUser2()->getId() === $user->getId() && $user->getId() === $game->getUserTurn()) {
-            switch ($action) {
-                case 'secret':
-                    $carte = $request->query->get('carte');
-                    $actions = $round->getUser2Action(); //un tableau...
-                    $actions['SECRET'] = [$carte]; //je sauvegarde la carte cachée dans mes actions
-                    $round->setUser2Action($actions); //je mets à jour le tableau
-                    $main = $round->getUser2HandCards();
-                    $indexCarte = array_search($carte, $main); //je récupère l'index de la carte a supprimer dans ma main
-                    unset($main[$indexCarte]); //je supprime la carte de ma main
-                    $round->setUser2HandCards($main);
-                    $client->request('GET', $this->getParameter('app.api_url').'/action/'.$action, [
-                        'query' => [
-                            'userId' => $game->getUser1()->getId(),
-                        ],
-                    ]);
-                    break;
-                default:
-                    return $this->json(false);
-                    break;
-            }
-            $game->setUserTurn($game->getUser1()->getId());
+//            switch ($action) {
+//                case 'secret':
+//                    $carte = $request->query->get('carte');
+//                    $actions = $round->getUser2Action(); //un tableau...
+//                    $actions['SECRET'] = [$carte]; //je sauvegarde la carte cachée dans mes actions
+//                    $round->setUser2Action($actions); //je mets à jour le tableau
+//                    $main = $round->getUser2HandCards();
+//                    $indexCarte = array_search($carte, $main); //je récupère l'index de la carte a supprimer dans ma main
+//                    unset($main[$indexCarte]); //je supprime la carte de ma main
+//                    $round->setUser2HandCards($main);
+//                    $client->request('GET', $this->getParameter('app.api_url').'/action/'.$action, [
+//                        'query' => [
+//                            'userId' => $game->getUser1()->getId(),
+//                        ],
+//                    ]);
+//                    break;
+//                default:
+//                    return $this->json(false);
+//                    break;
+//            }
+//            $game->setUserTurn($game->getUser1()->getId());
         } else {
             return new Response('Houston, nous avons un problème ! Un intrus est parmis nous !');
         }

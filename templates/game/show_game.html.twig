@@ -46,6 +46,7 @@
                     <img id="token_depot" class="token" data-activated="false" data-action="depot" src="{{ asset('/assets/images/tokens') }}/Jeton2.png" alt="jeton">
                     <img id="token_offre" class="token" data-activated="false" data-action="offre" src="{{ asset('/assets/images/tokens') }}/Jeton3.png" alt="jeton">
                     <img id="token_echange" class="token" data-activated="false" data-action="echange" src="{{ asset('/assets/images/tokens') }}/Jeton4.png" alt="jeton">
+                    <button id="token-validation" onclick="sendActionToServer()" disabled>Valider</button>
                 </div>
                 <div id="carte_jeu">
 {#                    <img id="carte1" class="card" src="{{ asset('/assets/images/objects') }}/carte_1.png" alt="objet">#}
@@ -117,9 +118,15 @@
 {#    </div>#}
     <a href="{{ path('home') }}">Retour à l'accueil</a>
     <script>
+        let tokenValidation
+        let currentAction = ""
+        let secretArray = []
         let depotArray = []
         let offreArray = []
-        let echangeArray = []
+        let echangeArray = {
+            firstDeck:[],
+            secondDeck:[]
+        }
 
         socket.on('action',(data)=>{
             console.log(data)
@@ -139,6 +146,7 @@
 
         window.addEventListener('DOMContentLoaded',()=>{
             let tokens = document.getElementsByClassName('token')
+            tokenValidation = document.getElementById('token-validation')
             Array.from(tokens).forEach((token_card)=>{
                 token_card.addEventListener('click',(e)=>{
                     if(token_card.getAttribute("data-activated") !== "true"){
@@ -159,6 +167,8 @@
                 })
                 token.setAttribute("data-activated", "true")
                 token.style.transform = "scale(1.2)"
+
+                currentAction = token.getAttribute("data-action")
                 let cards = document.getElementsByClassName('card')
                 Array.from(cards).forEach((card)=>{
                     card.addEventListener('click',actionCard)
@@ -167,8 +177,18 @@
             else{
                 token.setAttribute("data-activated", "false")
                 token.style.transform = "scale(1)"
+                currentAction = ""
+                secretArray = []
+                depotArray = []
+                offreArray = []
+                echangeArray = {
+                    firstDeck:[],
+                    secondDeck:[]
+                }
+                tokenValidation.disabled = true
                 let cards = document.getElementsByClassName('card')
                 Array.from(cards).forEach((card)=>{
+                    card.style.transform = "translateY(0)"
                     card.removeEventListener('click',actionCard)
                 })
             }
@@ -178,7 +198,19 @@
             let action = document.querySelector('.token[data-activated="true"]').getAttribute('data-action')
             switch (action) {
                 case 'secret':
-                    sendActionToServer(e.target.getAttribute("data-card-id"))
+                    if (secretArray.indexOf(e.target) === -1){
+                        if (secretArray.length < 1){
+                            e.target.style.transform = "translateY(-30px)"
+                            secretArray.push(e.target)
+                            if(secretArray.length === 1){
+                                tokenValidation.disabled = false
+                            }
+                        }
+                    }else{
+                        tokenValidation.disabled = true
+                        secretArray.splice(secretArray.indexOf(e.target),1)
+                        e.target.style.transform = "translateY(0)"
+                    }
                     break
                 case 'depot':
                     if (depotArray.indexOf(e.target) === -1){
@@ -186,30 +218,55 @@
                             e.target.style.transform = "translateY(-30px)"
                             depotArray.push(e.target)
                             if(depotArray.length === 2){
-                                console.log("c'est bon")
+                                tokenValidation.disabled = false
                             }
                         }
                     }else{
+                        tokenValidation.disabled = true
                         depotArray.splice(depotArray.indexOf(e.target),1)
                         e.target.style.transform = "translateY(0)"
                     }
-
                     break
                 case 'offre':
-                    if (depotArray.indexOf(e.target) === -1){
-                        if (depotArray.length < 3){
+                    if (offreArray.indexOf(e.target) === -1){
+                        if (offreArray.length < 3){
                             e.target.style.transform = "translateY(-30px)"
-                            depotArray.push(e.target)
-                            if(depotArray.length === 3){
-                                console.log("c'est bon")
+                            offreArray.push(e.target)
+                            if(offreArray.length === 3){
+                                tokenValidation.disabled = false
                             }
                         }
                     }else{
-                        depotArray.splice(depotArray.indexOf(e.target),1)
+                        tokenValidation.disabled = true
+                        offreArray.splice(offreArray.indexOf(e.target),1)
                         e.target.style.transform = "translateY(0)"
                     }
                     break
                 case 'echange':
+                    if (echangeArray.firstDeck.indexOf(e.target) === -1 && echangeArray.secondDeck.indexOf(e.target) === -1){
+                        if (echangeArray.firstDeck.length < 2){
+                            e.target.style.transform = "translateY(-30px)"
+                            echangeArray.firstDeck.push(e.target)
+                            if(echangeArray.firstDeck.length === 2){
+                            }
+                        }
+                        else if (echangeArray.secondDeck.length < 2){
+                            e.target.style.transform = "translateY(30px)"
+                            echangeArray.secondDeck.push(e.target)
+                            if(echangeArray.secondDeck.length === 2){
+                                tokenValidation.disabled = false
+                            }
+                        }
+                    }else{
+                        if (echangeArray.firstDeck.indexOf(e.target) !== -1){
+                            echangeArray.firstDeck.splice(echangeArray.firstDeck.indexOf(e.target),1)
+                        }
+                        else if(echangeArray.secondDeck.indexOf(e.target) !== -1){
+                            echangeArray.secondDeck.splice(echangeArray.secondDeck.indexOf(e.target),1)
+                        }
+                        tokenValidation.disabled = true
+                        e.target.style.transform = "translateY(0)"
+                    }
                     break
                 default:
                     alert('Bizarre ton action narvalo')
@@ -217,14 +274,43 @@
             }
         }
 
-        function sendActionToServer(cardId){
-            let tokens = document.getElementsByClassName('token')
-            Array.from(tokens).forEach((token_card)=>{
-                changeTokenState(token_card, false)
-            })
-            console.log(`carte id:${cardId} cliquée`)
-           /* fetch(`{{ path('action_game',{game:game.getId()}) }}?action=secret&carte=${cardId}`,{
-                method:'GET'
+        function sendActionToServer(){
+            let data = {}
+            data.action = currentAction
+            switch (currentAction) {
+                case 'secret':
+                    data.card = secretArray[0].getAttribute('data-card-id')
+                    break
+                case 'depot':
+                    data.card1 = depotArray[0].getAttribute('data-card-id')
+                    data.card2 = depotArray[1].getAttribute('data-card-id')
+                    break
+                case 'offre':
+                    data.card1 = offreArray[0].getAttribute('data-card-id')
+                    data.card2 = offreArray[1].getAttribute('data-card-id')
+                    data.card3 = offreArray[2].getAttribute('data-card-id')
+                    break
+                case 'echange':
+                    data.firstDeck = []
+                    data.secondDeck = []
+                    data.firstDeck[0] = echangeArray.firstDeck[0].getAttribute('data-card-id')
+                    data.firstDeck[1] = echangeArray.firstDeck[1].getAttribute('data-card-id')
+                    data.secondDeck[0] = echangeArray.secondDeck[0].getAttribute('data-card-id')
+                    data.secondDeck[1] = echangeArray.secondDeck[1].getAttribute('data-card-id')
+                    break
+                default:
+                    alert('Bizarre ton action narvalo')
+                    break
+            }
+            changeTokenState(document.querySelector('.token[data-activated="true"]'),false)
+            let formData = new FormData()
+            formData.append("data","data")
+             fetch(`{{ path('action_game',{game:game.getId()}) }}`,{
+                 method:'post',
+                 headers:{
+                    'Content-Type': 'application/json'
+                 },
+                 body:formData
             })
             .then(data=>{
                 return data.json()
@@ -232,7 +318,7 @@
             .then(data=>{
                 console.log(data)
                 document.location.reload()
-            })*/
+            })
         }
     </script>
 {% endblock %}
