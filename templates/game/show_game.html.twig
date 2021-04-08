@@ -303,8 +303,6 @@
                     break
             }
             changeTokenState(document.querySelector('.token[data-activated="true"]'),false)
-            let formData = new FormData()
-            formData.append("form","data")
              fetch(`{{ path('action_game',{game:game.getId()}) }}`,{
                  method:'post',
                  body:JSON.stringify(data)
@@ -314,7 +312,7 @@
             })
             .then(data=>{
                 console.log(data)
-                document.location.reload()
+                //document.location.reload()
             })
         }
     </script>

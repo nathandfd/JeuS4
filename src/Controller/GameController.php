@@ -122,6 +122,28 @@ class GameController extends AbstractController
 
             $this->newSet($cardRepository, $entityManager, $game);
 
+            $entityManager->refresh($game);
+            $round = $game->getRounds()[0];
+
+            if ($user_array[0] == $game->getUser1()){
+                $pioche = $round->getPioche();
+                $tirage = array_pop($pioche);
+                $user1HandCards = $round->getUser1HandCards();
+                $user1HandCards[] = $tirage;
+                $round->setUser1HandCards($user1HandCards);
+                $round->setPioche($pioche);
+            }
+            else{
+                $pioche = $round->getPioche();
+                $tirage = array_pop($pioche);
+                $user1HandCards = $round->getUser2HandCards();
+                $user1HandCards[] = $tirage;
+                $round->setUser2HandCards($user1HandCards);
+                $round->setPioche($pioche);
+            }
+
+            $entityManager->flush();
+
             $client->request('GET', $this->getParameter('app.api_url').'/game', [
                 'query' => [
                     'userId' => $user1->getId(),
@@ -284,11 +306,34 @@ class GameController extends AbstractController
                     $round->setUser1HandCards($main);
                     break;
                 case 'echange':
+                    $cartes['firstDeck'] = [$data['firstDeck'][0],$data['firstDeck'][1]];
+                    $cartes['secondDeck'] = [$data['secondDeck'][0],$data['secondDeck'][1]];
+                    $cartes['done'] = false;
+                    $actions = $round->getUser1Action();
+                    $actions['ECHANGE'] = $cartes;
+                    $round->setUser1Action($actions);
+                    $main = $round->getUser1HandCards();
+                    $indexCarte = array_search($data['firstDeck'][0], $main);
+                    unset($main[$indexCarte]);
+                    $indexCarte = array_search($data['firstDeck'][1], $main);
+                    unset($main[$indexCarte]);
+                    $indexCarte = array_search($data['secondDeck'][0], $main);
+                    unset($main[$indexCarte]);
+                    $indexCarte = array_search($data['secondDeck'][1], $main);
+                    unset($main[$indexCarte]);
+                    $round->setUser1HandCards($main);
                     break;
                 default:
                     return $this->json(false);
                     break;
             }
+            $pioche = $round->getPioche();
+            $tirage = array_pop($pioche);
+            $user1HandCards = $round->getUser2HandCards();
+            $user1HandCards[] = $tirage;
+            $round->setUser2HandCards($user1HandCards);
+            $round->setPioche($pioche);
+
             $game->setUserTurn($game->getUser2()->getId());
         } elseif ($game->getUser2()->getId() === $user->getId() && $user->getId() === $game->getUserTurn()) {
             switch ($action) {
@@ -341,11 +386,33 @@ class GameController extends AbstractController
                     $round->setUser2HandCards($main);
                     break;
                 case 'echange':
+                    $cartes['firstDeck'] = [$data['firstDeck'][0],$data['firstDeck'][1]];
+                    $cartes['secondDeck'] = [$data['secondDeck'][0],$data['secondDeck'][1]];
+                    $cartes['done'] = false;
+                    $actions = $round->getUser2Action();
+                    $actions['ECHANGE'] = $cartes;
+                    $round->setUser2Action($actions);
+                    $main = $round->getUser2HandCards();
+                    $indexCarte = array_search($data['firstDeck'][0], $main);
+                    unset($main[$indexCarte]);
+                    $indexCarte = array_search($data['firstDeck'][1], $main);
+                    unset($main[$indexCarte]);
+                    $indexCarte = array_search($data['secondDeck'][0], $main);
+                    unset($main[$indexCarte]);
+                    $indexCarte = array_search($data['secondDeck'][1], $main);
+                    unset($main[$indexCarte]);
+                    $round->setUser2HandCards($main);
                     break;
                 default:
                     return $this->json(false);
                     break;
             }
+            $pioche = $round->getPioche();
+            $tirage = array_pop($pioche);
+            $user1HandCards = $round->getUser1HandCards();
+            $user1HandCards[] = $tirage;
+            $round->setUser1HandCards($user1HandCards);
+            $round->setPioche($pioche);
             $game->setUserTurn($game->getUser1()->getId());
         } else {
             return new Response('Houston, nous avons un problème ! Un intrus est parmis nous !');
@@ -368,7 +435,7 @@ class GameController extends AbstractController
         }
 
         //$round->
-        //$this->newSet($cardRepository, $entityManager, $game);
+        $this->newSet($cardRepository, $entityManager, $game);
 
         return $this->json(true);
     }
