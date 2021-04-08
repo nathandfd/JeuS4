@@ -304,13 +304,10 @@
             }
             changeTokenState(document.querySelector('.token[data-activated="true"]'),false)
             let formData = new FormData()
-            formData.append("data","data")
+            formData.append("form","data")
              fetch(`{{ path('action_game',{game:game.getId()}) }}`,{
                  method:'post',
-                 headers:{
-                    'Content-Type': 'application/json'
-                 },
-                 body:formData
+                 body:JSON.stringify(data)
             })
             .then(data=>{
                 return data.json()
