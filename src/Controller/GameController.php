@@ -157,7 +157,6 @@ class GameController extends AbstractController
             $tCards[$card->getId()] = $card;
         }
         $user_id = $this->getUser()->getId();
-
         return $this->render('game/show_game.html.twig', [
             'game' => $game,
             'set' => $game->getRounds()[0],

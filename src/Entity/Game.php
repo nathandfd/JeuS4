@@ -45,7 +45,7 @@ class Game
     private $winner;
 
     /**
-     * @ORM\OneToMany(targetEntity=Round::class, mappedBy="game")
+     * @ORM\OneToMany(targetEntity=Round::class, mappedBy="game", cascade={"remove"})
      * @ORM\OrderBy({"created" = "DESC"})
      */
     private $rounds;
