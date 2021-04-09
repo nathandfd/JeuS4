@@ -87,6 +87,20 @@ app.get('/sendFriendRequest',(req,res)=>{
     }
 })
 
+app.get('/reload',(req,res)=>{
+    if (req.query.userId){
+        let userIndex = users.findIndex((el)=>{
+            return el.server_id === req.query.userId
+        })
+        let socketId = users[userIndex].client_id
+        io.to(socketId).emit("reload",true)
+        res.status(200).end()
+    }
+    else{
+        res.status(400).end()
+    }
+})
+
 io.on('connection',socket=>{
     socket.on('disconnect',()=>{
          //TODO: Récupérer list de ses amis et leur envoyer un ping pour dire qu'il est hors-ligne

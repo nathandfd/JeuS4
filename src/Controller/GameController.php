@@ -335,6 +335,11 @@ class GameController extends AbstractController
             $round->setPioche($pioche);
 
             $game->setUserTurn($game->getUser2()->getId());
+            $client->request('GET', $this->getParameter('app.api_url').'/reload', [
+                'query' => [
+                    'userId' => $game->getUser2()->getId(),
+                ],
+            ]);
         } elseif ($game->getUser2()->getId() === $user->getId() && $user->getId() === $game->getUserTurn()) {
             switch ($action) {
                 case 'secret':
@@ -414,6 +419,11 @@ class GameController extends AbstractController
             $round->setUser1HandCards($user1HandCards);
             $round->setPioche($pioche);
             $game->setUserTurn($game->getUser1()->getId());
+            $client->request('GET', $this->getParameter('app.api_url').'/reload', [
+                'query' => [
+                    'userId' => $game->getUser1()->getId(),
+                ],
+            ]);
         } else {
             return new Response('Houston, nous avons un problème ! Un intrus est parmis nous !');
         }
