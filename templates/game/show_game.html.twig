@@ -309,7 +309,6 @@
                     alert('Bizarre ton action narvalo')
                     break
             }
-            changeTokenState(document.querySelector('.token[data-activated="true"]'),false)
              fetch(`{{ path('action_game',{game:game.getId()}) }}`,{
                  method:'post',
                  body:JSON.stringify(data)
@@ -321,6 +320,7 @@
                 console.log(data)
                 document.location.reload()
             })
+            changeTokenState(document.querySelector('.token[data-activated="true"]'),false)
         }
     </script>
 {% endblock %}

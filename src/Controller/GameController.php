@@ -279,6 +279,9 @@ class GameController extends AbstractController
                     $cartes[] = $data['card1'];
                     $cartes[] = $data['card2'];
                     $actions = $round->getUser1Action();
+                    if ($actions['DEPOT']){
+                        return $this->json(false);
+                    }
                     $actions['DEPOT'] = $cartes;
                     $round->setUser1Action($actions);
                     $main = $round->getUser1HandCards();
@@ -294,6 +297,9 @@ class GameController extends AbstractController
                     $cartes[] = $data['card3'];
                     $cartes['done'] = false;
                     $actions = $round->getUser1Action();
+                    if ($actions['OFFRE']){
+                        return $this->json(false);
+                    }
                     $actions['OFFRE'] = $cartes;
                     $round->setUser1Action($actions);
                     $main = $round->getUser1HandCards();
@@ -310,6 +316,9 @@ class GameController extends AbstractController
                     $cartes['secondDeck'] = [$data['secondDeck'][0],$data['secondDeck'][1]];
                     $cartes['done'] = false;
                     $actions = $round->getUser1Action();
+                    if ($actions['ECHANGE']){
+                        return $this->json(false);
+                    }
                     $actions['ECHANGE'] = $cartes;
                     $round->setUser1Action($actions);
                     $main = $round->getUser1HandCards();
@@ -364,6 +373,9 @@ class GameController extends AbstractController
                     $cartes[] = $data['card1'];
                     $cartes[] = $data['card2'];
                     $actions = $round->getUser2Action();
+                    if ($actions['DEPOT']){
+                        return $this->json(false);
+                    }
                     $actions['DEPOT'] = $cartes;
                     $round->setUser2Action($actions);
                     $main = $round->getUser2HandCards();
@@ -379,6 +391,9 @@ class GameController extends AbstractController
                     $cartes[] = $data['card3'];
                     $cartes['done'] = false;
                     $actions = $round->getUser2Action();
+                    if ($actions['OFFRE']){
+                        return $this->json(false);
+                    }
                     $actions['OFFRE'] = $cartes;
                     $round->setUser2Action($actions);
                     $main = $round->getUser2HandCards();
@@ -395,6 +410,9 @@ class GameController extends AbstractController
                     $cartes['secondDeck'] = [$data['secondDeck'][0],$data['secondDeck'][1]];
                     $cartes['done'] = false;
                     $actions = $round->getUser2Action();
+                    if ($actions['ECHANGE']){
+                        return $this->json(false);
+                    }
                     $actions['ECHANGE'] = $cartes;
                     $round->setUser2Action($actions);
                     $main = $round->getUser2HandCards();
