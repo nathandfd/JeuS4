@@ -45,10 +45,17 @@
             </div>
             <div id="jeu">
                 <div id="jetons_jeu">
-                    <img id="token_secret" class="token" data-activated="false" data-action="secret" src="{{ asset('/assets/images/tokens') }}/Jeton1.png" alt="jeton">
-                    <img id="token_depot" class="token" data-activated="false" data-action="depot" src="{{ asset('/assets/images/tokens') }}/Jeton2.png" alt="jeton">
-                    <img id="token_offre" class="token" data-activated="false" data-action="offre" src="{{ asset('/assets/images/tokens') }}/Jeton3.png" alt="jeton">
-                    <img id="token_echange" class="token" data-activated="false" data-action="echange" src="{{ asset('/assets/images/tokens') }}/Jeton4.png" alt="jeton">
+                    {% if game.getUser2().getId() == user_id %}
+                        <img id="token_secret" class="token" data-activated="false" data-action="secret" src="{{ asset('/assets/images/tokens') }}/{{ set.getUser2Action()['SECRET']?'Jeton1_ad.png':'Jeton1.png' }}" alt="jeton">
+                        <img id="token_depot" class="token" data-activated="false" data-action="depot" src="{{ asset('/assets/images/tokens') }}/{{ set.getUser2Action()['DEPOT']?'Jeton2_ad.png':'Jeton2.png' }}" alt="jeton">
+                        <img id="token_offre" class="token" data-activated="false" data-action="offre" src="{{ asset('/assets/images/tokens') }}/{{ set.getUser2Action()['OFFRE']?'Jeton3_ad.png':'Jeton3.png' }}" alt="jeton">
+                        <img id="token_echange" class="token" data-activated="false" data-action="echange" src="{{ asset('/assets/images/tokens') }}/{{ set.getUser2Action()['ECHANGE']?'Jeton4_ad.png':'Jeton4.png' }}" alt="jeton">
+                    {% else %}
+                        <img id="token_secret" class="token" data-activated="false" data-action="secret" src="{{ asset('/assets/images/tokens') }}/{{ set.getUser1Action()['SECRET']?'Jeton1_ad.png':'Jeton1.png' }}" alt="jeton">
+                        <img id="token_depot" class="token" data-activated="false" data-action="depot" src="{{ asset('/assets/images/tokens') }}/{{ set.getUser1Action()['DEPOT']?'Jeton2_ad.png':'Jeton2.png' }}" alt="jeton">
+                        <img id="token_offre" class="token" data-activated="false" data-action="offre" src="{{ asset('/assets/images/tokens') }}/{{ set.getUser1Action()['OFFRE']?'Jeton3_ad.png':'Jeton3.png' }}" alt="jeton">
+                        <img id="token_echange" class="token" data-activated="false" data-action="echange" src="{{ asset('/assets/images/tokens') }}/{{ set.getUser1Action()['ECHANGE']?'Jeton4_ad.png':'Jeton4.png' }}" alt="jeton">
+                    {% endif %}
                     <button id="token-validation" onclick="sendActionToServer()" disabled>Valider</button>
                 </div>
                 <div id="carte_jeu">
