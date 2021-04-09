@@ -135,6 +135,10 @@
             console.log(data)
         })
 
+        socket.on('reload',(data)=>{
+            document.location.reload()
+        })
+
         window.addEventListener('load',()=>{
             document.getElementById('loading_screen').style.display = 'none';
             /*let cards = document.getElementsByClassName('card-container')

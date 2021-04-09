@@ -148,7 +148,7 @@ header #lien_accueil img {
   flex-wrap: nowrap;
 }
 #fond #plateau #jeu_centre #persos .personnage1 {
-  background-image: url(../img/1.png);
+  background-image: url('/assets/images/cards/carte_1.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
@@ -160,7 +160,7 @@ header #lien_accueil img {
   padding: 0 0.5%;
 }
 #fond #plateau #jeu_centre #persos .personnage2 {
-  background-image: url(../img/2.png);
+  background-image: url('/assets/images/cards/carte_2.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
@@ -172,7 +172,7 @@ header #lien_accueil img {
   padding: 0 0.5%;
 }
 #fond #plateau #jeu_centre #persos .personnage3 {
-  background-image: url(../img/3.png);
+  background-image: url('/assets/images/cards/carte_3.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
@@ -184,7 +184,7 @@ header #lien_accueil img {
   padding: 0 0.5%;
 }
 #fond #plateau #jeu_centre #persos .personnage4 {
-  background-image: url(../img/4.png);
+  background-image: url('/assets/images/cards/carte_4.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
@@ -196,7 +196,7 @@ header #lien_accueil img {
   padding: 0 0.5%;
 }
 #fond #plateau #jeu_centre #persos .personnage5 {
-  background-image: url(../img/5.png);
+  background-image: url('/assets/images/cards/carte_5.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
@@ -208,7 +208,7 @@ header #lien_accueil img {
   padding: 0 0.5%;
 }
 #fond #plateau #jeu_centre #persos .personnage6 {
-  background-image: url(../img/6.png);
+  background-image: url('/assets/images/cards/carte_6.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
@@ -220,7 +220,7 @@ header #lien_accueil img {
   padding: 0 0.5%;
 }
 #fond #plateau #jeu_centre #persos .personnage7 {
-  background-image: url(../img/7.png);
+  background-image: url('/assets/images/cards/carte_7.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
