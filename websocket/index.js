@@ -4,6 +4,8 @@ const fs = require('fs')
 var cors = require('cors');
 var users = []
 var bodyParser = require('body-parser');
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 const server = require('https').Server({
     key: fs.readFileSync('/etc/letsencrypt/live/nathandfd.fr-0002/privkey.pem'),
@@ -19,8 +21,6 @@ const io = require('socket.io')(server,{
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    bodyParser.json()
-    bodyParser.urlencoded({ extended: true }); // support encoded bodies
     next();
 });
 app.get('/opponent',(req,res)=>{
