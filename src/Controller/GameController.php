@@ -292,14 +292,26 @@ class GameController extends AbstractController
                     $round->setUser1HandCards($main);
                     $client->request('POST', $this->getParameter('app.api_url').'/action/'.$action, [
                         'body' => [
-                            'userId' => $game->getUser1()->getId(),
+                            'userId' => $game->getUser2()->getId(),
                         ],
                     ]);
                     break;
                 case 'offre':
-                    $cartes[] = $data['card1'];
-                    $cartes[] = $data['card2'];
-                    $cartes[] = $data['card3'];
+                    $carte1 = $cardRepository->find($data['card1']);
+                    $cartes[] = [
+                        'id'=>$carte1->getId(),
+                        'picture'=>$carte1->getPicture()
+                    ];
+                    $carte2 = $cardRepository->find($data['card2']);
+                    $cartes[] = [
+                        'id'=>$carte2->getId(),
+                        'picture'=>$carte2->getPicture()
+                    ];
+                    $carte3 = $cardRepository->find($data['card3']);
+                    $cartes[] = [
+                        'id'=>$carte3->getId(),
+                        'picture'=>$carte3->getPicture()
+                    ];
                     $cartes['done'] = false;
                     $actions = $round->getUser1Action();
                     if ($actions['OFFRE']){
@@ -317,13 +329,30 @@ class GameController extends AbstractController
                     $round->setUser1HandCards($main);
                     $client->request('POST', $this->getParameter('app.api_url').'/action/'.$action, [
                         'body' => [
-                            'userId' => $game->getUser1()->getId(),
+                            'userId' => $game->getUser2()->getId(),
+                            'cards'=>$cartes
                         ],
                     ]);
                     break;
                 case 'echange':
-                    $cartes['firstDeck'] = [$data['firstDeck'][0],$data['firstDeck'][1]];
-                    $cartes['secondDeck'] = [$data['secondDeck'][0],$data['secondDeck'][1]];
+                    $carte1 = $cardRepository->find($data['firstDeck'][0]);
+                    $carte2 = $cardRepository->find($data['firstDeck'][1]);
+                    $carte3 = $cardRepository->find($data['secondDeck'][0]);
+                    $carte4 = $cardRepository->find($data['secondDeck'][1]);
+                    $cartes['firstDeck'] = [[
+                        'id'=>$carte1->getId(),
+                        'picture'=>$carte1->getPicture()
+                    ],[
+                        'id'=>$carte2->getId(),
+                        'picture'=>$carte2->getPicture()
+                    ]];
+                    $cartes['secondDeck'] = [[
+                        'id'=>$carte3->getId(),
+                        'picture'=>$carte3->getPicture()
+                    ],[
+                        'id'=>$carte4->getId(),
+                        'picture'=>$carte4->getPicture()
+                    ]];
                     $cartes['done'] = false;
                     $actions = $round->getUser1Action();
                     if ($actions['ECHANGE']){
@@ -343,7 +372,8 @@ class GameController extends AbstractController
                     $round->setUser1HandCards($main);
                     $client->request('POST', $this->getParameter('app.api_url').'/action/'.$action, [
                         'body' => [
-                            'userId' => $game->getUser1()->getId(),
+                            'userId' => $game->getUser2()->getId(),
+                            'cards'=>$cartes
                         ],
                     ]);
                     break;
@@ -406,9 +436,21 @@ class GameController extends AbstractController
                     ]);
                     break;
                 case 'offre':
-                    $cartes[] = $data['card1'];
-                    $cartes[] = $data['card2'];
-                    $cartes[] = $data['card3'];
+                    $carte1 = $cardRepository->find($data['card1']);
+                    $cartes[] = [
+                        'id'=>$carte1->getId(),
+                        'picture'=>$carte1->getPicture()
+                    ];
+                    $carte2 = $cardRepository->find($data['card2']);
+                    $cartes[] = [
+                        'id'=>$carte2->getId(),
+                        'picture'=>$carte2->getPicture()
+                    ];
+                    $carte3 = $cardRepository->find($data['card3']);
+                    $cartes[] = [
+                        'id'=>$carte3->getId(),
+                        'picture'=>$carte3->getPicture()
+                    ];
                     $cartes['done'] = false;
                     $actions = $round->getUser2Action();
                     if ($actions['OFFRE']){
@@ -427,12 +469,29 @@ class GameController extends AbstractController
                     $client->request('POST', $this->getParameter('app.api_url').'/action/'.$action, [
                         'body' => [
                             'userId' => $game->getUser1()->getId(),
+                            'cards'=>$cartes
                         ],
                     ]);
                     break;
                 case 'echange':
-                    $cartes['firstDeck'] = [$data['firstDeck'][0],$data['firstDeck'][1]];
-                    $cartes['secondDeck'] = [$data['secondDeck'][0],$data['secondDeck'][1]];
+                    $carte1 = $cardRepository->find($data['firstDeck'][0]);
+                    $carte2 = $cardRepository->find($data['firstDeck'][1]);
+                    $carte3 = $cardRepository->find($data['secondDeck'][0]);
+                    $carte4 = $cardRepository->find($data['secondDeck'][1]);
+                    $cartes['firstDeck'] = [[
+                        'id'=>$carte1->getId(),
+                        'picture'=>$carte1->getPicture()
+                    ],[
+                        'id'=>$carte2->getId(),
+                        'picture'=>$carte2->getPicture()
+                    ]];
+                    $cartes['secondDeck'] = [[
+                        'id'=>$carte3->getId(),
+                        'picture'=>$carte3->getPicture()
+                    ],[
+                        'id'=>$carte4->getId(),
+                        'picture'=>$carte4->getPicture()
+                    ]];
                     $cartes['done'] = false;
                     $actions = $round->getUser2Action();
                     if ($actions['ECHANGE']){
@@ -453,6 +512,7 @@ class GameController extends AbstractController
                     $client->request('POST', $this->getParameter('app.api_url').'/action/'.$action, [
                         'body' => [
                             'userId' => $game->getUser1()->getId(),
+                            'cards'=>$cartes
                         ],
                     ]);
                     break;
