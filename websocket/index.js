@@ -40,8 +40,8 @@ app.get('/game',(req,res)=>{
     }
 })
 
-app.get('/action/:action',(req,res)=>{
-    if (req.query.userId){
+app.post('/action/:action',(req,res)=>{
+    if (req.body.userId){
         let userId = req.query.userId
         let action = req.params.action
         let userIndex = users.findIndex((el)=>{
@@ -55,16 +55,16 @@ app.get('/action/:action',(req,res)=>{
                     action:action,
                     card_position:3,
                 }
-                io.to(socketId).emit("action",data)
+                io.to(socketId).emit("action",req.body)
                 break
             case 'depot':
-                io.to(socketId).emit("action",action)
+                io.to(socketId).emit("action",req.body)
                 break
             case 'echange':
-                io.to(socketId).emit("action",action)
+                io.to(socketId).emit("action",req.body)
                 break
             case 'offre':
-                io.to(socketId).emit("action",action)
+                io.to(socketId).emit("action",req.body)
                 break
             default:
                 res.status(400).end("L'action demandée n'existe pas")
