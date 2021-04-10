@@ -290,6 +290,11 @@ class GameController extends AbstractController
                     $indexCarte = array_search($data['card2'], $main);
                     unset($main[$indexCarte]);
                     $round->setUser1HandCards($main);
+                    $client->request('POST', $this->getParameter('app.api_url').'/action/'.$action, [
+                        'body' => [
+                            'userId' => $game->getUser1()->getId(),
+                        ],
+                    ]);
                     break;
                 case 'offre':
                     $cartes[] = $data['card1'];
@@ -310,6 +315,11 @@ class GameController extends AbstractController
                     $indexCarte = array_search($data['card3'], $main);
                     unset($main[$indexCarte]);
                     $round->setUser1HandCards($main);
+                    $client->request('POST', $this->getParameter('app.api_url').'/action/'.$action, [
+                        'body' => [
+                            'userId' => $game->getUser1()->getId(),
+                        ],
+                    ]);
                     break;
                 case 'echange':
                     $cartes['firstDeck'] = [$data['firstDeck'][0],$data['firstDeck'][1]];
@@ -331,6 +341,11 @@ class GameController extends AbstractController
                     $indexCarte = array_search($data['secondDeck'][1], $main);
                     unset($main[$indexCarte]);
                     $round->setUser1HandCards($main);
+                    $client->request('POST', $this->getParameter('app.api_url').'/action/'.$action, [
+                        'body' => [
+                            'userId' => $game->getUser1()->getId(),
+                        ],
+                    ]);
                     break;
                 default:
                     return $this->json(false);
@@ -384,6 +399,11 @@ class GameController extends AbstractController
                     $indexCarte = array_search($data['card2'], $main);
                     unset($main[$indexCarte]);
                     $round->setUser2HandCards($main);
+                    $client->request('POST', $this->getParameter('app.api_url').'/action/'.$action, [
+                        'body' => [
+                            'userId' => $game->getUser1()->getId(),
+                        ],
+                    ]);
                     break;
                 case 'offre':
                     $cartes[] = $data['card1'];
@@ -404,6 +424,11 @@ class GameController extends AbstractController
                     $indexCarte = array_search($data['card3'], $main);
                     unset($main[$indexCarte]);
                     $round->setUser2HandCards($main);
+                    $client->request('POST', $this->getParameter('app.api_url').'/action/'.$action, [
+                        'body' => [
+                            'userId' => $game->getUser1()->getId(),
+                        ],
+                    ]);
                     break;
                 case 'echange':
                     $cartes['firstDeck'] = [$data['firstDeck'][0],$data['firstDeck'][1]];
@@ -425,6 +450,11 @@ class GameController extends AbstractController
                     $indexCarte = array_search($data['secondDeck'][1], $main);
                     unset($main[$indexCarte]);
                     $round->setUser2HandCards($main);
+                    $client->request('POST', $this->getParameter('app.api_url').'/action/'.$action, [
+                        'body' => [
+                            'userId' => $game->getUser1()->getId(),
+                        ],
+                    ]);
                     break;
                 default:
                     return $this->json(false);

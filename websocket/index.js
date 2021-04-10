@@ -51,23 +51,30 @@ app.post('/action/:action',(req,res)=>{
             return el.server_id === userId
         })
         let socketId = users[userIndex].client_id
+        let data = {
+            action:action,
+        }
 
         switch (action){
             case 'secret':
-                let data = {
-                    action:action,
-                    card_position:3,
-                }
-                io.to(socketId).emit("action",req.body)
+                io.to(socketId).emit("action",data)
                 break
             case 'depot':
-                io.to(socketId).emit("action",req.body)
+                io.to(socketId).emit("action",data)
                 break
             case 'echange':
-                io.to(socketId).emit("action",req.body)
+                if(!req.body.cards){
+                    res.status(400).end("Il manque des données")
+                }
+                data.cards = req.body.cards
+                io.to(socketId).emit("action",data)
                 break
             case 'offre':
-                io.to(socketId).emit("action",req.body)
+                if(!req.body.cards){
+                    res.status(400).end("Il manque des données")
+                }
+                data.cards = req.body.cards
+                io.to(socketId).emit("action",data)
                 break
             default:
                 res.status(400).end("L'action demandée n'existe pas")
