@@ -44,6 +44,7 @@ app.get('/game',(req,res)=>{
 })
 
 app.post('/action/:action',(req,res)=>{
+    console.log(req.body)
     if (req.body.userId){
         let userId = req.body.userId
         //let action = req.params.action
