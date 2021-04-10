@@ -42,8 +42,8 @@ app.get('/game',(req,res)=>{
 
 app.post('/action/:action',(req,res)=>{
     if (req.body.userId){
-        let userId = req.query.userId
-        let action = req.params.action
+        let userId = req.body.userId
+        //let action = req.params.action
         let userIndex = users.findIndex((el)=>{
             return el.server_id === userId
         })
@@ -52,7 +52,7 @@ app.post('/action/:action',(req,res)=>{
         switch (action){
             case 'secret':
                 let data = {
-                    action:action,
+                    //action:action,
                     card_position:3,
                 }
                 io.to(socketId).emit("action",req.body)

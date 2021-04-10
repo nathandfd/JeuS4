@@ -269,8 +269,8 @@ class GameController extends AbstractController
                     $indexCarte = array_search($carte, $main); //je récupère l'index de la carte a supprimer dans ma main
                     unset($main[$indexCarte]); //je supprime la carte de ma main
                     $round->setUser1HandCards($main);
-                    $client->request('GET', $this->getParameter('app.api_url').'/action/'.$action, [
-                        'query' => [
+                    $client->request('POST', $this->getParameter('app.api_url').'/action/'.$action, [
+                        'body' => [
                             'userId' => $game->getUser2()->getId(),
                         ],
                     ]);
@@ -363,8 +363,8 @@ class GameController extends AbstractController
                     $indexCarte = array_search($carte, $main); //je récupère l'index de la carte a supprimer dans ma main
                     unset($main[$indexCarte]); //je supprime la carte de ma main
                     $round->setUser2HandCards($main);
-                    $client->request('GET', $this->getParameter('app.api_url').'/action/'.$action, [
-                        'query' => [
+                    $client->request('POST', $this->getParameter('app.api_url').'/action/'.$action, [
+                        'body' => [
                             'userId' => $game->getUser1()->getId(),
                         ],
                     ]);
