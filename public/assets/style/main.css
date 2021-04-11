@@ -4,6 +4,14 @@
   padding: 0 0.5%;
 }
 
+.direction_me{
+  transform: translateY(30px);
+}
+
+.direction_opponent{
+  transform: translateY(-30px);
+}
+
 header #lien_accueil {
   color: white;
   text-decoration: none;
