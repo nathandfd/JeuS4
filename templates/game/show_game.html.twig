@@ -77,6 +77,17 @@
                 </div>
                 <div id="cards"></div>
             </div>
+            <div id="cards">
+                {% if game.getUser1().getId() == user_id %}
+                    {% for card in set.user1BoardCards %}
+                        <img data-card-id="{{ cards[card].getId() }}" class="card" height="100" src="{{ asset('assets/images/objects/'~cards[card].picture) }}">{{ cards[card].number }}
+                    {% endfor %}
+                {% else %}
+                    {% for card in set.user2BoardCards %}
+                        <img data-card-id="{{ cards[card].getId()}}" class="card" height="100" src="{{ asset('assets/images/objects/'~cards[card].picture) }}">{{ cards[card].number }}
+                    {% endfor %}
+                {% endif %}
+            </div>
         </div>
     </div>
 {#    <div class="row">#}
@@ -343,6 +354,9 @@
             let div = document.getElementById('cards')
             div.innerHTML = ''
             let card1, card2, card3
+            let data = {
+                action: 'accept_offer'
+            }
             card1 = document.createElement('img')
             card2 = document.createElement('img')
             card3 = document.createElement('img')
@@ -350,6 +364,48 @@
             card1.src = '{{ asset('assets/images/objects/') }}'+cards[0].picture
             card2.src = '{{ asset('assets/images/objects/') }}'+cards[1].picture
             card3.src = '{{ asset('assets/images/objects/') }}'+cards[2].picture
+
+            card1.onclick = ()=>{
+                data.card = cards[0].id
+                fetch('{{ path('action_game',{game:game.getId()}) }}',{
+                    method:'post',
+                    body:JSON.stringify(data)
+                })
+                .then(data=>{
+                    return data.json()
+                })
+                .then(data=>{
+                    console.log(data)
+                })
+            }
+
+            card2.onclick = ()=>{
+                data.card = cards[1].id
+                fetch('{{ path('action_game',{game:game.getId()}) }}',{
+                    method:'post',
+                    body:JSON.stringify(data)
+                })
+                    .then(data=>{
+                        return data.json()
+                    })
+                    .then(data=>{
+                        console.log(data)
+                    })
+            }
+
+            card3.onclick = ()=>{
+                data.card = cards[2].id
+                fetch('{{ path('action_game',{game:game.getId()}) }}',{
+                    method:'post',
+                    body:JSON.stringify(data)
+                })
+                    .then(data=>{
+                        return data.json()
+                    })
+                    .then(data=>{
+                        console.log(data)
+                    })
+            }
 
             div.appendChild(card1)
             div.appendChild(card2)
@@ -360,21 +416,57 @@
         function newEchange(cards){
             let div = document.getElementById('cards')
             div.innerHTML = ''
-            let card1, card2, card3, card4
+            let card1, card2, card3, card4, group1, group2
+            let data = {
+                action: 'accept_echange'
+            }
+
             card1 = document.createElement('img')
             card2 = document.createElement('img')
             card3 = document.createElement('img')
             card4 = document.createElement('img')
+            group1 = document.createElement('div')
+            group2 = document.createElement('div')
 
             card1.src = '{{ asset('assets/images/objects/') }}'+cards['firstDeck'][0].picture
             card2.src = '{{ asset('assets/images/objects/') }}'+cards['firstDeck'][1].picture
             card3.src = '{{ asset('assets/images/objects/') }}'+cards['secondDeck'][0].picture
             card4.src = '{{ asset('assets/images/objects/') }}'+cards['secondDeck'][1].picture
 
-            div.appendChild(card1)
-            div.appendChild(card2)
-            div.appendChild(card3)
-            div.appendChild(card4)
+            group1.onclick = ()=>{
+                data.cards = [cards['firstDeck'][0].id,cards['firstDeck'][1].id]
+                fetch('{{ path('action_game',{game:game.getId()}) }}',{
+                    method:'post',
+                    body:JSON.stringify(data)
+                })
+                    .then(data=>{
+                        return data.json()
+                    })
+                    .then(data=>{
+                        console.log(data)
+                    })
+            }
+
+            group2.onclick = ()=>{
+                data.cards = [cards['secondDeck'][0].id,cards['secondDeck'][1].id]
+                fetch('{{ path('action_game',{game:game.getId()}) }}',{
+                    method:'post',
+                    body:JSON.stringify(data)
+                })
+                    .then(data=>{
+                        return data.json()
+                    })
+                    .then(data=>{
+                        console.log(data)
+                    })
+            }
+
+            group1.appendChild(card1)
+            group1.appendChild(card2)
+            group2.appendChild(card3)
+            group2.appendChild(card4)
+            div.appendChild(group1)
+            div.appendChild(group2)
         }
     </script>
 {% endblock %}

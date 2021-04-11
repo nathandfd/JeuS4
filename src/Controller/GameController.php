@@ -377,6 +377,72 @@ class GameController extends AbstractController
                         ],
                     ]);
                     break;
+                case 'accept_offer':
+                    $carte = $data['card'];
+                    $actionsAdversaire = $round->getUser2Action();
+                    if (!$actionsAdversaire['OFFRE']){
+                        return $this->json('Pas cool de tricher petit malin !');
+                    }
+                    if (!$actionsAdversaire['OFFRE']['done']){
+                        $carteIndex = 0;
+                        foreach ($actionsAdversaire['OFFRE'] as $key => $value){
+                            $carteIndex = array_search($carte, $value);
+                            if ($carteIndex){
+                                $user1Board = $round->getUser1BoardCards();
+                                $user1Board[] = $actionsAdversaire['OFFRE'][$key]['id'];
+                                $round->setUser1BoardCards($user1Board);
+                                array_splice($actionsAdversaire['OFFRE'],$key,1);
+                                $user2Board = $round->getUser2BoardCards();
+                                $user2Board[] = $actionsAdversaire['OFFRE'][0]['id'];
+                                $user2Board[] = $actionsAdversaire['OFFRE'][1]['id'];
+                                $round->setUser2BoardCards($user2Board);
+                                $entityManager->flush();
+                                return $this->json($user2Board);
+                                break;
+                            }
+                        }
+                        if (!$carteIndex){
+                            return $this->json('Pas cool de tricher petit malin !');
+                        }
+                    }
+                    else{
+                        return $this->json(false);
+                    }
+                    break;
+                case 'accept_echange':
+                    $cartes = $data['cards'];
+                    $actionsAdversaire = $round->getUser2Action();
+                    if (!$actionsAdversaire['ECHANGE']){
+                        return $this->json('Pas cool de tricher petit malin !');
+                    }
+                    if (!$actionsAdversaire['ECHANGE']['done']) {
+                        if ($actionsAdversaire['ECHANGE']['firstDeck'][0]['id'] == $cartes[0] && $actionsAdversaire['ECHANGE']['firstDeck'][1]['id'] == $cartes[1]) {
+                            $user2Board = $round->getUser1BoardCards();
+                            $user2Board[] = $actionsAdversaire['ECHANGE']['firstDeck'][0]['id'];
+                            $user2Board[] = $actionsAdversaire['ECHANGE']['firstDeck'][1]['id'];
+                            $round->setUser1BoardCards($user2Board);
+                            $user1Board = $round->getUser2BoardCards();
+                            $user1Board[] = $actionsAdversaire['ECHANGE']['secondDeck'][0]['id'];
+                            $user1Board[] = $actionsAdversaire['ECHANGE']['secondDeck'][1]['id'];
+                            $round->setUser2BoardCards($user1Board);
+                            $entityManager->flush();
+                            return $this->json($user2Board);
+                        } elseif ($actionsAdversaire['ECHANGE']['secondDeck'][0]['id'] == $cartes[0] && $actionsAdversaire['ECHANGE']['secondDeck'][1]['id'] == $cartes[1]) {
+                            $user1Board = $round->getUser2BoardCards();
+                            $user1Board[] = $actionsAdversaire['ECHANGE']['firstDeck'][0]['id'];
+                            $user2Board[] = $actionsAdversaire['ECHANGE']['firstDeck'][1]['id'];
+                            $round->setUser2BoardCards($user2Board);
+                            $user2Board = $round->getUser1BoardCards();
+                            $user2Board[] = $actionsAdversaire['ECHANGE']['secondDeck'][0]['id'];
+                            $user2Board[] = $actionsAdversaire['ECHANGE']['secondDeck'][1]['id'];
+                            $round->setUser2BoardCards($user2Board);
+                            $entityManager->flush();
+                            return $this->json($user2Board);
+                        } else {
+                            return $this->json('Pas cool de tricher petit malin !');
+                        }
+                    }
+                        break;
                 default:
                     return $this->json(false);
                     break;
@@ -515,6 +581,97 @@ class GameController extends AbstractController
                             'cards'=>$cartes
                         ],
                     ]);
+                    break;
+                case 'accept_offer':
+                    $carte = $data['card'];
+                    $actionsAdversaire = $round->getUser1Action();
+                    if (!$actionsAdversaire['OFFRE']){
+                        return $this->json('Pas cool de tricher petit malin !');
+                    }
+                    if (!$actionsAdversaire['OFFRE']['done']){
+                        $carteIndex = 0;
+                        foreach ($actionsAdversaire['OFFRE'] as $key => $value){
+                            $carteIndex = array_search($carte, $value);
+                            if ($carteIndex){
+                                $user1Board = $round->getUser2BoardCards();
+                                $user1Board[] = $actionsAdversaire['OFFRE'][$key]['id'];
+                                $round->setUser2BoardCards($user1Board);
+                                array_splice($actionsAdversaire['OFFRE'],$key,1);
+                                $user2Board = $round->getUser1BoardCards();
+                                $user2Board[] = $actionsAdversaire['OFFRE'][0]['id'];
+                                $user2Board[] = $actionsAdversaire['OFFRE'][1]['id'];
+                                $round->setUser1BoardCards($user2Board);
+                                $entityManager->flush();
+                                return $this->json($user2Board);
+                                break;
+                            }
+                        }
+                        if (!$carteIndex){
+                            return $this->json('Pas cool de tricher petit malin !');
+                        }
+                    }
+                    else{
+                        return $this->json(false);
+                    }
+                    break;
+                case 'accept_echange':
+                    $cartes = $data['cards'];
+                    $actionsAdversaire = $round->getUser1Action();
+                    if (!$actionsAdversaire['ECHANGE']){
+                        return $this->json('Pas cool de tricher petit malin !');
+                    }
+                    if (!$actionsAdversaire['ECHANGE']['done']){
+                        if ($actionsAdversaire['ECHANGE']['firstDeck'][0]['id'] == $cartes[0] && $actionsAdversaire['ECHANGE']['firstDeck'][1]['id'] == $cartes[1]){
+                            $user2Board = $round->getUser2BoardCards();
+                            $user2Board[] = $actionsAdversaire['ECHANGE']['firstDeck'][0]['id'];
+                            $user2Board[] = $actionsAdversaire['ECHANGE']['firstDeck'][1]['id'];
+                            $round->setUser2BoardCards($user2Board);
+                            $user1Board = $round->getUser1BoardCards();
+                            $user1Board[] = $actionsAdversaire['ECHANGE']['secondDeck'][0]['id'];
+                            $user1Board[] = $actionsAdversaire['ECHANGE']['secondDeck'][1]['id'];
+                            $round->setUser1BoardCards($user1Board);
+                            $entityManager->flush();
+                            return $this->json($user2Board);
+                        }
+                        elseif ($actionsAdversaire['ECHANGE']['secondDeck'][0]['id'] == $cartes[0] && $actionsAdversaire['ECHANGE']['secondDeck'][1]['id'] == $cartes[1]){
+                            $user1Board = $round->getUser1BoardCards();
+                            $user1Board[] = $actionsAdversaire['ECHANGE']['firstDeck'][0]['id'];
+                            $user2Board[] = $actionsAdversaire['ECHANGE']['firstDeck'][1]['id'];
+                            $round->setUser1BoardCards($user2Board);
+                            $user2Board = $round->getUser2BoardCards();
+                            $user2Board[] = $actionsAdversaire['ECHANGE']['secondDeck'][0]['id'];
+                            $user2Board[] = $actionsAdversaire['ECHANGE']['secondDeck'][1]['id'];
+                            $round->setUser2BoardCards($user2Board);
+                            $entityManager->flush();
+                            return $this->json($user2Board);
+                        }
+                        else{
+                            return $this->json('Pas cool de tricher petit malin !');
+                        }
+
+//                            $carteIndex = array_search($carte, $value);
+//                            $carteIndex2 = array_search($carte, $value);
+//                            if ($carteIndex){
+//                                $user1Board = $round->getUser2BoardCards();
+//                                $user1Board[] = $actionsAdversaire['OFFRE'][$key]['id'];
+//                                $round->setUser2BoardCards($user1Board);
+//                                array_splice($actionsAdversaire['OFFRE'],$key,1);
+//                                $user2Board = $round->getUser1BoardCards();
+//                                $user2Board[] = $actionsAdversaire['OFFRE'][0]['id'];
+//                                $user2Board[] = $actionsAdversaire['OFFRE'][1]['id'];
+//                                $round->setUser1BoardCards($user2Board);
+//                                $entityManager->flush();
+//                                return $this->json($user2Board);
+//                                break;
+//                            }
+//                        }
+//                        if (!$carteIndex){
+//                            return $this->json('Pas cool de tricher petit malin !');
+//                        }
+                    }
+                    else{
+                        return $this->json(false);
+                    }
                     break;
                 default:
                     return $this->json(false);
