@@ -430,12 +430,12 @@ class GameController extends AbstractController
                         } elseif ($actionsAdversaire['ECHANGE']['secondDeck'][0]['id'] == $cartes[0] && $actionsAdversaire['ECHANGE']['secondDeck'][1]['id'] == $cartes[1]) {
                             $user1Board = $round->getUser2BoardCards();
                             $user1Board[] = $actionsAdversaire['ECHANGE']['firstDeck'][0]['id'];
-                            $user2Board[] = $actionsAdversaire['ECHANGE']['firstDeck'][1]['id'];
-                            $round->setUser2BoardCards($user2Board);
+                            $user1Board[] = $actionsAdversaire['ECHANGE']['firstDeck'][1]['id'];
+                            $round->setUser2BoardCards($user1Board);
                             $user2Board = $round->getUser1BoardCards();
                             $user2Board[] = $actionsAdversaire['ECHANGE']['secondDeck'][0]['id'];
                             $user2Board[] = $actionsAdversaire['ECHANGE']['secondDeck'][1]['id'];
-                            $round->setUser2BoardCards($user2Board);
+                            $round->setUser1BoardCards($user2Board);
                             $entityManager->flush();
                             return $this->json($user2Board);
                         } else {
@@ -636,8 +636,8 @@ class GameController extends AbstractController
                         elseif ($actionsAdversaire['ECHANGE']['secondDeck'][0]['id'] == $cartes[0] && $actionsAdversaire['ECHANGE']['secondDeck'][1]['id'] == $cartes[1]){
                             $user1Board = $round->getUser1BoardCards();
                             $user1Board[] = $actionsAdversaire['ECHANGE']['firstDeck'][0]['id'];
-                            $user2Board[] = $actionsAdversaire['ECHANGE']['firstDeck'][1]['id'];
-                            $round->setUser1BoardCards($user2Board);
+                            $user1Board[] = $actionsAdversaire['ECHANGE']['firstDeck'][1]['id'];
+                            $round->setUser1BoardCards($user1Board);
                             $user2Board = $round->getUser2BoardCards();
                             $user2Board[] = $actionsAdversaire['ECHANGE']['secondDeck'][0]['id'];
                             $user2Board[] = $actionsAdversaire['ECHANGE']['secondDeck'][1]['id'];
@@ -765,6 +765,17 @@ class GameController extends AbstractController
 
         if ($game->getRounds()[0]){
             $set->setBoard($game->getRounds()[0]->getBoard());
+        }
+        else{
+            $set->setBoard([
+                'EMPL1'=> 'N',
+                'EMPL2'=> 'N',
+                'EMPL3'=> 'N',
+                'EMPL4'=> 'N',
+                'EMPL5'=> 'N',
+                'EMPL6'=> 'N',
+                'EMPL7'=> 'N',
+        ]);
         }
 
         $entityManager->persist($set);
