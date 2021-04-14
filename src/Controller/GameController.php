@@ -125,23 +125,6 @@ class GameController extends AbstractController
             $entityManager->refresh($game);
             $round = $game->getRounds()[0];
 
-            if ($user_array[0] == $game->getUser1()){
-                $pioche = $round->getPioche();
-                $tirage = array_pop($pioche);
-                $user1HandCards = $round->getUser1HandCards();
-                $user1HandCards[] = $tirage;
-                $round->setUser1HandCards($user1HandCards);
-                $round->setPioche($pioche);
-            }
-            else{
-                $pioche = $round->getPioche();
-                $tirage = array_pop($pioche);
-                $user1HandCards = $round->getUser2HandCards();
-                $user1HandCards[] = $tirage;
-                $round->setUser2HandCards($user1HandCards);
-                $round->setPioche($pioche);
-            }
-
             $entityManager->flush();
 
             $client->request('GET', $this->getParameter('app.api_url').'/game', [
@@ -835,6 +818,23 @@ class GameController extends AbstractController
                 'couteau' => 'N',
                 'cigarettes' => 'N'
         ]);
+        }
+
+        if ($game->getUserTurn() == $game->getUser1()){
+            $pioche = $set->getPioche();
+            $tirage = array_pop($pioche);
+            $user1HandCards = $set->getUser1HandCards();
+            $user1HandCards[] = $tirage;
+            $set->setUser1HandCards($user1HandCards);
+            $set->setPioche($pioche);
+        }
+        else{
+            $pioche = $set->getPioche();
+            $tirage = array_pop($pioche);
+            $user1HandCards = $set->getUser2HandCards();
+            $user1HandCards[] = $tirage;
+            $set->setUser2HandCards($user1HandCards);
+            $set->setPioche($pioche);
         }
 
         $entityManager->persist($set);
