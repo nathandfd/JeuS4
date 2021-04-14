@@ -749,10 +749,27 @@ class GameController extends AbstractController
             $game->setWinner($game->getUser2());
         }
 
+        if ($game->getRounds()[2]){
+            if ($round->getUser1Points() > $round->getUser2Points()){
+                $game->setWinner($game->getUser1());
+            }
+            elseif ($round->getUser2Points() >$round->getUser1Points()){
+                $game->setWinner($game->getUser2());
+            }
+        }
+
         $round->setBoard($board);
+        $round->setUser1Points($round->getUser1Points() + $user1_points);
+        $round->setUser2Points($round->getUser2Points() + $user2_points);
+
         $entityManager->flush();
 
-        $this->newSet($cardRepository, $entityManager, $game);
+        if (!$game->getWinner()){
+            $this->newSet($cardRepository, $entityManager, $game);
+        }
+        else{
+            return $this->json('Partie terminée Blyat !');
+        }
 
         return $this->json(true);
     }
@@ -807,6 +824,8 @@ class GameController extends AbstractController
 
         if ($game->getRounds()[0]){
             $set->setBoard($game->getRounds()[0]->getBoard());
+            $set->setUser1Points($game->getRounds()[0]->getUser1Points());
+            $set->setUser2Points($game->getRounds()[0]->getUser1Points());
         }
         else{
             $set->setBoard([
@@ -818,6 +837,8 @@ class GameController extends AbstractController
                 'couteau' => 'N',
                 'cigarettes' => 'N'
         ]);
+            $set->setUser1Points(0);
+            $set->setUser2Points(0);
         }
 
         if ($game->getUserTurn() == $game->getUser1()->getId()){

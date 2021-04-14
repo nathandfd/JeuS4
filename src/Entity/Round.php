@@ -82,6 +82,16 @@ class Round
      */
     private $pioche = [];
 
+    /**
+     * @ORM\Column(type="smallint")
+     */
+    private $user1_points;
+
+    /**
+     * @ORM\Column(type="smallint")
+     */
+    private $user2_points;
+
 
     public function getId(): ?int
     {
@@ -240,6 +250,30 @@ class Round
     public function setPioche(array $pioche): self
     {
         $this->pioche = $pioche;
+
+        return $this;
+    }
+
+    public function getUser1Points(): ?int
+    {
+        return $this->user1_points;
+    }
+
+    public function setUser1Points(int $user1_points): self
+    {
+        $this->user1_points = $user1_points;
+
+        return $this;
+    }
+
+    public function getUser2Points(): ?int
+    {
+        return $this->user2_points;
+    }
+
+    public function setUser2Points(int $user2_points): self
+    {
+        $this->user2_points = $user2_points;
 
         return $this;
     }
