@@ -721,47 +721,49 @@ class GameController extends AbstractController
         $user2_nb_geisha = 0;
 
         foreach ($board as $object => $value){
+            $user1_geishas[$object] = 0;
+            $user2_geishas[$object] = 0;
+
             foreach ($user1_cards as $card_key => $card){
                 $full_card = $cardRepository->find($card);
-                $user1_geishas[$full_card->getName()] = 0;
                 if ($full_card->getName() === $object){
-                    $user1_points += $full_card->getNumber();
+                    if($user1_geishas[$full_card->getName()]){
+                        $user1_points += $full_card->getNumber();
+                    }
                     $user1_geishas[$full_card->getName()] =+ 1;
                 }
             }
 
             foreach ($user2_cards as $card_key => $card){
                 $full_card = $cardRepository->find($card);
-                $user2_geishas[$full_card->getName()] = 0;
                 if ($full_card->getName() === $object){
-                    $user2_points += $full_card->getNumber();
+                    if($user2_geishas[$full_card->getName()]){
+                        $user2_points += $full_card->getNumber();
+                    }
                     $user2_geishas[$full_card->getName()] =+ 1;
                 }
             }
 
-            if ($user1_geishas[$object] > $user1_geishas[$object]){
+            if ($user1_geishas[$object] > $user2_geishas[$object]){
                 $board[$object] = $game->getUser1()->getId();
                 $user1_nb_geisha += 1;
             }
-            elseif ($user2_geishas[$object] > $user2_geishas[$object]){
+            elseif ($user2_geishas[$object] > $user1_geishas[$object]){
                 $board[$object] = $game->getUser2()->getId();
                 $user2_nb_geisha += 1;
-            }
-            else{
-                $board[$object] = 'N';
             }
         }
 
         if ($user1_nb_geisha >= 4){
-            $game->setWinner($game->getUser1()->getId());
+            $game->setWinner($game->getUser1());
         }elseif ($user2_nb_geisha >= 4){
-            $game->setWinner($game->getUser2()->getId());
+            $game->setWinner($game->getUser2());
         }
 
         if ($user1_points >= 11){
-            $game->setWinner($game->getUser1()->getId());
+            $game->setWinner($game->getUser1());
         }elseif ($user2_points >= 11){
-            $game->setWinner($game->getUser2()->getId());
+            $game->setWinner($game->getUser2());
         }
 
         $round->setBoard($board);
