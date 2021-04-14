@@ -709,7 +709,64 @@ class GameController extends AbstractController
             return $this->json(true);
         }
 
-        //$round->
+        //TODO "Continuer fin de partie ici"
+        $user1_cards = $round->getUser1BoardCards();
+        $user2_cards = $round->getUser2BoardCards();
+        $board = $round->getBoard();
+        $user1_geishas = [];
+        $user2_geishas = [];
+        $user1_points = 0;
+        $user2_points = 0;
+        $user1_nb_geisha = 0;
+        $user2_nb_geisha = 0;
+
+        foreach ($board as $object => $value){
+            foreach ($user1_cards as $card_key => $card){
+                $full_card = $cardRepository->find($card);
+                $user1_geishas[$full_card->getName()] = 0;
+                if ($full_card->getName() === $object){
+                    $user1_points += $full_card->getNumber();
+                    $user1_geishas[$full_card->getName()] =+ 1;
+                }
+            }
+
+            foreach ($user2_cards as $card_key => $card){
+                $full_card = $cardRepository->find($card);
+                $user2_geishas[$full_card->getName()] = 0;
+                if ($full_card->getName() === $object){
+                    $user2_points += $full_card->getNumber();
+                    $user2_geishas[$full_card->getName()] =+ 1;
+                }
+            }
+
+            if ($user1_geishas[$object] > $user1_geishas[$object]){
+                $board[$object] = $game->getUser1()->getId();
+                $user1_nb_geisha += 1;
+            }
+            elseif ($user2_geishas[$object] > $user2_geishas[$object]){
+                $board[$object] = $game->getUser2()->getId();
+                $user2_nb_geisha += 1;
+            }
+            else{
+                $board[$object] = 'N';
+            }
+        }
+
+        if ($user1_nb_geisha >= 4){
+            $game->setWinner($game->getUser1()->getId());
+        }elseif ($user2_nb_geisha >= 4){
+            $game->setWinner($game->getUser2()->getId());
+        }
+
+        if ($user1_points >= 11){
+            $game->setWinner($game->getUser1()->getId());
+        }elseif ($user2_points >= 11){
+            $game->setWinner($game->getUser2()->getId());
+        }
+
+        $round->setBoard($board);
+        $entityManager->flush();
+
         $this->newSet($cardRepository, $entityManager, $game);
 
         return $this->json(true);
@@ -768,13 +825,13 @@ class GameController extends AbstractController
         }
         else{
             $set->setBoard([
-                'EMPL1'=> 'N',
-                'EMPL2'=> 'N',
-                'EMPL3'=> 'N',
-                'EMPL4'=> 'N',
-                'EMPL5'=> 'N',
-                'EMPL6'=> 'N',
-                'EMPL7'=> 'N',
+                'pistolet' => 'N',
+                'lampe' => 'N',
+                'oreillette' => 'N',
+                'ordinateur' => 'N',
+                'fiole' => 'N',
+                'couteau' => 'N',
+                'cigarettes' => 'N'
         ]);
         }
 
