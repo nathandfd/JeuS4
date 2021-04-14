@@ -820,7 +820,7 @@ class GameController extends AbstractController
         ]);
         }
 
-        if ($game->getUserTurn() == $game->getUser1()){
+        if ($game->getUserTurn() == $game->getUser1()->getId()){
             $pioche = $set->getPioche();
             $tirage = array_pop($pioche);
             $user1HandCards = $set->getUser1HandCards();
