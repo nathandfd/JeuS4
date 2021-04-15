@@ -799,42 +799,17 @@ class GameController extends AbstractController
 
         if ($user1_nb_geisha >= 4){
             $game->setWinner($game->getUser1());
-            $client->request('GET', $this->getParameter('app.api_url').'/User1byNbGeishah', [
-                'query' => [
-                    'userId' => $game->getUser2()->getId(),
-                ],
-            ]);
         }elseif ($user2_nb_geisha >= 4){
             $game->setWinner($game->getUser2());
-            $client->request('GET', $this->getParameter('app.api_url').'/User2byNbGeishah', [
-                'query' => [
-                    'userId' => $game->getUser2()->getId(),
-                ],
-            ]);
         }
 
         if ($user1_points >= 11){
             $game->setWinner($game->getUser1());
-            $client->request('GET', $this->getParameter('app.api_url').'/User1byNbPoints', [
-                'query' => [
-                    'userId' => $game->getUser2()->getId(),
-                ],
-            ]);
         }elseif ($user2_points >= 11){
             $game->setWinner($game->getUser2());
-            $client->request('GET', $this->getParameter('app.api_url').'/User2byNbPoints', [
-                'query' => [
-                    'userId' => $game->getUser2()->getId(),
-                ],
-            ]);
         }
 
         if (!is_null($game->getRounds()[2])){
-            $client->request('GET', $this->getParameter('app.api_url').'/Userbyround3', [
-                'query' => [
-                    'userId' => $game->getUser2()->getId(),
-                ],
-            ]);
             if ($round->getUser1Points() > $round->getUser2Points()){
                 $game->setWinner($game->getUser1());
             }
@@ -847,13 +822,26 @@ class GameController extends AbstractController
         $round->setUser1Points($round->getUser1Points() + $user1_points);
         $round->setUser2Points($round->getUser2Points() + $user2_points);
 
+        $entityManager->persist($game);
         $entityManager->flush();
+        $entityManager->refresh();
 
         if (!$game->getWinner()){
             $this->newSet($cardRepository, $entityManager, $game);
         }
         else{
-            return $this->json('Partie terminée Blyat !');
+            $client->request('GET', $this->getParameter('app.api_url').'/ended_game', [
+                'query' => [
+                    'userId' => $game->getUser1()->getId(),
+                    'winner'=> ($game->getWinner()->getId() === $game->getUser1()->getId())
+                ],
+            ]);
+            $client->request('GET', $this->getParameter('app.api_url').'/ended_game', [
+                'query' => [
+                    'userId' => $game->getUser2()->getId(),
+                    'winner'=> ($game->getWinner() === $game->getUser2()->getId())
+                ],
+            ]);
         }
 
         return $this->json(true);
