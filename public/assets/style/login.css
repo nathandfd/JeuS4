@@ -6,6 +6,12 @@
   font-family: "Segoe UI";
   src: url("../font/Segoe UI.ttf");
 }
+
+.g-recaptcha{
+  display: flex;
+  justify-content: center;
+}
+
 body {
   background-image: url("../img/fond3.png");
   background-repeat: no-repeat;
