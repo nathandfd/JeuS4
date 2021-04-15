@@ -769,7 +769,7 @@ class GameController extends AbstractController
                     if($user1_geishas[$full_card->getName()]){
                         $user1_points += $full_card->getNumber();
                     }
-                    $user1_geishas[$full_card->getName()] =+ 1;
+                    $user1_geishas[$full_card->getName()] += 1;
                 }
             }
 
@@ -779,7 +779,7 @@ class GameController extends AbstractController
                     if($user2_geishas[$full_card->getName()]){
                         $user2_points += $full_card->getNumber();
                     }
-                    $user2_geishas[$full_card->getName()] =+ 1;
+                    $user2_geishas[$full_card->getName()] += 1;
                 }
             }
 
@@ -795,17 +795,42 @@ class GameController extends AbstractController
 
         if ($user1_nb_geisha >= 4){
             $game->setWinner($game->getUser1());
+            $client->request('GET', $this->getParameter('app.api_url').'/User1byNbGeishah', [
+                'query' => [
+                    'userId' => $game->getUser2()->getId(),
+                ],
+            ]);
         }elseif ($user2_nb_geisha >= 4){
             $game->setWinner($game->getUser2());
+            $client->request('GET', $this->getParameter('app.api_url').'/User2byNbGeishah', [
+                'query' => [
+                    'userId' => $game->getUser2()->getId(),
+                ],
+            ]);
         }
 
         if ($user1_points >= 11){
             $game->setWinner($game->getUser1());
+            $client->request('GET', $this->getParameter('app.api_url').'/User1byNbPoints', [
+                'query' => [
+                    'userId' => $game->getUser2()->getId(),
+                ],
+            ]);
         }elseif ($user2_points >= 11){
             $game->setWinner($game->getUser2());
+            $client->request('GET', $this->getParameter('app.api_url').'/User2byNbPoints', [
+                'query' => [
+                    'userId' => $game->getUser2()->getId(),
+                ],
+            ]);
         }
 
         if (!is_null($game->getRounds()[2])){
+            $client->request('GET', $this->getParameter('app.api_url').'/Userbyround3', [
+                'query' => [
+                    'userId' => $game->getUser2()->getId(),
+                ],
+            ]);
             if ($round->getUser1Points() > $round->getUser2Points()){
                 $game->setWinner($game->getUser1());
             }
