@@ -746,8 +746,8 @@ class GameController extends AbstractController
         //TODO "Envoyer fin de partie aux joueurs et rediriger"
         $user1_cards = $round->getUser1BoardCards();
         $user2_cards = $round->getUser2BoardCards();
-        $user1_cards[] = $round->getUser1Action()['SECRET'];
-        $user2_cards[] = $round->getUser2Action()['SECRET'];
+        $user1_cards[] = intval($round->getUser1Action()['SECRET'][0],10);
+        $user2_cards[] = intval($round->getUser2Action()['SECRET'][0],10);
         $round->setUser1BoardCards($user1_cards);
         $round->setUser2BoardCards($user2_cards);
         $entityManager->flush();
@@ -805,7 +805,7 @@ class GameController extends AbstractController
             $game->setWinner($game->getUser2());
         }
 
-        if ($game->getRounds()[2]){
+        if (!is_null($game->getRounds()[2])){
             if ($round->getUser1Points() > $round->getUser2Points()){
                 $game->setWinner($game->getUser1());
             }

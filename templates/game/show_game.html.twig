@@ -27,13 +27,21 @@
                 </div>
                 <div id="carte_ad">
                     {% if game.getUser2().getId() == user_id %}
-                        {% for card in set.user1HandCards %}
-                            <img src="{{ asset('/assets/images/cards') }}/carte_arriere.png" alt="verso carte">
-                        {% endfor %}
+                        {% if set.user1HandCards %}
+                            {% for card in set.user1HandCards %}
+                                <img src="{{ asset('/assets/images/cards') }}/carte_arriere.png" alt="verso carte">
+                            {% endfor %}
+                        {% else %}
+                            L'adversaire n'a plus de carte
+                        {% endif %}
                     {% else %}
-                        {% for card in set.user2HandCards %}
-                            <img src="{{ asset('/assets/images/cards') }}/carte_arriere.png" alt="verso carte">
-                        {% endfor %}
+                        {% if set.user2HandCards %}
+                            {% for card in set.user2HandCards %}
+                                <img src="{{ asset('/assets/images/cards') }}/carte_arriere.png" alt="verso carte">
+                            {% endfor %}
+                        {% else %}
+                            L'adversaire n'a plus de carte
+                        {% endif %}
                     {% endif %}
                 </div>
             </div>
