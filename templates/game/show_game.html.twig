@@ -74,7 +74,7 @@
                         <img id="token_offre" class="token" data-activated="false" data-action="offre" src="{{ asset('/assets/images/tokens') }}/{{ set.getUser1Action()['OFFRE']?'Jeton3_ad.png':'Jeton3.png' }}" alt="jeton">
                         <img id="token_echange" class="token" data-activated="false" data-action="echange" src="{{ asset('/assets/images/tokens') }}/{{ set.getUser1Action()['ECHANGE']?'Jeton4_ad.png':'Jeton4.png' }}" alt="jeton">
                     {% endif %}
-                    <button id="token-validation" onclick="sendActionToServer()" disabled>Valider</button>
+                    <button style="margin-top: 1.5rem" id="token-validation" onclick="sendActionToServer()" disabled>Valider</button>
                 </div>
                 <div id="carte_jeu">
                     {% if game.getUser1().getId() == user_id %}
