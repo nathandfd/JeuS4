@@ -471,7 +471,7 @@ class GameController extends AbstractController
             $user1HandCards[] = $tirage;
             $round->setUser2HandCards($user1HandCards);
             $round->setPioche($pioche);
-            if ($action !== 'accept_echange' || $action !== 'accept_offer'){
+            if ($action !== 'accept_echange' && $action !== 'accept_offer'){
                 $game->setUserTurn($game->getUser2()->getId());
             }
         } elseif ($game->getUser2()->getId() === $user->getId() && $user->getId() === $game->getUserTurn()) {
@@ -715,7 +715,7 @@ class GameController extends AbstractController
             $user1HandCards[] = $tirage;
             $round->setUser1HandCards($user1HandCards);
             $round->setPioche($pioche);
-            if ($action !== 'accept_echange' || $action !== 'accept_offer'){
+            if ($action !== 'accept_echange' && $action !== 'accept_offer'){
                 $game->setUserTurn($game->getUser1()->getId());
             }
         } else {
