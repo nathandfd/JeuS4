@@ -257,6 +257,16 @@ class GameController extends AbstractController
                             'userId' => $game->getUser2()->getId(),
                         ],
                     ]);
+                    $client->request('GET', $this->getParameter('app.api_url').'/reload', [
+                        'query' => [
+                            'userId' => $game->getUser1()->getId(),
+                        ],
+                    ]);
+                    $client->request('GET', $this->getParameter('app.api_url').'/reload', [
+                        'query' => [
+                            'userId' => $game->getUser2()->getId(),
+                        ],
+                    ]);
                     break;
                 case 'depot':
                     $cartes[] = $data['card1'];
@@ -275,6 +285,16 @@ class GameController extends AbstractController
                     $round->setUser1HandCards($main);
                     $client->request('POST', $this->getParameter('app.api_url').'/action/'.$action, [
                         'body' => [
+                            'userId' => $game->getUser2()->getId(),
+                        ],
+                    ]);
+                    $client->request('GET', $this->getParameter('app.api_url').'/reload', [
+                        'query' => [
+                            'userId' => $game->getUser1()->getId(),
+                        ],
+                    ]);
+                    $client->request('GET', $this->getParameter('app.api_url').'/reload', [
+                        'query' => [
                             'userId' => $game->getUser2()->getId(),
                         ],
                     ]);
@@ -380,13 +400,22 @@ class GameController extends AbstractController
                                 $user2Board[] = $actionsAdversaire['OFFRE'][1]['id'];
                                 $round->setUser2BoardCards($user2Board);
                                 $entityManager->flush();
-                                return $this->json($user2Board);
                                 break;
                             }
                         }
                         if (!$carteIndex){
                             return $this->json('Pas cool de tricher petit malin !');
                         }
+                        $client->request('GET', $this->getParameter('app.api_url').'/reload', [
+                            'query' => [
+                                'userId' => $game->getUser1()->getId(),
+                            ],
+                        ]);
+                        $client->request('GET', $this->getParameter('app.api_url').'/reload', [
+                            'query' => [
+                                'userId' => $game->getUser2()->getId(),
+                            ],
+                        ]);
                     }
                     else{
                         return $this->json(false);
@@ -409,7 +438,6 @@ class GameController extends AbstractController
                             $user1Board[] = $actionsAdversaire['ECHANGE']['secondDeck'][1]['id'];
                             $round->setUser2BoardCards($user1Board);
                             $entityManager->flush();
-                            return $this->json($user2Board);
                         } elseif ($actionsAdversaire['ECHANGE']['secondDeck'][0]['id'] == $cartes[0] && $actionsAdversaire['ECHANGE']['secondDeck'][1]['id'] == $cartes[1]) {
                             $user1Board = $round->getUser2BoardCards();
                             $user1Board[] = $actionsAdversaire['ECHANGE']['firstDeck'][0]['id'];
@@ -420,10 +448,19 @@ class GameController extends AbstractController
                             $user2Board[] = $actionsAdversaire['ECHANGE']['secondDeck'][1]['id'];
                             $round->setUser1BoardCards($user2Board);
                             $entityManager->flush();
-                            return $this->json($user2Board);
                         } else {
                             return $this->json('Pas cool de tricher petit malin !');
                         }
+                        $client->request('GET', $this->getParameter('app.api_url').'/reload', [
+                            'query' => [
+                                'userId' => $game->getUser1()->getId(),
+                            ],
+                        ]);
+                        $client->request('GET', $this->getParameter('app.api_url').'/reload', [
+                            'query' => [
+                                'userId' => $game->getUser2()->getId(),
+                            ],
+                        ]);
                     }
                         break;
                 default:
@@ -438,11 +475,6 @@ class GameController extends AbstractController
             $round->setPioche($pioche);
 
             $game->setUserTurn($game->getUser2()->getId());
-            $client->request('GET', $this->getParameter('app.api_url').'/reload', [
-                'query' => [
-                    'userId' => $game->getUser2()->getId(),
-                ],
-            ]);
         } elseif ($game->getUser2()->getId() === $user->getId() && $user->getId() === $game->getUserTurn()) {
             switch ($action) {
                 case 'secret':
@@ -460,6 +492,16 @@ class GameController extends AbstractController
                     $client->request('POST', $this->getParameter('app.api_url').'/action/'.$action, [
                         'body' => [
                             'userId' => $game->getUser1()->getId(),
+                        ],
+                    ]);
+                    $client->request('GET', $this->getParameter('app.api_url').'/reload', [
+                        'query' => [
+                            'userId' => $game->getUser1()->getId(),
+                        ],
+                    ]);
+                    $client->request('GET', $this->getParameter('app.api_url').'/reload', [
+                        'query' => [
+                            'userId' => $game->getUser2()->getId(),
                         ],
                     ]);
                     break;
@@ -481,6 +523,16 @@ class GameController extends AbstractController
                     $client->request('POST', $this->getParameter('app.api_url').'/action/'.$action, [
                         'body' => [
                             'userId' => $game->getUser1()->getId(),
+                        ],
+                    ]);
+                    $client->request('GET', $this->getParameter('app.api_url').'/reload', [
+                        'query' => [
+                            'userId' => $game->getUser1()->getId(),
+                        ],
+                    ]);
+                    $client->request('GET', $this->getParameter('app.api_url').'/reload', [
+                        'query' => [
+                            'userId' => $game->getUser2()->getId(),
                         ],
                     ]);
                     break;
@@ -592,6 +644,16 @@ class GameController extends AbstractController
                         if (!$carteIndex){
                             return $this->json('Pas cool de tricher petit malin !');
                         }
+                        $client->request('GET', $this->getParameter('app.api_url').'/reload', [
+                            'query' => [
+                                'userId' => $game->getUser1()->getId(),
+                            ],
+                        ]);
+                        $client->request('GET', $this->getParameter('app.api_url').'/reload', [
+                            'query' => [
+                                'userId' => $game->getUser2()->getId(),
+                            ],
+                        ]);
                     }
                     else{
                         return $this->json(false);
@@ -614,7 +676,6 @@ class GameController extends AbstractController
                             $user1Board[] = $actionsAdversaire['ECHANGE']['secondDeck'][1]['id'];
                             $round->setUser1BoardCards($user1Board);
                             $entityManager->flush();
-                            return $this->json($user2Board);
                         }
                         elseif ($actionsAdversaire['ECHANGE']['secondDeck'][0]['id'] == $cartes[0] && $actionsAdversaire['ECHANGE']['secondDeck'][1]['id'] == $cartes[1]){
                             $user1Board = $round->getUser1BoardCards();
@@ -626,7 +687,6 @@ class GameController extends AbstractController
                             $user2Board[] = $actionsAdversaire['ECHANGE']['secondDeck'][1]['id'];
                             $round->setUser2BoardCards($user2Board);
                             $entityManager->flush();
-                            return $this->json($user2Board);
                         }
                         else{
                             return $this->json('Pas cool de tricher petit malin !');
@@ -651,6 +711,17 @@ class GameController extends AbstractController
 //                        if (!$carteIndex){
 //                            return $this->json('Pas cool de tricher petit malin !');
 //                        }
+                        $client->request('GET', $this->getParameter('app.api_url').'/reload', [
+                            'query' => [
+                                'userId' => $game->getUser1()->getId(),
+                            ],
+                        ]);
+                        $client->request('GET', $this->getParameter('app.api_url').'/reload', [
+                            'query' => [
+                                'userId' => $game->getUser2()->getId(),
+                            ],
+                        ]);
+
                     }
                     else{
                         return $this->json(false);
@@ -667,11 +738,6 @@ class GameController extends AbstractController
             $round->setUser1HandCards($user1HandCards);
             $round->setPioche($pioche);
             $game->setUserTurn($game->getUser1()->getId());
-            $client->request('GET', $this->getParameter('app.api_url').'/reload', [
-                'query' => [
-                    'userId' => $game->getUser1()->getId(),
-                ],
-            ]);
         } else {
             return new Response('Houston, nous avons un problème ! Un intrus est parmis nous !');
         }
@@ -692,7 +758,7 @@ class GameController extends AbstractController
             return $this->json(true);
         }
 
-        //TODO "Continuer fin de partie ici"
+        //TODO "Envoyer fin de partie aux joueurs et rediriger"
         $user1_cards = $round->getUser1BoardCards();
         $user2_cards = $round->getUser2BoardCards();
         $board = $round->getBoard();

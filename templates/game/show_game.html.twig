@@ -163,7 +163,7 @@
         })
 
         socket.on('reload',(data)=>{
-           // document.location.reload()
+            document.location.reload()
         })
 
         window.addEventListener('load',()=>{
@@ -345,7 +345,6 @@
             })
             .then(data=>{
                 console.log(data)
-                document.location.reload()
             })
             changeTokenState(document.querySelector('.token[data-activated="true"]'),false)
         }
@@ -376,7 +375,6 @@
                 })
                 .then(data=>{
                     console.log(data)
-                    document.location.reload()
                 })
             }
 
@@ -391,7 +389,6 @@
                     })
                     .then(data=>{
                         console.log(data)
-                        document.location.reload()
                     })
             }
 
@@ -406,7 +403,6 @@
                     })
                     .then(data=>{
                         console.log(data)
-                        document.location.reload()
                     })
             }
 
@@ -447,7 +443,6 @@
                     })
                     .then(data=>{
                         console.log(data)
-                        document.location.reload()
                     })
             }
 
@@ -462,7 +457,6 @@
                     })
                     .then(data=>{
                         console.log(data)
-                        document.location.reload()
                     })
             }
 
