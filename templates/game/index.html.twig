@@ -20,7 +20,7 @@
             color: white;
             text-align: center;
             height: 100vh;
-            background-image: url(img/fond_plateau.png);
+            background-image: url({{ asset('assets/img/fond_plateau.png') }});
             background-size: contain;
             background-position: bottom;
             background-repeat: no-repeat;
@@ -72,6 +72,12 @@
             text-align: center;
             font-size: 200%;
         }
+        #subtitle {
+            color: white;
+            font-family: "Spy Agency", serif;
+            text-align: center;
+            font-size: 1em;
+        }
         #phrase {
             font-family: "Segoe UI", serif;
         }
@@ -80,8 +86,8 @@
 
 {% block body %}
     <div class="loader">Loading...</div>
-    <p>En attente d'un autre joueur</p>
     <p class="titre">HANDLING</p>
+    <p id="subtitle">En attente d'un autre joueur</p>
     <div id="phrase"></div>
     <script>
         $( document ).ready(function (){
@@ -98,9 +104,7 @@
     <script src="https://cdn.socket.io/4.0.0/socket.io.min.js" integrity="sha384-DkkWv9oJFWLIydBXXjkBWnG1/fuVhw8YPBq37uvvD6WSYRFRqr21eY5Dg9ZhmWdy" crossorigin="anonymous"></script>
     <script>
         socket.on('opponent_{{ user_id }}',opponent=>{
-            let element = document.createElement('h2')
-            element.innerHTML = `Adversaire trouvé : ${opponent}`
-            document.getElementById('title').insertAdjacentElement('afterend',element)
+            document.getElementById('subtitle').innerHTML = `Adversaire trouvé : ${opponent}`
         })
 
         socket.on('game_{{ user_id }}', gameId=>{
