@@ -248,7 +248,7 @@ class GameController extends AbstractController
                     $round->setUser1Action($actions); //je mets à jour le tableau
                     $main = $round->getUser1HandCards();
                     $indexCarte = array_search($carte, $main); //je récupère l'index de la carte a supprimer dans ma main
-                    unset($main[$indexCarte]); //je supprime la carte de ma main
+                    array_splice($main,$indexCarte,1);
                     $round->setUser1HandCards($main);
                     $client->request('POST', $this->getParameter('app.api_url').'/action/'.$action, [
                         'body' => [
@@ -277,9 +277,9 @@ class GameController extends AbstractController
                     $round->setUser1Action($actions);
                     $main = $round->getUser1HandCards();
                     $indexCarte = array_search($data['card1'], $main);
-                    unset($main[$indexCarte]);
+                    array_splice($main,$indexCarte,1);
                     $indexCarte = array_search($data['card2'], $main);
-                    unset($main[$indexCarte]);
+                    array_splice($main,$indexCarte,1);
                     $round->setUser1HandCards($main);
                     $client->request('POST', $this->getParameter('app.api_url').'/action/'.$action, [
                         'body' => [
@@ -322,11 +322,11 @@ class GameController extends AbstractController
                     $round->setUser1Action($actions);
                     $main = $round->getUser1HandCards();
                     $indexCarte = array_search($data['card1'], $main);
-                    unset($main[$indexCarte]);
+                    array_splice($main,$indexCarte,1);
                     $indexCarte = array_search($data['card2'], $main);
-                    unset($main[$indexCarte]);
+                    array_splice($main,$indexCarte,1);
                     $indexCarte = array_search($data['card3'], $main);
-                    unset($main[$indexCarte]);
+                    array_splice($main,$indexCarte,1);
                     $round->setUser1HandCards($main);
                     $client->request('POST', $this->getParameter('app.api_url').'/action/'.$action, [
                         'body' => [
@@ -363,13 +363,13 @@ class GameController extends AbstractController
                     $round->setUser1Action($actions);
                     $main = $round->getUser1HandCards();
                     $indexCarte = array_search($data['firstDeck'][0], $main);
-                    unset($main[$indexCarte]);
+                    array_splice($main,$indexCarte,1);
                     $indexCarte = array_search($data['firstDeck'][1], $main);
-                    unset($main[$indexCarte]);
+                    array_splice($main,$indexCarte,1);
                     $indexCarte = array_search($data['secondDeck'][0], $main);
-                    unset($main[$indexCarte]);
+                    array_splice($main,$indexCarte,1);
                     $indexCarte = array_search($data['secondDeck'][1], $main);
-                    unset($main[$indexCarte]);
+                    array_splice($main,$indexCarte,1);
                     $round->setUser1HandCards($main);
                     $client->request('POST', $this->getParameter('app.api_url').'/action/'.$action, [
                         'body' => [
@@ -486,7 +486,7 @@ class GameController extends AbstractController
                     $round->setUser2Action($actions); //je mets à jour le tableau
                     $main = $round->getUser2HandCards();
                     $indexCarte = array_search($carte, $main); //je récupère l'index de la carte a supprimer dans ma main
-                    unset($main[$indexCarte]); //je supprime la carte de ma main
+                    array_splice($main,$indexCarte,1);
                     $round->setUser2HandCards($main);
                     $client->request('POST', $this->getParameter('app.api_url').'/action/'.$action, [
                         'body' => [
@@ -515,9 +515,9 @@ class GameController extends AbstractController
                     $round->setUser2Action($actions);
                     $main = $round->getUser2HandCards();
                     $indexCarte = array_search($data['card1'], $main);
-                    unset($main[$indexCarte]);
+                    array_splice($main,$indexCarte,1);
                     $indexCarte = array_search($data['card2'], $main);
-                    unset($main[$indexCarte]);
+                    array_splice($main,$indexCarte,1);
                     $round->setUser2HandCards($main);
                     $client->request('POST', $this->getParameter('app.api_url').'/action/'.$action, [
                         'body' => [
@@ -560,11 +560,11 @@ class GameController extends AbstractController
                     $round->setUser2Action($actions);
                     $main = $round->getUser2HandCards();
                     $indexCarte = array_search($data['card1'], $main);
-                    unset($main[$indexCarte]);
+                    array_splice($main,$indexCarte,1);
                     $indexCarte = array_search($data['card2'], $main);
-                    unset($main[$indexCarte]);
+                    array_splice($main,$indexCarte,1);
                     $indexCarte = array_search($data['card3'], $main);
-                    unset($main[$indexCarte]);
+                    array_splice($main,$indexCarte,1);
                     $round->setUser2HandCards($main);
                     $client->request('POST', $this->getParameter('app.api_url').'/action/'.$action, [
                         'body' => [
@@ -601,13 +601,13 @@ class GameController extends AbstractController
                     $round->setUser2Action($actions);
                     $main = $round->getUser2HandCards();
                     $indexCarte = array_search($data['firstDeck'][0], $main);
-                    unset($main[$indexCarte]);
+                    array_splice($main,$indexCarte,1);
                     $indexCarte = array_search($data['firstDeck'][1], $main);
-                    unset($main[$indexCarte]);
+                    array_splice($main,$indexCarte,1);
                     $indexCarte = array_search($data['secondDeck'][0], $main);
-                    unset($main[$indexCarte]);
+                    array_splice($main,$indexCarte,1);
                     $indexCarte = array_search($data['secondDeck'][1], $main);
-                    unset($main[$indexCarte]);
+                    array_splice($main,$indexCarte,1);
                     $round->setUser2HandCards($main);
                     $client->request('POST', $this->getParameter('app.api_url').'/action/'.$action, [
                         'body' => [
