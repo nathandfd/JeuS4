@@ -307,7 +307,7 @@ body #jouer {
   align-items: center;
 }
 body #jouer #carte {
-  width: 60%;
+  /*width: 60%;*/
   height: 22em;
 }
 body #jouer #handling {
