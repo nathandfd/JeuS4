@@ -465,15 +465,15 @@ class GameController extends AbstractController
                     return $this->json(false);
                     break;
             }
-            $pioche = $round->getPioche();
-            if ($pioche){
-                $tirage = array_pop($pioche);
-                $user2HandCards = $round->getUser2HandCards();
-                $user2HandCards[] = $tirage;
-                $round->setUser2HandCards($user2HandCards);
-                $round->setPioche($pioche);
-            }
             if ($action !== 'accept_echange' && $action !== 'accept_offer'){
+                $pioche = $round->getPioche();
+                if ($pioche){
+                    $tirage = array_pop($pioche);
+                    $user2HandCards = $round->getUser2HandCards();
+                    $user2HandCards[] = $tirage;
+                    $round->setUser2HandCards($user2HandCards);
+                    $round->setPioche($pioche);
+                }
                 $game->setUserTurn($game->getUser2()->getId());
             }
         } elseif ($game->getUser2()->getId() === $user->getId() && $user->getId() === $game->getUserTurn()) {
@@ -711,15 +711,16 @@ class GameController extends AbstractController
                     return $this->json(false);
                     break;
             }
-            $pioche = $round->getPioche();
-            if ($pioche){
-                $tirage = array_pop($pioche);
-                $user1HandCards = $round->getUser1HandCards();
-                $user1HandCards[] = $tirage;
-                $round->setUser1HandCards($user1HandCards);
-                $round->setPioche($pioche);
-            }
+
             if ($action !== 'accept_echange' && $action !== 'accept_offer'){
+                $pioche = $round->getPioche();
+                if ($pioche){
+                    $tirage = array_pop($pioche);
+                    $user1HandCards = $round->getUser1HandCards();
+                    $user1HandCards[] = $tirage;
+                    $round->setUser1HandCards($user1HandCards);
+                    $round->setPioche($pioche);
+                }
                 $game->setUserTurn($game->getUser1()->getId());
             }
         } else {
