@@ -797,19 +797,11 @@ class GameController extends AbstractController
             }
         }
 
-        if ($user1_nb_geisha >= 4){
+        if ($user1_nb_geisha >= 4 || $user1_points >= 11){
             $game->setWinner($game->getUser1());
-        }elseif ($user2_nb_geisha >= 4){
+        }elseif ($user2_nb_geisha >= 4 || $user2_points >= 11){
             $game->setWinner($game->getUser2());
-        }
-
-        if ($user1_points >= 11){
-            $game->setWinner($game->getUser1());
-        }elseif ($user2_points >= 11){
-            $game->setWinner($game->getUser2());
-        }
-
-        if (!is_null($game->getRounds()[2])){
+        }elseif($game->getRounds()[2]){
             if ($round->getUser1Points() > $round->getUser2Points()){
                 $game->setWinner($game->getUser1());
             }
@@ -822,11 +814,12 @@ class GameController extends AbstractController
         $round->setUser1Points($round->getUser1Points() + $user1_points);
         $round->setUser2Points($round->getUser2Points() + $user2_points);
 
+        $entityManager->flush();
+
         if (is_null($game->getWinner())){
             $this->newSet($cardRepository, $entityManager, $game);
         }
         else{
-            $entityManager->flush();
             $client->request('GET', $this->getParameter('app.api_url').'/ended_game', [
                 'query' => [
                     'userId' => $game->getUser1()->getId(),
