@@ -822,12 +822,11 @@ class GameController extends AbstractController
         $round->setUser1Points($round->getUser1Points() + $user1_points);
         $round->setUser2Points($round->getUser2Points() + $user2_points);
 
-        $entityManager->flush();
-
         if (is_null($game->getWinner())){
             $this->newSet($cardRepository, $entityManager, $game);
         }
         else{
+            $entityManager->flush();
             $client->request('GET', $this->getParameter('app.api_url').'/ended_game', [
                 'query' => [
                     'userId' => $game->getUser1()->getId(),
