@@ -4,7 +4,10 @@
 {% endblock %}
 
 {% block body %}
-
+    <div id="myModal" class="modal">
+        <div id="cards-content" class="modal-content">
+        </div>
+    </div>
     <div id="loading_screen" style="background-color: #404040; position: absolute; height: 100vh; width: 100vw; margin: 0; padding: 0; top: 0; left: 0">
         Loading !
     </div>
@@ -95,7 +98,6 @@
                         {% endif %}
                     {% endif %}
                 </div>
-                <div id="cards"></div>
             </div>
             <h3 id="user_turn">
                 {% if game.getUserTurn() == user_id %}
@@ -118,6 +120,8 @@
         </div>
     </div>
     <script>
+        let modal = document.getElementById("myModal");
+        let btn = document.getElementById("myBtn");
         let tokenValidation
         let currentAction = ""
         let secretArray = []
@@ -129,7 +133,6 @@
         }
 
         socket.on('action',(data)=>{
-            console.log(data)
             switch (data.action){
                 case 'offre':
                     newOffer(data.cards)
@@ -146,14 +149,6 @@
 
         window.addEventListener('load',()=>{
             document.getElementById('loading_screen').style.display = 'none';
-            /*let cards = document.getElementsByClassName('card-container')
-            console.log(cards)
-            Array.from(cards).forEach((card)=>{
-                let secret = document.createElement('button')
-                secret.innerHTML = "Secret"
-                secret.onclick = ()=>{secretCard(card.getAttribute("data-card-id"))}
-                card.appendChild(secret)
-            })*/
         })
 
         window.addEventListener('DOMContentLoaded',()=>{
@@ -328,7 +323,7 @@
         }
 
         function newOffer(cards){
-            let div = document.getElementById('cards')
+            let div = document.getElementById('cards-content')
             div.innerHTML = ''
             let card1, card2, card3
             let data = {
@@ -354,6 +349,7 @@
                 .then(data=>{
                     console.log(data)
                 })
+                document.getElementById('myModal').style.display = "none";
             }
 
             card2.onclick = ()=>{
@@ -368,6 +364,7 @@
                     .then(data=>{
                         console.log(data)
                     })
+                document.getElementById('myModal').style.display = "none";
             }
 
             card3.onclick = ()=>{
@@ -382,16 +379,19 @@
                     .then(data=>{
                         console.log(data)
                     })
+                document.getElementById('myModal').style.display = "none";
             }
 
             div.appendChild(card1)
             div.appendChild(card2)
             div.appendChild(card3)
 
+            document.getElementById('myModal').style.display = "block";
+
         }
 
         function newEchange(cards){
-            let div = document.getElementById('cards')
+            let div = document.getElementById('cards-content')
             div.innerHTML = ''
             let card1, card2, card3, card4, group1, group2
             let data = {
@@ -422,6 +422,7 @@
                     .then(data=>{
                         console.log(data)
                     })
+                document.getElementById('myModal').style.display = "none";
             }
 
             group2.onclick = ()=>{
@@ -436,6 +437,7 @@
                     .then(data=>{
                         console.log(data)
                     })
+                document.getElementById('myModal').style.display = "none";
             }
 
             group1.appendChild(card1)
@@ -444,6 +446,8 @@
             group2.appendChild(card4)
             div.appendChild(group1)
             div.appendChild(group2)
+
+            document.getElementById('myModal').style.display = "block";
         }
     </script>
 {% endblock %}
