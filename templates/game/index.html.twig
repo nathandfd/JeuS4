@@ -1,9 +1,97 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello GameController!{% endblock %}
+{% block title %}Matchmaking{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdn.rawgit.com/jlong/css-spinners/master/css/spinners.css">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <style>
+        @font-face {
+            font-family: "Spy Agency";
+            src: url("font/spyagency.otf");
+        }
+        @font-face {
+            font-family: "Segoe UI";
+            src: url("font/Segoe UI.ttf");
+        }
+        body {
+            overflow: hidden;
+            background-color: black;
+            color: white;
+            text-align: center;
+            height: 100vh;
+            background-image: url(img/fond_plateau.png);
+            background-size: contain;
+            background-position: bottom;
+            background-repeat: no-repeat;
+        }
+        .loader,
+        .loader:after {
+            border-radius: 50%;
+            width: 10em;
+            height: 10em;
+        }
+        .loader {
+            margin: 60px auto;
+            font-size: 10px;
+            position: relative;
+            text-indent: -9999em;
+            border-top: 1.1em solid rgba(255, 0, 0, 0.3);
+            border-right: 1.1em solid rgba(255,0,0, 0.3);
+            border-bottom: 1.1em solid rgba(255,0,0, 0.3);
+            border-left: 1.1em solid #ff0000;
+            -webkit-transform: translateZ(0);
+            -ms-transform: translateZ(0);
+            transform: translateZ(0);
+            -webkit-animation: load8 1.1s infinite linear;
+            animation: load8 1.1s infinite linear;
+        }
+        @-webkit-keyframes load8 {
+            0% {
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+        @keyframes load8 {
+            0% {
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+        .titre {
+            color: white;
+            font-family: "Spy Agency", serif;
+            text-align: center;
+            font-size: 200%;
+        }
+        #phrase {
+            font-family: "Segoe UI", serif;
+        }
+    </style>
+{% endblock %}
 
 {% block body %}
-    <h1 id="title">You're now wainting for another player</h1>
+    <div class="loader">Loading...</div>
+    <p class="titre">HANDLING</p>
+    <div id="phrase"></div>
+    <script>
+        $( document ).ready(function (){
+            var listePhrases = ["Le saviez-vous ? Les deux agences d'espionnage se nomment GroundWorld et Shadow Society",
+                "Recrutez un maximum d’espions dans votre rang grâce aux gadgets",
+                "Obtenez l'arme secrète et ainsi prenez le pouvoir du pays",
+                "Recrutez les espions nécessaires pour faire tomber le gouvernement.",
+                "Prenez part à une lutte contre l’organisation opposée, et usez de vos nombreux atouts."];
+            document.getElementById("phrase").innerHTML = listePhrases[Math.floor(Math.random() * listePhrases.length)];
+        })
+    </script>
 {% endblock %}
 {% block javascripts %}
     <script src="https://cdn.socket.io/4.0.0/socket.io.min.js" integrity="sha384-DkkWv9oJFWLIydBXXjkBWnG1/fuVhw8YPBq37uvvD6WSYRFRqr21eY5Dg9ZhmWdy" crossorigin="anonymous"></script>

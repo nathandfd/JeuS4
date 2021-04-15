@@ -762,12 +762,14 @@ class GameController extends AbstractController
         foreach ($board as $object => $value){
             $user1_geishas[$object] = 0;
             $user2_geishas[$object] = 0;
+            $card1_points = 0;
+            $card2_points = 0;
 
             foreach ($user1_cards as $card_key => $card){
                 $full_card = $cardRepository->find($card);
                 if ($full_card->getName() === $object){
                     if($user1_geishas[$full_card->getName()]){
-                        $user1_points += $full_card->getNumber();
+                        $card1_points = $full_card->getNumber();
                     }
                     $user1_geishas[$full_card->getName()] += 1;
                 }
@@ -777,7 +779,7 @@ class GameController extends AbstractController
                 $full_card = $cardRepository->find($card);
                 if ($full_card->getName() === $object){
                     if($user2_geishas[$full_card->getName()]){
-                        $user2_points += $full_card->getNumber();
+                        $card2_points = $full_card->getNumber();
                     }
                     $user2_geishas[$full_card->getName()] += 1;
                 }
@@ -785,10 +787,12 @@ class GameController extends AbstractController
 
             if ($user1_geishas[$object] > $user2_geishas[$object]){
                 $board[$object] = $game->getUser1()->getId();
+                $user1_points += $card1_points;
                 $user1_nb_geisha += 1;
             }
             elseif ($user2_geishas[$object] > $user1_geishas[$object]){
                 $board[$object] = $game->getUser2()->getId();
+                $user2_points += $card2_points;
                 $user2_nb_geisha += 1;
             }
         }
