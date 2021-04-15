@@ -150,7 +150,7 @@ class GameController extends AbstractController
     }
 
     /**
-     * @Route("/show-game/{game}", name="show_game")
+     * @Route("/play/{game}", name="show_game")
      */
     public function showGame(
         CardRepository $cardRepository,
@@ -216,12 +216,10 @@ class GameController extends AbstractController
 
 
 
-        return $this->render('game/show_game.html.twig', [
-            'game' => $game,
-            'set' => $game->getRounds()[0],
-            'cards' => $tCards,
+        return $this->json([
+            'user_turn' => ($game->getUserTurn() === $this->getUser()->getId()),
             'moi' => $moi,
-            'adversaire' => $adversaire
+            'opponent'=>$adversaire
         ]);
     }
 
@@ -473,8 +471,9 @@ class GameController extends AbstractController
             $user1HandCards[] = $tirage;
             $round->setUser2HandCards($user1HandCards);
             $round->setPioche($pioche);
-
-            $game->setUserTurn($game->getUser2()->getId());
+            if ($action !== 'accept_echange' || $action !== 'accept_offer'){
+                $game->setUserTurn($game->getUser2()->getId());
+            }
         } elseif ($game->getUser2()->getId() === $user->getId() && $user->getId() === $game->getUserTurn()) {
             switch ($action) {
                 case 'secret':
@@ -637,7 +636,6 @@ class GameController extends AbstractController
                                 $user2Board[] = $actionsAdversaire['OFFRE'][1]['id'];
                                 $round->setUser1BoardCards($user2Board);
                                 $entityManager->flush();
-                                return $this->json($user2Board);
                                 break;
                             }
                         }
@@ -691,26 +689,6 @@ class GameController extends AbstractController
                         else{
                             return $this->json('Pas cool de tricher petit malin !');
                         }
-
-//                            $carteIndex = array_search($carte, $value);
-//                            $carteIndex2 = array_search($carte, $value);
-//                            if ($carteIndex){
-//                                $user1Board = $round->getUser2BoardCards();
-//                                $user1Board[] = $actionsAdversaire['OFFRE'][$key]['id'];
-//                                $round->setUser2BoardCards($user1Board);
-//                                array_splice($actionsAdversaire['OFFRE'],$key,1);
-//                                $user2Board = $round->getUser1BoardCards();
-//                                $user2Board[] = $actionsAdversaire['OFFRE'][0]['id'];
-//                                $user2Board[] = $actionsAdversaire['OFFRE'][1]['id'];
-//                                $round->setUser1BoardCards($user2Board);
-//                                $entityManager->flush();
-//                                return $this->json($user2Board);
-//                                break;
-//                            }
-//                        }
-//                        if (!$carteIndex){
-//                            return $this->json('Pas cool de tricher petit malin !');
-//                        }
                         $client->request('GET', $this->getParameter('app.api_url').'/reload', [
                             'query' => [
                                 'userId' => $game->getUser1()->getId(),
@@ -737,7 +715,9 @@ class GameController extends AbstractController
             $user1HandCards[] = $tirage;
             $round->setUser1HandCards($user1HandCards);
             $round->setPioche($pioche);
-            $game->setUserTurn($game->getUser1()->getId());
+            if ($action !== 'accept_echange' || $action !== 'accept_offer'){
+                $game->setUserTurn($game->getUser1()->getId());
+            }
         } else {
             return new Response('Houston, nous avons un problème ! Un intrus est parmis nous !');
         }
@@ -761,6 +741,11 @@ class GameController extends AbstractController
         //TODO "Envoyer fin de partie aux joueurs et rediriger"
         $user1_cards = $round->getUser1BoardCards();
         $user2_cards = $round->getUser2BoardCards();
+        $user1_cards[] = $round->getUser1Action()['SECRET'];
+        $user2_cards[] = $round->getUser2Action()['SECRET'];
+        $round->setUser1BoardCards($user1_cards);
+        $round->setUser2BoardCards($user2_cards);
+        $entityManager->flush();
         $board = $round->getBoard();
         $user1_geishas = [];
         $user2_geishas = [];

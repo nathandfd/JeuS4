@@ -9,13 +9,21 @@
         Loading !
     </div>
     <div id="fond">
+        <a href="{{ path('home') }}">Quitter la partie</a>
         <div id="plateau">
             <div id="adversaire">
                 <div id="jetons_ad">
-                    <img id="token_secret_opponent" src="{{ asset('/assets/images/tokens') }}/Jeton1.png" alt="jeton">
-                    <img id="token_depot_opponent" src="{{ asset('/assets/images/tokens') }}/Jeton2.png" alt="jeton">
-                    <img id="token_offre_opponent" src="{{ asset('/assets/images/tokens') }}/Jeton3.png" alt="jeton">
-                    <img id="token_echange_opponent" src="{{ asset('/assets/images/tokens') }}/Jeton4.png" alt="jeton">
+                    {% if game.getUser1().getId() == user_id %}
+                        <img id="token_secret_opponent" class="token" data-activated="false" data-action="secret" src="{{ asset('/assets/images/tokens') }}/{{ set.getUser2Action()['SECRET']?'Jeton1_ad.png':'Jeton1.png' }}" alt="jeton">
+                        <img id="token_depot_opponent" class="token" data-activated="false" data-action="depot" src="{{ asset('/assets/images/tokens') }}/{{ set.getUser2Action()['DEPOT']?'Jeton2_ad.png':'Jeton2.png' }}" alt="jeton">
+                        <img id="token_offre_opponent" class="token" data-activated="false" data-action="offre" src="{{ asset('/assets/images/tokens') }}/{{ set.getUser2Action()['OFFRE']?'Jeton3_ad.png':'Jeton3.png' }}" alt="jeton">
+                        <img id="token_echange_opponent" class="token" data-activated="false" data-action="echange" src="{{ asset('/assets/images/tokens') }}/{{ set.getUser2Action()['ECHANGE']?'Jeton4_ad.png':'Jeton4.png' }}" alt="jeton">
+                    {% else %}
+                        <img id="token_secret_opponent" class="token" data-activated="false" data-action="secret" src="{{ asset('/assets/images/tokens') }}/{{ set.getUser1Action()['SECRET']?'Jeton1_ad.png':'Jeton1.png' }}" alt="jeton">
+                        <img id="token_depot_opponent" class="token" data-activated="false" data-action="depot" src="{{ asset('/assets/images/tokens') }}/{{ set.getUser1Action()['DEPOT']?'Jeton2_ad.png':'Jeton2.png' }}" alt="jeton">
+                        <img id="token_offre_opponent" class="token" data-activated="false" data-action="offre" src="{{ asset('/assets/images/tokens') }}/{{ set.getUser1Action()['OFFRE']?'Jeton3_ad.png':'Jeton3.png' }}" alt="jeton">
+                        <img id="token_echange_opponent" class="token" data-activated="false" data-action="echange" src="{{ asset('/assets/images/tokens') }}/{{ set.getUser1Action()['ECHANGE']?'Jeton4_ad.png':'Jeton4.png' }}" alt="jeton">
+                    {% endif %}
                 </div>
                 <div id="carte_ad">
                     {% if game.getUser2().getId() == user_id %}
@@ -59,12 +67,6 @@
                     <button id="token-validation" onclick="sendActionToServer()" disabled>Valider</button>
                 </div>
                 <div id="carte_jeu">
-{#                    <img id="carte1" class="card" src="{{ asset('/assets/images/objects') }}/carte_1.png" alt="objet">#}
-{#                    <img id="carte2" class="card" src="{{ asset('/assets/images/objects') }}/carte_1.png" alt="objet">#}
-{#                    <img id="carte3" class="card" src="{{ asset('/assets/images/objects') }}/carte_6.png" alt="objet">#}
-{#                    <img id="carte4" class="card" src="{{ asset('/assets/images/objects') }}/carte_2.png" alt="objet">#}
-{#                    <img id="carte5" class="card" src="{{ asset('/assets/images/objects') }}/carte_6.png" alt="objet">#}
-{#                    <img id="carte6" class="card" src="{{ asset('/assets/images/objects') }}/carte_5.png" alt="objet">#}
                     {% if game.getUser1().getId() == user_id %}
                         {% for card in set.user1HandCards %}
                             <img data-card-id="{{ cards[card].getId() }}" class="card" src="{{ asset('assets/images/objects/'~cards[card].picture) }}">
@@ -77,6 +79,13 @@
                 </div>
                 <div id="cards"></div>
             </div>
+            <h3 id="user_turn">
+                {% if game.getUserTurn() == user_id %}
+                A toi de jouer !
+                {% else %}
+                Patiente un petit peu, ton tour arrive !
+                {% endif %}
+            </h3>
             <div id="cards">
                 {% if game.getUser1().getId() == user_id %}
                     {% for card in set.user1BoardCards %}
@@ -90,55 +99,6 @@
             </div>
         </div>
     </div>
-{#    <div class="row">#}
-{#        <div class="col-8">#}
-{#            Cartes de l'adversaire#}
-{#            {% if game.getUser1().getId() == user_id %}#}
-{#                {% for card in set.user2HandCards %}#}
-{#                    <img height="100" src="{{ asset('assets/images/objects/'~cards[card].picture) }}">{{ cards[card].number }}#}
-{#                {% endfor %}#}
-{#            {% else %}#}
-{#                {% for card in set.user1HandCards %}#}
-{#                    <img height="100" src="{{ asset('assets/images/objects/'~cards[card].picture) }}">{{ cards[card].number }}#}
-{#                {% endfor %}#}
-{#            {% endif %}#}
-{#        </div>#}
-{#        <div class="col-4">#}
-{#            Actions#}
-{#        </div>#}
-{#    </div>#}
-{#    <div class="row">#}
-{#        Plateau adversaire#}
-{#    </div>#}
-{#    <div class="row">#}
-{#        Plateau#}
-{#    </div>#}
-{#    <div class="row">#}
-{#        Mon Plateau#}
-{#    </div>#}
-{#    <div class="row">#}
-{#        <div class="col-8">#}
-{#            {% if game.getUser1().getId() == user_id %}#}
-{#                {% for card in set.user1HandCards %}#}
-{#                    <img data-card-id="{{ cards[card].getId() }}" class="card" height="100" src="{{ asset('assets/images/objects/'~cards[card].picture) }}">{{ cards[card].number }}#}
-{#                {% endfor %}#}
-{#            {% else %}#}
-{#                {% for card in set.user2HandCards %}#}
-{#                    <img data-card-id="{{ cards[card].getId()}}" class="card" height="100" src="{{ asset('assets/images/objects/'~cards[card].picture) }}">{{ cards[card].number }}#}
-{#                {% endfor %}#}
-{#            {% endif %}#}
-{#        </div>#}
-{#        <div class="col-4">#}
-{#            Mes Actions#}
-{#            <div class="actions">#}
-{#                <button id="secret-button">Secret</button>#}
-{#                <button id="depot-button">Dépôt</button>#}
-{#                <button id="offre-button">Offre</button>#}
-{#                <button id="echange-button">Echange</button>#}
-{#            </div>#}
-{#        </div>#}
-{#    </div>#}
-    <a href="{{ path('home') }}">Retour à l'accueil</a>
     <script>
         let tokenValidation
         let currentAction = ""

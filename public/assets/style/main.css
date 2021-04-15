@@ -248,12 +248,13 @@ header #lien_accueil img {
 
 @font-face {
   font-family: "Spy Agency";
-  src: url("../font/spyagency3_2.otf") format("otf");
+  src: url("../font/spyagency.otf");
 }
 @font-face {
   font-family: "Segoe UI";
-  src: url("../font/Segoe UI.ttf") format("ttf");
+  src: url("../font/Segoe UI.ttf");
 }
+
 body #regles h2, body #presentation h2, body #jouer #handling h1, #profil h2 {
   color: #E3444D;
   text-transform: uppercase;
