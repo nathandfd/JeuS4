@@ -1,4 +1,4 @@
-#cards img{
+#cards img, #cards-content img{
   width: 4vw;
   height: auto;
   padding: 0 0.5%;
