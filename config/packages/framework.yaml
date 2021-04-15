@@ -18,4 +18,4 @@ framework:
 
     assets:
         base_urls:
-            - '/JeuS4/public'
+            - 'https://nathandfd.fr/JeuS4/public'
