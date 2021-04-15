@@ -1,4 +1,4 @@
-#cards img, #cards-content img{
+#cards img{
   width: 4vw;
   height: auto;
   padding: 0 0.5%;
@@ -248,49 +248,11 @@ header #lien_accueil img {
 
 @font-face {
   font-family: "Spy Agency";
-  src: url("../font/spyagency.otf");
+  src: url("/assets/font/spyagency.otf");
 }
 @font-face {
   font-family: "Segoe UI";
-  src: url("../font/Segoe UI.ttf");
-}
-
-.modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 10; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
-
-/* Modal Content */
-.modal-content {
-  background-color: #fefefe;
-  margin: auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-}
-
-/* The Close Button */
-.close {
-  color: #aaaaaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
+  src: url("/assets/font/Segoe UI.ttf");
 }
 
 body #regles h2, body #presentation h2, body #jouer #handling h1, #profil h2 {

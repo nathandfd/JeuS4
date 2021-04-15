@@ -1,6 +1,57 @@
 {% extends 'base.html.twig' %}
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('assets/style/main.css') }}">
+    <style>
+        #cards-content img{
+            width: 10vw;
+            height: auto;
+            padding: 0 0.5%;
+        }
+
+        .modal {
+            display: none; /* Hidden by default */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: fixed; /* Stay in place */
+            z-index: 10; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* The Close Button */
+        .close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
 {% endblock %}
 
 {% block body %}
@@ -382,11 +433,15 @@
                 document.getElementById('myModal').style.display = "none";
             }
 
+            let title = document.createElement('h2')
+            title.innerHTML = "Offre : Choisis une carte"
+
+            div.appendChild(title)
             div.appendChild(card1)
             div.appendChild(card2)
             div.appendChild(card3)
 
-            document.getElementById('myModal').style.display = "block";
+            document.getElementById('myModal').style.display = "flex";
 
         }
 
@@ -444,10 +499,15 @@
             group1.appendChild(card2)
             group2.appendChild(card3)
             group2.appendChild(card4)
+
+            let title = document.createElement('h2')
+            title.innerHTML = "Echange : Choisis un groupe de cartes"
+
+            div.appendChild(title)
             div.appendChild(group1)
             div.appendChild(group2)
 
-            document.getElementById('myModal').style.display = "block";
+            document.getElementById('myModal').style.display = "flex";
         }
     </script>
 {% endblock %}
