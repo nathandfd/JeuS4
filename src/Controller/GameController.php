@@ -466,11 +466,13 @@ class GameController extends AbstractController
                     break;
             }
             $pioche = $round->getPioche();
-            $tirage = array_pop($pioche);
-            $user1HandCards = $round->getUser2HandCards();
-            $user1HandCards[] = $tirage;
-            $round->setUser2HandCards($user1HandCards);
-            $round->setPioche($pioche);
+            if ($pioche){
+                $tirage = array_pop($pioche);
+                $user2HandCards = $round->getUser2HandCards();
+                $user2HandCards[] = $tirage;
+                $round->setUser2HandCards($user2HandCards);
+                $round->setPioche($pioche);
+            }
             if ($action !== 'accept_echange' && $action !== 'accept_offer'){
                 $game->setUserTurn($game->getUser2()->getId());
             }
@@ -710,11 +712,13 @@ class GameController extends AbstractController
                     break;
             }
             $pioche = $round->getPioche();
-            $tirage = array_pop($pioche);
-            $user1HandCards = $round->getUser1HandCards();
-            $user1HandCards[] = $tirage;
-            $round->setUser1HandCards($user1HandCards);
-            $round->setPioche($pioche);
+            if ($pioche){
+                $tirage = array_pop($pioche);
+                $user1HandCards = $round->getUser1HandCards();
+                $user1HandCards[] = $tirage;
+                $round->setUser1HandCards($user1HandCards);
+                $round->setPioche($pioche);
+            }
             if ($action !== 'accept_echange' && $action !== 'accept_offer'){
                 $game->setUserTurn($game->getUser1()->getId());
             }
